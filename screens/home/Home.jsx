@@ -1,14 +1,26 @@
-import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import React, { Component } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
+import CircularMenu from '../../components/home/CircularMenu';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export class Home extends Component {
+export default class Home extends Component {
   render() {
     return (
-      <View>
-        <Text> Home </Text>
-      </View>
-    )
+      <SafeAreaView style={styles.container}>
+        <CircularMenu />
+        {/* Other content for your Home screen */}
+      </SafeAreaView>
+    );
   }
 }
 
-export default Home
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  content: {
+    // Style for your main content if needed
+  },
+});
