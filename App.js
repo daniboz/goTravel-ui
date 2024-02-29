@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigation from './navigation/BottomTabNavigator';
+import { Home } from './screens';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +35,7 @@ export default function App() {
       <StatusBar  />
       <Stack.Navigator>
       <Stack.Screen name='Bottom' component={BottomTabNavigation} options={{ headerShown: false }} />
-        
+      <Stack.Screen name='Home' component={Home} options={{ headerShown: false }} />  
       </Stack.Navigator>
     </NavigationContainer>
   );
