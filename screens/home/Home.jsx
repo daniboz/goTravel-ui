@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import CircularMenu from '../../components/home/CircularMenu';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default class Home extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <CircularMenu />
         {/* Other content for your Home screen */}
-      </View>
+      </SafeAreaView>
     );
   }
 }

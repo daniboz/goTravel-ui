@@ -4,17 +4,16 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { COLORS } from '../../constants/theme';
 
 const windowWidth = Dimensions.get('window').width;
-const centralButtonSize = windowWidth * 0.3; // Example size for the central button
-const buttonSize = centralButtonSize * 0.6; // Smaller size for surrounding buttons
-const centralButtonMarginTop = 20; // Space between the top button and central button
+const centralButtonSize = windowWidth * 0.35; // Example size for the central button
+const buttonSize = centralButtonSize * 0.8; // Smaller size for surrounding buttons
 
 const CircularMenu = () => {
   return (
     <View style={styles.container}>
       {/* Restaurants Button - Placed above the 'All' button */}
       <TouchableOpacity style={[styles.button, { 
-       bottom: centralButtonSize /1.5 + centralButtonMarginTop, // Position the 'Restaurants' button above the 'All' button
-        alignSelf: 'center', // Center the button horizontally
+       left: 280,
+       bottom: 10,
       }]}>
         <Icon name="cutlery" size={30} color="#000" />
         <Text style={styles.buttonText}>Restaurants</Text>
@@ -22,13 +21,14 @@ const CircularMenu = () => {
 
       {/* Central 'All' Button */}
       <TouchableOpacity style={[styles.button, styles.centralButton]}>
-        <Icon name="globe" size={25} color="#000" />
+        <Icon name="globe" size={30} color="#000" />
         <Text style={styles.buttonText}>All</Text>
       </TouchableOpacity>
 
       {/* Attractions Button - Placed to the left of the 'All' button */}
       <TouchableOpacity style={[styles.button, { 
-       right: windowWidth /1.7 + centralButtonSize / 2, // Position to the left of the central button
+       right: 265, 
+       bottom: 60, 
       }]}>
         <Icon name="camera" size={30} color="#000" />
         <Text style={styles.buttonText}>Attractions</Text>
@@ -36,7 +36,8 @@ const CircularMenu = () => {
 
       {/* Events Button - Placed to the right of the 'All' button */}
       <TouchableOpacity style={[styles.button, { 
-       left: windowWidth / 1.7 + centralButtonSize / 2, // Position to the right of the central button
+       right: 225,
+       bottom: -210,
       }]}>
         <Icon name="ticket" size={40} color="#000" />
         <Text style={styles.buttonText}>Events</Text>
@@ -48,7 +49,7 @@ const CircularMenu = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: '50%', // Adjust this value to move the menu up or down
+    top: '55%', // Adjust this value to move the menu up or down
     left: 0,
     right: 0,
     alignItems: 'center',
