@@ -2,16 +2,15 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { COLORS } from '../../constants/theme';
+import { useNavigation } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
-const centralButtonSize = windowWidth * 0.35; // Example size for the central button
-const buttonSize = centralButtonSize * 0.8; // Smaller size for surrounding buttons
-const radius = centralButtonSize  ; // Increase this value to move buttons away from the central button
+const centralButtonSize = windowWidth * 0.35; 
+const buttonSize = centralButtonSize * 0.8;
+const radius = centralButtonSize  ;
+const angleOffset = Math.PI / 1.5; 
+const startAngle = -Math.PI / 2;
 
-const angleOffset = Math.PI / 1.5; // 60 degrees in radians
-const startAngle = -Math.PI / 2; // Start at the top (270 degrees)
-
-// Function to calculate the position of each button
 const calculatePosition = (angle) => {
   return {
     left: radius * Math.cos(angle) + (windowWidth /2 - buttonSize / 2),
@@ -20,28 +19,25 @@ const calculatePosition = (angle) => {
 };
 
 const CircularMenu = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      {/* Restaurants Button - 120 degrees from the top */}
-      <TouchableOpacity style={[styles.button, calculatePosition(startAngle + angleOffset)]}>
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle + angleOffset)]} onPress={()=> navigation.navigate('RestaurantsPage')}>
         <Icon name="cutlery" size={30} color="#000" />
         <Text style={styles.buttonText}>Restaurants</Text>
       </TouchableOpacity>
 
-      {/* Central 'All' Button */}
-      <TouchableOpacity style={[styles.button, styles.centralButton]}>
+      <TouchableOpacity style={[styles.button, styles.centralButton]} onPress={()=> navigation.navigate('AllPage')}>
         <Icon name="globe" size={30} color="#000" />
         <Text style={styles.buttonText}>All</Text>
       </TouchableOpacity>
 
-      {/* Attractions Button - Placed at the top */}
-      <TouchableOpacity style={[styles.button, calculatePosition(startAngle)]}>
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle)]} onPress={()=> navigation.navigate('AttractionsPage')}>
         <Icon name="camera" size={30} color="#000" />
         <Text style={styles.buttonText}>Attractions</Text>
       </TouchableOpacity>
 
-      {/* Events Button - 240 degrees from the top */}
-      <TouchableOpacity style={[styles.button, calculatePosition(startAngle - angleOffset)]}>
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle - angleOffset)]} onPress={()=> navigation.navigate('EventsPage')}>
         <Icon name="ticket" size={40} color="#000" />
         <Text style={styles.buttonText}>Events</Text>
       </TouchableOpacity>
@@ -52,7 +48,7 @@ const CircularMenu = () => {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: '55%', // Adjust this value to move the menu up or down
+    top: '55%', 
     left: 0,
     right: 0,
     alignItems: 'center',
@@ -66,27 +62,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: buttonSize / 2,
     backgroundColor: '#FFF',
-    // Add shadows and other styling as needed
   },
   centralButton: {
     position: 'absolute',
-    //top: windowWidth /2 - centralButtonSize / 2,
     bottom: windowWidth / 5 - centralButtonSize,
     left: windowWidth / 2 - centralButtonSize / 2,
     width: centralButtonSize,
     height: centralButtonSize,
     borderRadius: centralButtonSize / 2,
-    backgroundColor: COLORS.red, // Example color for "All" button
+    backgroundColor: COLORS.red, 
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonText: {
-    textAlign: 'center', // Center the text
-    fontSize: 13, // Adjust font size to fit the button
-    fontWeight: 'bold', // Optional: make the text bold
-    color: '#000', // Set text color
-    marginTop: 4, // Space between icon and text
-    width: buttonSize, // Ensure text does not exceed the button width
+    textAlign: 'center', 
+    fontSize: 13, 
+    fontWeight: 'bold', 
+    color: '#000', 
+    marginTop: 4, 
+    width: buttonSize, 
   }
 });
 

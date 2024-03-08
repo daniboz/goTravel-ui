@@ -4,7 +4,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Home, Calendar, Wallet, Location, Profile } from "../screens";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/theme";
-//import TopTab from "./TopTab";
 
 const Tab = createBottomTabNavigator();
 
@@ -72,23 +71,6 @@ const BottomTabNavigation = () => {
         }}
       />
 
-      {/* <Tab.Screen
-        name="Calendar"
-        component={Calendar}
-        options={{
-          tabBarStyle: tabBarStyle,
-          tabBarShowLabel: false,
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name={focused ? "calendar" : "calendar-outline"}
-              color={focused ? COLORS.red : COLORS.gray}
-              size={26}
-            />
-          ),
-        }}
-      /> */}
-
 <Tab.Screen
         name="Calendar"
         component={Calendar}
@@ -146,17 +128,12 @@ const styles = StyleSheet.create({
   customIcon: {
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 30, // Adjust for circular shape
+    borderRadius: 30, 
     width: 60,
     height: 60,
-    marginBottom: 20, // Lifts the icon up
-    backgroundColor: '#FFF', // Change as needed
+    marginBottom: 20, 
+    backgroundColor: '#FFF', 
   },
-  customIconFocused: {
-    // Additional styles for when the icon is focused
-    // You can add a different background color or other styling
-  },
-  // ... your existing styles
 });
 
 export default BottomTabNavigation;
