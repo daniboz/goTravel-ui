@@ -6,15 +6,24 @@ import { COLORS } from '../../constants/theme';
 const windowWidth = Dimensions.get('window').width;
 const centralButtonSize = windowWidth * 0.35; // Example size for the central button
 const buttonSize = centralButtonSize * 0.8; // Smaller size for surrounding buttons
+const radius = centralButtonSize  ; // Increase this value to move buttons away from the central button
+
+const angleOffset = Math.PI / 1.5; // 60 degrees in radians
+const startAngle = -Math.PI / 2; // Start at the top (270 degrees)
+
+// Function to calculate the position of each button
+const calculatePosition = (angle) => {
+  return {
+    left: radius * Math.cos(angle) + (windowWidth /2 - buttonSize / 2),
+    top: radius * Math.sin(angle) + (windowWidth / 8 - buttonSize),
+  };
+};
 
 const CircularMenu = () => {
   return (
     <View style={styles.container}>
-      {/* Restaurants Button - Placed above the 'All' button */}
-      <TouchableOpacity style={[styles.button, { 
-       left: 280,
-       bottom: 10,
-      }]}>
+      {/* Restaurants Button - 120 degrees from the top */}
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle + angleOffset)]}>
         <Icon name="cutlery" size={30} color="#000" />
         <Text style={styles.buttonText}>Restaurants</Text>
       </TouchableOpacity>
@@ -25,20 +34,14 @@ const CircularMenu = () => {
         <Text style={styles.buttonText}>All</Text>
       </TouchableOpacity>
 
-      {/* Attractions Button - Placed to the left of the 'All' button */}
-      <TouchableOpacity style={[styles.button, { 
-       right: 265, 
-       bottom: 60, 
-      }]}>
+      {/* Attractions Button - Placed at the top */}
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle)]}>
         <Icon name="camera" size={30} color="#000" />
         <Text style={styles.buttonText}>Attractions</Text>
       </TouchableOpacity>
 
-      {/* Events Button - Placed to the right of the 'All' button */}
-      <TouchableOpacity style={[styles.button, { 
-       right: 225,
-       bottom: -210,
-      }]}>
+      {/* Events Button - 240 degrees from the top */}
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle - angleOffset)]}>
         <Icon name="ticket" size={40} color="#000" />
         <Text style={styles.buttonText}>Events</Text>
       </TouchableOpacity>
@@ -66,6 +69,10 @@ const styles = StyleSheet.create({
     // Add shadows and other styling as needed
   },
   centralButton: {
+    position: 'absolute',
+    //top: windowWidth /2 - centralButtonSize / 2,
+    bottom: windowWidth / 5 - centralButtonSize,
+    left: windowWidth / 2 - centralButtonSize / 2,
     width: centralButtonSize,
     height: centralButtonSize,
     borderRadius: centralButtonSize / 2,
