@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import CircularMenu from '../../components/home/CircularMenu';
 import SearchComponent from '../../components/search/SearchComponent';
+import ForumActionButton from '../../components/forum/ForumActionButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default class Home extends Component {
+  handleForumPress = () => {
+    console.log('Forum button pressed');
+  }
+  
   render() {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -12,6 +17,7 @@ export default class Home extends Component {
         <View style={styles.container}>
           <SearchComponent />
           <CircularMenu />
+          <ForumActionButton onPress={this.handleForumPress} />
         </View>
       </SafeAreaView>
       </TouchableWithoutFeedback>
@@ -30,6 +36,5 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   content: {
-    // Style for your main content if needed
   },
 });

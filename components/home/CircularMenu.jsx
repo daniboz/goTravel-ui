@@ -14,7 +14,7 @@ const startAngle = -Math.PI / 2;
 const calculatePosition = (angle) => {
   return {
     left: radius * Math.cos(angle) + (windowWidth /2 - buttonSize / 2),
-    top: radius * Math.sin(angle) + (windowWidth / 8 - buttonSize),
+    top: radius * Math.sin(angle) + (windowWidth / 8 - buttonSize *1.35),
   };
 };
 
@@ -28,8 +28,8 @@ const CircularMenu = () => {
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, styles.centralButton]} onPress={()=> navigation.navigate('AllPage')}>
-        <Icon name="globe" size={30} color="#000" />
-        <Text style={styles.buttonText}>All</Text>
+        <Icon name="globe" size={35} color="#000" />
+        <Text style={styles.centralButtonText}>All</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={[styles.button, calculatePosition(startAngle)]} onPress={()=> navigation.navigate('AttractionsPage')}>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   centralButton: {
     position: 'absolute',
-    bottom: windowWidth / 5 - centralButtonSize,
+    bottom: windowWidth / 3.5 - centralButtonSize,
     left: windowWidth / 2 - centralButtonSize / 2,
     width: centralButtonSize,
     height: centralButtonSize,
@@ -77,6 +77,14 @@ const styles = StyleSheet.create({
   buttonText: {
     textAlign: 'center', 
     fontSize: 13, 
+    fontWeight: 'bold', 
+    color: '#000', 
+    marginTop: 4, 
+    width: buttonSize, 
+  },
+  centralButtonText: {
+    textAlign: 'center', 
+    fontSize: 16, 
     fontWeight: 'bold', 
     color: '#000', 
     marginTop: 4, 
