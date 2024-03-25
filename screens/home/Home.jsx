@@ -15,7 +15,9 @@ export default class Home extends Component {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
-          <SearchComponent />
+          <View style={styles.searchContainer}>
+            <SearchComponent />
+          </View>
           <CircularMenu />
           <ForumActionButton onPress={this.handleForumPress} />
         </View>
@@ -36,5 +38,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   content: {
+  },
+  searchContainer: {
+    width: '100%',
+    paddingHorizontal: 10, 
+    marginTop: 5, 
+    zIndex: 5, 
   },
 });
