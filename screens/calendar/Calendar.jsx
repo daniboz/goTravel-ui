@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, Dimensions } from 'react-native';
 import { startOfWeek, addDays, format} from 'date-fns';
 import { COLORS, TAB_BAR_HEIGHT } from '../../constants/theme';
@@ -24,8 +24,15 @@ const mockAppointments = {
 };
 
 const CalendarPage = () => {
+  const hoursListRef = useRef();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekDays, setWeekDays] = useState(getWeekDays(getWeekStart(new Date())));
+
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    const offset = currentHour * 60; // adjust the multiplier based on your hour row height
+    hoursListRef.current?.scrollTo({ y: offset, animated: true });
+  }, []);
 
   useEffect(() => {
     setWeekDays(getWeekDays(getWeekStart(selectedDate)));
@@ -95,7 +102,10 @@ const CalendarPage = () => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <ScrollView style={[styles.hoursList, { height: availableHeight }]}>
+      <ScrollView
+        ref={hoursListRef}
+        style={styles.hoursList}
+      >
         {Array.from({ length: 24 }, (_, index) => {
           const hourString = `${index < 10 ? '0' : ''}${index}:00`;
           return renderHourRow(hourString, mockAppointments[hourString]);
@@ -108,6 +118,13 @@ const CalendarPage = () => {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+    },
+    safeArea: {
+      flex: 1,
+      backgroundColor: COLORS.white,
+    },
+    hoursList: {
+      marginBottom: TAB_BAR_HEIGHT -5,
     },
     header: {
       width: '100%',
@@ -165,9 +182,6 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
     },
-    hoursList: {
-      width: '100%',
-    },
     appointmentContainer: {
       backgroundColor: COLORS.red,
       borderRadius: 5,
@@ -184,5 +198,3 @@ const styles = StyleSheet.create({
   });
 
 export default CalendarPage;
-
-
