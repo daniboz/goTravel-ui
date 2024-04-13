@@ -30,7 +30,7 @@ const CalendarPage = () => {
 
   useEffect(() => {
     const currentHour = new Date().getHours();
-    const offset = currentHour * 60; // adjust the multiplier based on your hour row height
+    const offset = currentHour * 35; 
     hoursListRef.current?.scrollTo({ y: offset, animated: true });
   }, []);
 
@@ -54,7 +54,11 @@ const CalendarPage = () => {
       <View key={hour} style={hasAppointments ? styles.hourRowHighlighted : styles.hourRow}>
         <Text style={hasAppointments ? styles.hourTextHighlighted : styles.hourText}>{hour}</Text>
         {hasAppointments && (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.appointmentsScrollView}
+          >
             {appointments.map((appointment) => (
               <View key={appointment.id} style={styles.appointmentContainer}>
                 <Text style={styles.appointmentText}>{appointment.title}</Text>
@@ -165,15 +169,18 @@ const styles = StyleSheet.create({
     hourRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      padding: 10,
+      paddingVertical: 10,
       opacity: 0.3,
+      paddingHorizontal: 16,
     },
     hourRowHighlighted: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       padding: 10,
-      opacity: 1, 
-      backgroundColor: '#f0f8ff', 
+      opacity: 0.95, 
+      backgroundColor: COLORS.red,
+      borderRadius: 15,
+      marginHorizontal:5
     },
     hourText: {
       fontSize: 16,
@@ -182,14 +189,12 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: 'bold',
     },
-    appointmentContainer: {
-      backgroundColor: COLORS.red,
-      borderRadius: 5,
-      padding: 5,
-      marginRight: 10,
+    appointmentsScrollView: {
+      marginLeft: 20, 
     },
     appointmentText: {
-      color: '#fff',
+      color: COLORS.black,
+      fontSize: 20,
     },
     todayButton: {
       backgroundColor: COLORS.red,
