@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import HomeStackNavigator from "./HomeStackNavigator";
 import { Home, Calendar, Wallet, Location, Profile } from "../screens";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/theme";
@@ -39,7 +40,7 @@ const BottomTabNavigation = () => {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeStackNavigator}
         options={{
           tabBarStyle: tabBarStyle,
           tabBarShowLabel: false,
