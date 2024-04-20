@@ -62,5 +62,6 @@ const SHADOWS = {
     },
 };
 
+const TAB_BAR_HEIGHT = 55;
 
-export { COLORS, SIZES, SHADOWS, TEXT };
+export { COLORS, SIZES, SHADOWS, TEXT, TAB_BAR_HEIGHT };
