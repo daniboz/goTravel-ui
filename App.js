@@ -7,6 +7,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigation from './navigation/BottomTabNavigator';
 import { Home, RestaurantsPage, AllPage, EventsPage, AttractionsPage } from './screens';
+import AddReviews from './screens/reviews/AddReviews';
+import AllReviews from './screens/reviews/AllReviews';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +41,9 @@ export default function App() {
       <Stack.Screen name='RestaurantsPage' component={RestaurantsPage} options={{ headerShown: false }} /> 
       <Stack.Screen name='AllPage' component={AllPage} options={{ headerShown: false }} /> 
       <Stack.Screen name='EventsPage' component={EventsPage} options={{ headerShown: false }} /> 
-      <Stack.Screen name='AttractionsPage' component={AttractionsPage} options={{ headerShown: false }} /> 
+      <Stack.Screen name='AttractionsPage' component={AttractionsPage} options={{ headerShown: false }} />
+      <Stack.Screen name="AddReviews" component={AddReviews} options={{ headerShown: false }}/> 
+      <Stack.Screen name="AllReviews" component={AllReviews} options={{ headerShown: false }}/> 
       </Stack.Navigator>
     </NavigationContainer>
   );
