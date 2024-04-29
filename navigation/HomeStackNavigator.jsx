@@ -6,6 +6,7 @@ import AttractionDetail from '../screens/attractions/AttractionDetail';
 import RestaurantsPage from '../screens/restaurants/RestaurantsPage';
 import EventsPage from '../screens/events/EventsPage';
 import AllPage from '../screens/all/AllPage';
+import AttractionsWhereTo from '../screens/attractions/AttractionsWhereTo';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ const HomeStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={Home} />
+      <Stack.Screen name="AttractionsWhereTo" component={AttractionsWhereTo} />
       <Stack.Screen name="AttractionsPage" component={AttractionsPage} />
       <Stack.Screen name="AttractionDetail" component={AttractionDetail} />
       <Stack.Screen name="RestaurantsPage" component={RestaurantsPage} />

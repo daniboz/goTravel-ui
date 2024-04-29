@@ -183,7 +183,7 @@ const navigation = useNavigation();
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <SearchComponent />
-        <TouchableOpacity style={styles.filterButton} onPress={() => setModalVisible(true)}>
+        <TouchableOpacity style={styles.filterButton} onPress={() => navigation.navigate('AttractionsFilter')}>
           <Text style={styles.filterButtonText}>Filter</Text>
           <Ionicons name="options-outline" size={24} color="black" style={{ marginLeft: 8 }} />
         </TouchableOpacity>

@@ -7,6 +7,7 @@ import RestaurantsPage from "./restaurants/RestaurantsPage"
 import AttractionsPage from "./attractions/AttractionsPage"
 import EventsPage from "./events/EventsPage"
 import AllPage from "./all/AllPage"
+import AttractionsWhereTo from "./attractions/AttractionsWhereTo"
 export {
     Home,
     Location,
@@ -14,6 +15,7 @@ export {
     Wallet,
     Profile,
     RestaurantsPage,
+    AttractionsWhereTo,
     AttractionsPage,
     EventsPage,
     AllPage,
