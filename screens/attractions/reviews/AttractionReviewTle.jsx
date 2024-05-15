@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import NetworkImage from "../../components/reusable/NetworkImage";
-import DescriptionText from "../../components/reusable/DescriptionText";
-import Rating from "../../components/reusable/Rating";
-import ReusableText from "../../components/reusable/ReusableText";
-import WidthSpacer from "../../components/reusable/WidthSpacer";
-import { COLORS, SIZES } from "../../constants/theme";
-import ExpandableText from "../../components/reusable/ExpandableText";
+import NetworkImage from "../../../components/reusable/NetworkImage";
+import Rating from "../../../components/reusable/Rating";
+import ReusableText from "../../../components/reusable/ReusableText";
+import WidthSpacer from "../../../components/reusable/WidthSpacer";
+import ExpandableText from "../../../components/reusable/ExpandableText";
+import { COLORS, SIZES } from "../../../constants/theme";
 
-const ReviewTle = ({ review }) => {
+const AttractionReviewTle = ({ review }) => {
   return (
     <View style={styles.reviewBorder}>
       <View style={styles.rowWithSpace("space-between")}>
@@ -54,7 +53,7 @@ const ReviewTle = ({ review }) => {
   );
 };
 
-export default ReviewTle;
+export default AttractionReviewTle;
 
 const styles = StyleSheet.create({
   reviewBorder: {

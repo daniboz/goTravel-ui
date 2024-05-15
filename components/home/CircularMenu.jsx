@@ -22,7 +22,7 @@ const CircularMenu = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={[styles.button, calculatePosition(startAngle + angleOffset)]} onPress={()=> navigation.navigate('RestaurantsPage')}>
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle + angleOffset)]} onPress={()=> navigation.navigate('RestaurantsWhereTo')}>
         <Icon name="cutlery" size={30} color="#000" />
         <Text style={styles.buttonText}>Restaurants</Text>
       </TouchableOpacity>
