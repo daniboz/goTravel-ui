@@ -1,11 +1,11 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ReviewTle from "./ReviewTle";
-import AppBar from "../../components/reusable/AppBar";
-import { COLORS } from "../../constants/theme";
+import AttractionReviewTle from "./AttractionReviewTle";
+import AppBar from "../../../components/reusable/AppBar";
+import { COLORS } from "../../../constants/theme";
 
-const AllReviews = ({navigation, route}) => {
+const AllAttractionReviews = ({navigation, route}) => {
     //const router = useRoute();
     //const id = router.params;
     //const {reviews, isLoading, error, refetch} = fetchReviews(id);
@@ -56,7 +56,7 @@ const AllReviews = ({navigation, route}) => {
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (
               <View style={{ marginBottom: 10 }}>
-                <ReviewTle
+                <AttractionReviewTle
                   review={item}
                   
                 />
@@ -68,6 +68,6 @@ const AllReviews = ({navigation, route}) => {
   );
 };
 
-export default AllReviews;
+export default AllAttractionReviews;
 
 const styles = StyleSheet.create({});

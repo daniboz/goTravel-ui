@@ -18,9 +18,9 @@ import HeightSpacer from '../../components/reusable/HeightSpacer';
 import ReusableText from '../../components/reusable/ReusableText';
 import DescriptionText from '../../components/reusable/DescriptionText';
 import AppBar from '../../components/reusable/AppBar';
-import ReviewsList from '../reviews/ReviewsList';
 import { TAB_BAR_HEIGHT } from '../../constants/theme';
 import ExpandableText from '../../components/reusable/ExpandableText';
+import AttractionReviewsList from './reviews/AttractionReviewsList';
 
 
 
@@ -50,7 +50,7 @@ const AttractionDetails = ({ route, navigation }) => {
 
   const handleReviews = () => {
     if (userLogin) {
-      navigation.navigate("AddReviews", id);
+      navigation.navigate("AddAttractionReviews", id);
     } else {
       Alert.alert("Auth Error", "Please login to add comments", [
         {
@@ -67,7 +67,7 @@ const AttractionDetails = ({ route, navigation }) => {
   };
 
   const handleReviewsMock = () => {
-      navigation.navigate("AddReviews");
+      navigation.navigate("AddAttractionReviews");
   };
 
   return (
@@ -187,7 +187,7 @@ const AttractionDetails = ({ route, navigation }) => {
               />
 
               <TouchableOpacity
-                onPress={() => navigation.navigate("AllReviews", { reviews: attraction.reviews })}
+                onPress={() => navigation.navigate("AllAttractionReviews", { reviews: attraction.reviews })}
               >
                 <Feather name="list" size={20} />
               </TouchableOpacity>
@@ -195,7 +195,7 @@ const AttractionDetails = ({ route, navigation }) => {
 
             <HeightSpacer height={10} />
 
-            <ReviewsList reviews={attraction.reviews} />
+            <AttractionReviewsList reviews={attraction.reviews} />
         </View>
 
       </ScrollView>

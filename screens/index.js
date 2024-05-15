@@ -8,12 +8,14 @@ import AttractionsPage from "./attractions/AttractionsPage"
 import EventsPage from "./events/EventsPage"
 import AllPage from "./all/AllPage"
 import AttractionsWhereTo from "./attractions/AttractionsWhereTo"
+import RestaurantsWhereTo from "./restaurants/RestaurantsWhereTo"
 export {
     Home,
     Location,
     Calendar,
     Wallet,
     Profile,
+    RestaurantsWhereTo,
     RestaurantsPage,
     AttractionsWhereTo,
     AttractionsPage,

@@ -192,7 +192,7 @@ const navigation = useNavigation();
             <TouchableOpacity
               key={index}
               style={styles.attractionCard}
-              onPress={() => navigation.navigate('AttractionDetail', { attraction })}
+              onPress={() => navigation.navigate('AttractionDetails', { attraction })}
             >
               <Image source={{ uri: attraction.imageUrl }} style={styles.image} />
               <Text style={styles.imageText}>{attraction.name}</Text>

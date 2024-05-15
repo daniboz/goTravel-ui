@@ -1,17 +1,17 @@
 import { View, Text, TextInput } from "react-native";
 import React, { useState } from "react";
-import HeightSpacer from "../../components/reusable/HeightSpacer";
-import ReusableText from "../../components/reusable/ReusableText";
-import AppBar from "../../components/reusable/AppBar";
-import ReusableBtn from "../../components/reusable/ReusableBtn";
-import { COLORS, SIZES } from "../../constants/theme";
 import { Rating, RatingInput } from "react-native-stock-star-rating";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StyleSheet } from 'react-native';
+import HeightSpacer from "../../../components/reusable/HeightSpacer";
+import ReusableText from "../../../components/reusable/ReusableText";
+import ReusableBtn from "../../../components/reusable/ReusableBtn";
+import AppBar from "../../../components/reusable/AppBar";
+import { COLORS, SIZES } from "../../../constants/theme";
 
-const AddReviews = ({navigation}) => {
+const AddAttractionReviews = ({navigation}) => {
   const router = useRoute();
   const placeId = router.params;
   const [rating,setRating] = React.useState(0);
@@ -112,7 +112,7 @@ const AddReviews = ({navigation}) => {
   );
 };
 
-export default AddReviews;
+export default AddAttractionReviews;
 
 const styles = StyleSheet.create({
   input: {
