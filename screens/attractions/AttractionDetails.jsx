@@ -100,12 +100,21 @@ const AttractionDetails = ({ route, navigation }) => {
 
           <View style={styles.titleContainer}>
                 <View style={styles.titleColumn}>
-                  <ReusableText
-                    text={attraction.name}
-                    family={"medium"}
-                    size={SIZES.xLarge}
-                    color={COLORS.black}
-                  />
+                  <View style={styles.rowWithSpace("space-between")}>
+                    <ReusableText
+                      text={attraction.name}
+                      family={"medium"}
+                      size={SIZES.xLarge}
+                      color={COLORS.black}
+                    />
+
+                    <ReusableText
+                      text={`${attraction.hours}`}
+                      family={"medium"}
+                      size={SIZES.medium}
+                      color={COLORS.gray}
+                    />
+                  </View>  
 
                   <HeightSpacer height={10} />
                   <ReusableText
