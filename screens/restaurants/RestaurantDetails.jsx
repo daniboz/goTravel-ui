@@ -97,12 +97,21 @@ const RestaurantDetails = ({ route, navigation }) => {
 
           <View style={styles.titleContainer}>
                 <View style={styles.titleColumn}>
-                  <ReusableText
-                    text={restaurant.name}
-                    family={"medium"}
-                    size={SIZES.xLarge}
-                    color={COLORS.black}
-                  />
+                    <View style={styles.rowWithSpace("space-between")}>
+                        <ReusableText
+                            text={restaurant.name}
+                            family={"medium"}
+                            size={SIZES.xLarge}
+                            color={COLORS.black}
+                        />
+
+                        <ReusableText
+                            text={`${restaurant.hours}`}
+                            family={"medium"}
+                            size={SIZES.medium}
+                            color={COLORS.gray}
+                        />
+                    </View>    
 
                   <HeightSpacer height={10} />
                   <ReusableText

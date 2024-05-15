@@ -24,6 +24,7 @@ const RestaurantsPage = () => {
       rating: 5,
       location: { city: "New York", country: "USA" },
       reviewCount: 320,
+      hours: "11:00 AM - 11:00 PM",
       reviews: [
         {
           id: 1,
@@ -56,6 +57,7 @@ const RestaurantsPage = () => {
       rating: 5,
       location: { city: "Paris", country: "France" },
       reviewCount: 150,
+      hours: "12:00 PM - 10:00 PM",
       reviews: [
         {
           id: 1,
@@ -88,6 +90,7 @@ const RestaurantsPage = () => {
       rating: 4,
       location: { city: "Beijing", country: "China" },
       reviewCount: 220,
+      hours: "10:00 AM - 10:00 PM",
       reviews: [
         {
           id: 1,
@@ -120,6 +123,7 @@ const RestaurantsPage = () => {
       rating: 5,
       location: { city: "Delhi", country: "India" },
       reviewCount: 320,
+      hours: "12:00 PM - 11:00 PM",
       reviews: [
         {
           id: 1,
@@ -152,6 +156,7 @@ const RestaurantsPage = () => {
       rating: 5,
       location: { city: "Lima", country: "Peru" },
       reviewCount: 540,
+      hours: "1:00 PM - 10:00 PM",
       reviews: [
         {
           id: 1,
@@ -184,6 +189,7 @@ const RestaurantsPage = () => {
       rating: 5,
       location: { city: "Rome", country: "Italy" },
       reviewCount: 250,
+      hours: "12:00 PM - 11:00 PM",
       reviews: [
         {
           id: 1,
@@ -216,6 +222,7 @@ const RestaurantsPage = () => {
       rating: 5,
       location: { city: "Sydney", country: "Australia" },
       reviewCount: 480,
+      hours: "11:00 AM - 10:00 PM",
       reviews: [
         {
           id: 1,
@@ -259,7 +266,10 @@ const RestaurantsPage = () => {
               onPress={() => navigation.navigate('RestaurantDetails', { restaurant })}
             >
               <Image source={{ uri: restaurant.imageUrl }} style={styles.image} />
-              <Text style={styles.imageText}>{restaurant.name}</Text>
+              <View style={styles.textContainer}>
+                <Text style={styles.imageText}>{restaurant.name}</Text>
+                <Text style={styles.hoursText}>{restaurant.hours}</Text>
+              </View>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -364,16 +374,19 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
   },
+  textContainer: {
+    padding: 10,
+    backgroundColor: 'white',
+  },
   imageText: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    color: 'white',
-    fontSize: 24,
+    color: 'black',
+    fontSize: 18,
     fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10
+  },
+  hoursText: {
+    color: 'gray',
+    fontSize: 14,
+    marginTop: 5,
   },
   centeredView: {
     flex: 1,

@@ -37,7 +37,7 @@ const CircularMenu = () => {
         <Text style={styles.buttonText}>Attractions</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={[styles.button, calculatePosition(startAngle - angleOffset)]} onPress={()=> navigation.navigate('EventsPage')}>
+      <TouchableOpacity style={[styles.button, calculatePosition(startAngle - angleOffset)]} onPress={()=> navigation.navigate('EventsWhereTo')}>
         <Icon name="ticket" size={40} color="#000" />
         <Text style={styles.buttonText}>Events</Text>
       </TouchableOpacity>

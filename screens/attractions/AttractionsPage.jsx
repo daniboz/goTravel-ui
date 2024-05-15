@@ -19,11 +19,12 @@ const AttractionsPage = () => {
       id: 1,
       name: "Statue of Liberty",
       imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Statue_of_Liberty%2C_NY.jpg",
-      description: "The Statue of Liberty, a colossal neoclassical sculpture on Liberty Island in New York Harbor, was designed by Frédéric Auguste Bartholdi and dedicated on October 28, 1886. The statue is a gift from the people of France and has become a universal symbol of freedom and democracy. It represents Libertas, the Roman liberty goddess. It holds a torch above her head with her right hand, and in her left hand carries a tabula ansata inscribed with the date of the American Declaration of Independence, July 4, 1776.",
+      description: "The Statue of Liberty, a colossal neoclassical sculpture on Liberty Island in New York Harbor.",
       coordinates: { latitude: 40.6892, longitude: -74.0445 },
       rating: 5,
       location: { city: "New York", country: "USA" },
       reviewCount: 320,
+      hours: "9:00 AM - 5:00 PM",
       reviews: [
         {
           id: 1,
@@ -32,7 +33,7 @@ const AttractionsPage = () => {
             profile: 'https://randomuser.me/api/portraits/men/10.jpg'
           },
           rating: 5,
-          review: 'An iconic symbol of freedom! The Statue of Liberty stands as a beautiful reminder of our liberty. The view from the crown is breathtaking and well worth the climb.',
+          review: 'An iconic symbol of freedom!',
           updatedAt: new Date().toISOString()
         },
         {
@@ -42,142 +43,124 @@ const AttractionsPage = () => {
             profile: 'https://randomuser.me/api/portraits/women/10.jpg'
           },
           rating: 5,
-          review: 'Absolutely breathtaking, steeped in so much history. The ferry ride to the island was lovely, and the museum provides a rich context to her story and significance.',
-          updatedAt: new Date().toISOString()
-        },
-        {
-          id: 3,
-          user: {
-            username: 'LibertyFan',
-            profile: 'https://randomuser.me/api/portraits/men/25.jpg'
-          },
-          rating: 5,
-          review: 'Amazing visit! Make sure to grab an audio tour for an enriching experience. The statue is inspiring with detailed historical exhibits inside.',
-          updatedAt: new Date().toISOString()
-        },
-        {
-          id: 4,
-          user: {
-            username: 'Traveler4',
-            profile: 'https://randomuser.me/api/portraits/women/26.jpg'
-          },
-          rating: 5,
-          review: 'The symbol of freedom and American independence. A must-see for everyone visiting New York. I recommend going early to avoid the crowds.',
+          review: 'Absolutely breathtaking!',
           updatedAt: new Date().toISOString()
         }
       ]
-  },
+    },
     {
-        id: 2,
-        name: "Eiffel Tower",
-        imageUrl: "https://th.bing.com/th/id/OIP.AW_3WtO4mpBHZSZBQ9OQ9QHaE8?rs=1&pid=ImgDetMain",
-        description: "A wrought-iron lattice tower on the Champ de Mars in Paris, France.",
-        coordinates: { latitude: 48.8584, longitude: 2.2945 },
-        rating: 5,
-        location: { city: "Paris", country: "France" },
-        reviewCount: 1050,
-        reviews: [
-          {
-            id: 1,
-            user: {
-              username: 'ParisianDreamer',
-              profile: 'https://randomuser.me/api/portraits/men/20.jpg'
-            },
-            rating: 5,
-            review: 'Stunning views at night, a must-see!',
-            updatedAt: new Date().toISOString()
+      id: 2,
+      name: "Eiffel Tower",
+      imageUrl: "https://th.bing.com/th/id/OIP.AW_3WtO4mpBHZSZBQ9OQ9QHaE8?rs=1&pid=ImgDetMain",
+      description: "A wrought-iron lattice tower on the Champ de Mars in Paris, France.",
+      coordinates: { latitude: 48.8584, longitude: 2.2945 },
+      rating: 5,
+      location: { city: "Paris", country: "France" },
+      reviewCount: 1050,
+      hours: "9:30 AM - 11:45 PM",
+      reviews: [
+        {
+          id: 1,
+          user: {
+            username: 'ParisianDreamer',
+            profile: 'https://randomuser.me/api/portraits/men/20.jpg'
           },
-          {
-            id: 2,
-            user: {
-              username: 'ArtLover',
-              profile: 'https://randomuser.me/api/portraits/women/20.jpg'
-            },
-            rating: 4,
-            review: 'The tower is marvelous, especially the ironwork details!',
-            updatedAt: new Date().toISOString()
-          }
-        ]
-    },
-    {
-        id: 3,
-        name: "Great Wall of China",
-        imageUrl: "https://th.bing.com/th/id/OIP.XIP8n-FUuutxiV7G3s33xAHaEK?rs=1&pid=ImgDetMain",
-        description: "A series of fortifications made of stone, brick, tamped earth, wood, and other materials.",
-        coordinates: { latitude: 40.4319, longitude: 116.5704 },
-        rating: 4,
-        location: { city: "Beijing", country: "China" },
-        reviewCount: 840,
-        reviews: [
-          {
-            id: 1,
-            user: {
-              username: 'TravelerBeijing',
-              profile: 'https://randomuser.me/api/portraits/men/30.jpg'
-            },
-            rating: 4,
-            review: 'Incredible historical monument, a true masterpiece.',
-            updatedAt: new Date().toISOString()
+          rating: 5,
+          review: 'Stunning views at night!',
+          updatedAt: new Date().toISOString()
+        },
+        {
+          id: 2,
+          user: {
+            username: 'ArtLover',
+            profile: 'https://randomuser.me/api/portraits/women/20.jpg'
           },
-          {
-            id: 2,
-            user: {
-              username: 'Adventurer',
-              profile: 'https://randomuser.me/api/portraits/women/30.jpg'
-            },
-            rating: 4,
-            review: 'A bit crowded, but the views and history are worth it.',
-            updatedAt: new Date().toISOString()
-          }
-        ]
+          rating: 4,
+          review: 'Marvelous ironwork details!',
+          updatedAt: new Date().toISOString()
+        }
+      ]
     },
     {
-        id: 4,
-        name: "Taj Mahal",
-        imageUrl: "https://th.bing.com/th/id/OIP.gUlxaGCTm1180mEfjLnbOgHaEQ?rs=1&pid=ImgDetMain",
-        description: "An ivory-white marble mausoleum on the south bank of the Yamuna river in Agra, India.",
-        coordinates: { latitude: 27.1751, longitude: 78.0421 },
-        rating: 5,
-        location: { city: "Agra", country: "India" },
-        reviewCount: 932 
+      id: 3,
+      name: "Great Wall of China",
+      imageUrl: "https://th.bing.com/th/id/OIP.XIP8n-FUuutxiV7G3s33xAHaEK?rs=1&pid=ImgDetMain",
+      description: "A series of fortifications made of stone, brick, tamped earth, wood, and other materials.",
+      coordinates: { latitude: 40.4319, longitude: 116.5704 },
+      rating: 4,
+      location: { city: "Beijing", country: "China" },
+      reviewCount: 840,
+      hours: "7:30 AM - 5:30 PM",
+      reviews: [
+        {
+          id: 1,
+          user: {
+            username: 'TravelerBeijing',
+            profile: 'https://randomuser.me/api/portraits/men/30.jpg'
+          },
+          rating: 4,
+          review: 'Incredible historical monument!',
+          updatedAt: new Date().toISOString()
+        },
+        {
+          id: 2,
+          user: {
+            username: 'Adventurer',
+            profile: 'https://randomuser.me/api/portraits/women/30.jpg'
+          },
+          rating: 4,
+          review: 'Crowded but worth it!',
+          updatedAt: new Date().toISOString()
+        }
+      ]
     },
     {
-        id: 5,
-        name: "Machu Picchu",
-        imageUrl: "https://th.bing.com/th/id/R.85a17e0b6b26a5edf858be3f0dcaed57?rik=TO2ae5aBd3BkmA&riu=http%3a%2f%2fwww.destination360.com%2fcontents%2fpictures%2fsouth-america%2fperu%2fmachu-picchu.jpg&ehk=CRBVkEg5C4m%2b9D06kckOpVknNQo8ZcY6Cl7T0Qzsu5s%3d&risl=&pid=ImgRaw&r=0",
-        description: "An Incan citadel set high in the Andes Mountains in Peru, above the Urubamba River valley.",
-        coordinates: { latitude: -13.1631, longitude: -72.5450},
-        rating: 4,
-        location: { city: "Cusco", country: "Peru" },
-        reviewCount: 765 
+      id: 4,
+      name: "Taj Mahal",
+      imageUrl: "https://th.bing.com/th/id/OIP.gUlxaGCTm1180mEfjLnbOgHaEQ?rs=1&pid=ImgDetMain",
+      description: "An ivory-white marble mausoleum on the south bank of the Yamuna river in Agra, India.",
+      coordinates: { latitude: 27.1751, longitude: 78.0421 },
+      rating: 5,
+      location: { city: "Agra", country: "India" },
+      reviewCount: 932,
+      hours: "6:00 AM - 7:00 PM"
     },
     {
-        id: 6,
-        name: "Colosseum",
-        imageUrl: "https://th.bing.com/th/id/OIP.-X2XZs7QYgzjhkZP_Fq4sAHaEo?w=297&h=186&c=7&r=0&o=5&pid=1.7",
-        description: "An oval amphitheatre in the centre of the city of Rome, Italy.",
-        coordinates: { latitude: 41.8902, longitude: 12.4922 },
-        rating: 5,
-        location: { city: "Rome", country: "Italy" },
-        reviewCount: 1543 
+      id: 5,
+      name: "Machu Picchu",
+      imageUrl: "https://th.bing.com/th/id/R.85a17e0b6b26a5edf858be3f0dcaed57?rik=TO2ae5aBd3BkmA&riu=http%3a%2f%2fwww.destination360.com%2fcontents%2fpictures%2fsouth-america%2fperu%2fmachu-picchu.jpg&ehk=CRBVkEg5C4m%2b9D06kckOpVknNQo8ZcY6Cl7T0Qzsu5s%3d&risl=&pid=ImgRaw&r=0",
+      description: "An Incan citadel set high in the Andes Mountains in Peru.",
+      coordinates: { latitude: -13.1631, longitude: -72.5450 },
+      rating: 4,
+      location: { city: "Cusco", country: "Peru" },
+      reviewCount: 765,
+      hours: "6:00 AM - 5:30 PM"
     },
     {
-        id: 7,
-        name: "Sydney Opera House",
-        imageUrl: "https://th.bing.com/th/id/OIP.8WXqr4q0sWA9fBhUGVYXtAHaEK?pid=ImgDet&rs=1",
-        description: "A multi-venue performing arts centre at Sydney Harbour in Sydney, New South Wales, Australia.",
-        coordinates: { latitude: -33.8568, longitude: 151.2153 },
-        rating: 5,
-        location: { city: "Sydney", country: "Australia" },
-        reviewCount: 486 
+      id: 6,
+      name: "Colosseum",
+      imageUrl: "https://th.bing.com/th/id/OIP.-X2XZs7QYgzjhkZP_Fq4sAHaEo?w=297&h=186&c=7&r=0&o=5&pid=1.7",
+      description: "An oval amphitheatre in the centre of the city of Rome, Italy.",
+      coordinates: { latitude: 41.8902, longitude: 12.4922 },
+      rating: 5,
+      location: { city: "Rome", country: "Italy" },
+      reviewCount: 1543,
+      hours: "8:30 AM - 7:00 PM"
+    },
+    {
+      id: 7,
+      name: "Sydney Opera House",
+      imageUrl: "https://th.bing.com/th/id/OIP.8WXqr4q0sWA9fBhUGVYXtAHaEK?pid=ImgDet&rs=1",
+      description: "A multi-venue performing arts centre at Sydney Harbour in Sydney, Australia.",
+      coordinates: { latitude: -33.8568, longitude: 151.2153 },
+      rating: 5,
+      location: { city: "Sydney", country: "Australia" },
+      reviewCount: 486,
+      hours: "9:00 AM - 5:00 PM"
     }
-];
+  ];
 
-
-  
-
-const navigation = useNavigation();
-
+  const navigation = useNavigation();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -195,7 +178,10 @@ const navigation = useNavigation();
               onPress={() => navigation.navigate('AttractionDetails', { attraction })}
             >
               <Image source={{ uri: attraction.imageUrl }} style={styles.image} />
-              <Text style={styles.imageText}>{attraction.name}</Text>
+              <View style={styles.textContainer}>
+                <Text style={styles.imageText}>{attraction.name}</Text>
+                <Text style={styles.hoursText}>{attraction.hours}</Text>
+              </View>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -279,7 +265,7 @@ const styles = StyleSheet.create({
   },
   attractionsList: {
     marginTop: 10,
-    marginBottom: TAB_BAR_HEIGHT ,
+    marginBottom: TAB_BAR_HEIGHT,
   },
   scrollViewContent: {
     paddingBottom: 50, 
@@ -300,16 +286,19 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 200,
   },
+  textContainer: {
+    padding: 10,
+    backgroundColor: 'white',
+  },
   imageText: {
-    position: 'absolute',
-    bottom: 10,
-    left: 10,
-    color: 'white',
-    fontSize: 24,
+    color: 'black',
+    fontSize: 18,
     fontWeight: 'bold',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10
+  },
+  hoursText: {
+    color: 'gray',
+    fontSize: 14,
+    marginTop: 5,
   },
   centeredView: {
     flex: 1,

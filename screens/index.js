@@ -9,6 +9,7 @@ import EventsPage from "./events/EventsPage"
 import AllPage from "./all/AllPage"
 import AttractionsWhereTo from "./attractions/AttractionsWhereTo"
 import RestaurantsWhereTo from "./restaurants/RestaurantsWhereTo"
+import EventsWhereTo from "./events/EventsWhereTo"
 export {
     Home,
     Location,
@@ -19,6 +20,7 @@ export {
     RestaurantsPage,
     AttractionsWhereTo,
     AttractionsPage,
+    EventsWhereTo,
     EventsPage,
     AllPage,
 }

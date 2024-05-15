@@ -1,31 +1,28 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { COLORS } from '../../constants/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS } from '../../constants/theme';
 
-const RestaurantsFilter = () => {
+const EventsFilter = () => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRating, setSelectedRating] = useState([]);
-  const [selectedPriceRange, setSelectedPriceRange] = useState([]);
-  const [selectedDietaryOptions, setSelectedDietaryOptions] = useState([]);
+  const [selectedDuration, setSelectedDuration] = useState([]);
+  const [selectedSuitability, setSelectedSuitability] = useState([]);
   const [expandedType, setExpandedType] = useState(false);
   const [expandedRating, setExpandedRating] = useState(false);
-  const [expandedPriceRange, setExpandedPriceRange] = useState(false);
-  const [expandedDietaryOptions, setExpandedDietaryOptions] = useState(false);
+  const [expandedDuration, setExpandedDuration] = useState(false);
+  const [expandedSuitability, setExpandedSuitability] = useState(false);
 
-  const typesOfRestaurants = [
-    { id: 'Italian', name: 'Italian' },
-    { id: 'Chinese', name: 'Chinese' },
-    { id: 'Indian', name: 'Indian' },
-    { id: 'Mexican', name: 'Mexican' },
-    { id: 'Japanese', name: 'Japanese' },
-    { id: 'American', name: 'American' },
-    { id: 'Thai', name: 'Thai' }
+  const typesOfEvents = [
+    { id: 'Concerts', name: 'Concerts' },
+    { id: 'Festivals', name: 'Festivals' },
+    { id: 'Conferences', name: 'Conferences' },
+    { id: 'Sports', name: 'Sports' },
   ];
 
   const ratings = ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"];
-  const priceRanges = ["$", "$$", "$$$"];
-  const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Halal"];
+  const durations = ["<1hr", "1-3hr", ">3hr"];
+  const suitabilities = ["Family-Friendly", "Partying", "Outdoor", "Indoor"];
 
   const handleSelect = (item, list, setList) => {
     const currentIndex = list.indexOf(item);
@@ -43,16 +40,16 @@ const RestaurantsFilter = () => {
   const applyFilters = () => {
     console.log('Selected Types:', selectedTypes);
     console.log('Selected Ratings:', selectedRating);
-    console.log('Selected Price Ranges:', selectedPriceRange);
-    console.log('Selected Dietary Options:', selectedDietaryOptions);
+    console.log('Selected Durations:', selectedDuration);
+    console.log('Selected Suitability:', selectedSuitability);
     // navigation.goBack(); 
   };
 
   const clearFilters = () => {
     setSelectedTypes([]);
     setSelectedRating([]);
-    setSelectedPriceRange([]);
-    setSelectedDietaryOptions([]);
+    setSelectedDuration([]);
+    setSelectedSuitability([]);
   };
 
   return (
@@ -61,16 +58,16 @@ const RestaurantsFilter = () => {
         <Text style={styles.title}>Filters</Text>
         
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.label}>Type of Cuisine:</Text>
+          <Text style={styles.label}>Type of Event:</Text>
           <View style={styles.spaceBelowLabel}/>
-          {expandedType ? typesOfRestaurants.map((type) => (
+          {expandedType ? typesOfEvents.map((type) => (
             <TouchableOpacity
               key={type.id}
               style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
               onPress={() => handleSelect(type.id, selectedTypes, setSelectedTypes)}>
               <Text style={styles.optionText}>{type.name}</Text>
             </TouchableOpacity>
-          )) : typesOfRestaurants.slice(0, 3).map((type) => (
+          )) : typesOfEvents.slice(0, 3).map((type) => (
             <TouchableOpacity
               key={type.id}
               style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
@@ -102,40 +99,40 @@ const RestaurantsFilter = () => {
             <Text style={styles.viewMoreText}>{expandedRating ? "View Less" : "View More"}</Text>
           </TouchableOpacity>
 
-          <Text style={styles.label}>Dietary Options:</Text>
-          {expandedDietaryOptions ? dietaryOptions.map(option => (
+          <Text style={styles.label}>Suitability:</Text>
+          {expandedSuitability ? suitabilities.map(option => (
             <TouchableOpacity
               key={option}
-              style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
+              style={[styles.option, selectedSuitability.includes(option) ? styles.selectedOption : styles.unselectedOption]}
+              onPress={() => handleSelect(option, selectedSuitability, setSelectedSuitability)}>
               <Text style={styles.optionText}>{option}</Text>
             </TouchableOpacity>
-          )) : dietaryOptions.slice(0, 3).map(option => (
+          )) : suitabilities.slice(0, 3).map(option => (
             <TouchableOpacity
               key={option}
-              style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
+              style={[styles.option, selectedSuitability.includes(option) ? styles.selectedOption : styles.unselectedOption]}
+              onPress={() => handleSelect(option, selectedSuitability, setSelectedSuitability)}>
               <Text style={styles.optionText}>{option}</Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity onPress={() => setExpandedDietaryOptions(!expandedDietaryOptions)} style={styles.viewMoreButton}>
-            <Text style={styles.viewMoreText}>{expandedDietaryOptions ? "View Less" : "View More"}</Text>
+          <TouchableOpacity onPress={() => setExpandedSuitability(!expandedSuitability)} style={styles.viewMoreButton}>
+            <Text style={styles.viewMoreText}>{expandedSuitability ? "View Less" : "View More"}</Text>
           </TouchableOpacity>
 
-          <Text style={styles.label}>Price Range:</Text>
-          {expandedPriceRange ? priceRanges.map(priceRange => (
+          <Text style={styles.label}>Duration:</Text>
+          {expandedDuration ? durations.map(duration => (
             <TouchableOpacity
-              key={priceRange}
-              style={[styles.option, selectedPriceRange.includes(priceRange) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(priceRange, selectedPriceRange, setSelectedPriceRange)}>
-              <Text style={styles.optionText}>{priceRange}</Text>
+              key={duration}
+              style={[styles.option, selectedDuration.includes(duration) ? styles.selectedOption : styles.unselectedOption]}
+              onPress={() => handleSelect(duration, selectedDuration, setSelectedDuration)}>
+              <Text style={styles.optionText}>{duration}</Text>
             </TouchableOpacity>
-          )) : priceRanges.slice(0, 3).map(priceRange => (
+          )) : durations.slice(0, 3).map(duration => (
             <TouchableOpacity
-              key={priceRange}
-              style={[styles.option, selectedPriceRange.includes(priceRange) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(priceRange, selectedPriceRange, setSelectedPriceRange)}>
-              <Text style={styles.optionText}>{priceRange}</Text>
+              key={duration}
+              style={[styles.option, selectedDuration.includes(duration) ? styles.selectedOption : styles.unselectedOption]}
+              onPress={() => handleSelect(duration, selectedDuration, setSelectedDuration)}>
+              <Text style={styles.optionText}>{duration}</Text>
             </TouchableOpacity>
           ))}
         </ScrollView>
@@ -231,4 +228,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RestaurantsFilter;
+export default EventsFilter;

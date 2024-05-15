@@ -15,6 +15,10 @@ import AddRestaurantReviews from './screens/restaurants/reviews/AddRestaurantRev
 import AllRestaurantReviews from './screens/restaurants/reviews/AllRestaurantReviews';
 import RestaurantsWhereTo from './screens/restaurants/RestaurantsWhereTo';
 import RestaurantsFilter from './screens/restaurants/RestaurantsFilter';
+import EventsWhereTo from './screens/events/EventsWhereTo';
+import EventsFilter from './screens/events/EventsFilter';
+import AddEventReviews from './screens/events/reviews/AddEventReviews';
+import AllEventReviews from './screens/events/reviews/AllEventReviews';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,7 +54,11 @@ export default function App() {
       <Stack.Screen name='AddRestaurantReviews' component={AddRestaurantReviews} options={{ headerShown: false }} /> 
       <Stack.Screen name='AllRestaurantReviews' component={AllRestaurantReviews} options={{ headerShown: false }} /> 
       <Stack.Screen name='AllPage' component={AllPage} options={{ headerShown: false }} /> 
+      <Stack.Screen name='EventsWhereTo' component={EventsWhereTo} options={{ headerShown: false }} />
       <Stack.Screen name='EventsPage' component={EventsPage} options={{ headerShown: false }} />
+      <Stack.Screen name='EventsFilter' component={EventsFilter} options={{ headerShown: false }} />
+      <Stack.Screen name='AddEventReviews' component={AddEventReviews} options={{ headerShown: false }} />
+      <Stack.Screen name='AllEventReviews' component={AllEventReviews} options={{ headerShown: false }} />
       <Stack.Screen name='AttractionsWhereTo' component={AttractionsWhereTo} options={{ headerShown: false }} /> 
       <Stack.Screen name='AttractionsPage' component={AttractionsPage} options={{ headerShown: false }} />
       <Stack.Screen name='AttractionsFilter' component={AttractionsFilter} options={{ headerShown: false }} />

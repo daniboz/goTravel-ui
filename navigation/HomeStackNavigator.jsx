@@ -9,6 +9,8 @@ import AttractionsWhereTo from '../screens/attractions/AttractionsWhereTo';
 import RestaurantDetails from '../screens/restaurants/RestaurantDetails';
 import AttractionDetails from '../screens/attractions/AttractionDetails';
 import RestaurantsWhereTo from '../screens/restaurants/RestaurantsWhereTo';
+import EventsWhereTo from '../screens/events/EventsWhereTo';
+import EventDetails from '../screens/events/EventDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +24,9 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="RestaurantsWhereTo" component={RestaurantsWhereTo} />
       <Stack.Screen name="RestaurantsPage" component={RestaurantsPage} />
       <Stack.Screen name="RestaurantDetails" component={RestaurantDetails} />
+      <Stack.Screen name="EventsWhereTo" component={EventsWhereTo} />
       <Stack.Screen name="EventsPage" component={EventsPage} />
+      <Stack.Screen name="EventDetails" component={EventDetails} />
       <Stack.Screen name="AllPage" component={AllPage} />
     </Stack.Navigator>
   );
