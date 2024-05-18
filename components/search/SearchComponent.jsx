@@ -1,29 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-const SearchComponent = () => {
-  const navigation = useNavigation();
+const SearchComponent = ({ onSearch }) => {
+  const [query, setQuery] = useState('');
 
-  // Function to handle the search action
   const handleSearch = () => {
-    // Here, you might want to navigate to a search results screen
-    // For example: navigation.navigate('SearchResults', { query: 'your query here' });
-    console.log('Search action triggered');
+    if (onSearch) {
+      onSearch(query);
+    }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <View style={styles.container}>
-      <TextInput
-        placeholder="Search here..."
-        style={styles.input}
-        // You can add more props to handle the search text, such as onChangeText
-      />
-      <TouchableOpacity onPress={handleSearch} style={styles.button}>
-        <Text style={styles.buttonText}>Search</Text>
-      </TouchableOpacity>
-    </View>
+      <View style={styles.container}>
+        <TextInput
+          placeholder="Search here..."
+          style={styles.input}
+          value={query}
+          onChangeText={setQuery}
+          onSubmitEditing={handleSearch}
+        />
+        <TouchableOpacity onPress={handleSearch} style={styles.button}>
+          <Text style={styles.buttonText}>Search</Text>
+        </TouchableOpacity>
+      </View>
     </TouchableWithoutFeedback>
   );
 };

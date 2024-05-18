@@ -1,235 +1,50 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SearchComponent from '../../components/search/SearchComponent';
-import ForumActionButton from '../../components/forum/ForumActionButton';
-import { TAB_BAR_HEIGHT, COLORS } from '../../constants/theme';
+import { COLORS } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const AttractionsPage = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('USA');
-  const [selectedCity, setSelectedCity] = useState('New York');
-
-  // Dummy data for attractions
-  const attractions = [
-    {
-      id: 1,
-      name: "Statue of Liberty",
-      imageUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Statue_of_Liberty%2C_NY.jpg",
-      description: "The Statue of Liberty, a colossal neoclassical sculpture on Liberty Island in New York Harbor.",
-      coordinates: { latitude: 40.6892, longitude: -74.0445 },
-      rating: 5,
-      location: { city: "New York", country: "USA" },
-      reviewCount: 320,
-      hours: "9:00 AM - 5:00 PM",
-      reviews: [
-        {
-          id: 1,
-          user: {
-            username: 'NYCLover',
-            profile: 'https://randomuser.me/api/portraits/men/10.jpg'
-          },
-          rating: 5,
-          review: 'An iconic symbol of freedom!',
-          updatedAt: new Date().toISOString()
-        },
-        {
-          id: 2,
-          user: {
-            username: 'HistoryBuff',
-            profile: 'https://randomuser.me/api/portraits/women/10.jpg'
-          },
-          rating: 5,
-          review: 'Absolutely breathtaking!',
-          updatedAt: new Date().toISOString()
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "Eiffel Tower",
-      imageUrl: "https://th.bing.com/th/id/OIP.AW_3WtO4mpBHZSZBQ9OQ9QHaE8?rs=1&pid=ImgDetMain",
-      description: "A wrought-iron lattice tower on the Champ de Mars in Paris, France.",
-      coordinates: { latitude: 48.8584, longitude: 2.2945 },
-      rating: 5,
-      location: { city: "Paris", country: "France" },
-      reviewCount: 1050,
-      hours: "9:30 AM - 11:45 PM",
-      reviews: [
-        {
-          id: 1,
-          user: {
-            username: 'ParisianDreamer',
-            profile: 'https://randomuser.me/api/portraits/men/20.jpg'
-          },
-          rating: 5,
-          review: 'Stunning views at night!',
-          updatedAt: new Date().toISOString()
-        },
-        {
-          id: 2,
-          user: {
-            username: 'ArtLover',
-            profile: 'https://randomuser.me/api/portraits/women/20.jpg'
-          },
-          rating: 4,
-          review: 'Marvelous ironwork details!',
-          updatedAt: new Date().toISOString()
-        }
-      ]
-    },
-    {
-      id: 3,
-      name: "Great Wall of China",
-      imageUrl: "https://th.bing.com/th/id/OIP.XIP8n-FUuutxiV7G3s33xAHaEK?rs=1&pid=ImgDetMain",
-      description: "A series of fortifications made of stone, brick, tamped earth, wood, and other materials.",
-      coordinates: { latitude: 40.4319, longitude: 116.5704 },
-      rating: 4,
-      location: { city: "Beijing", country: "China" },
-      reviewCount: 840,
-      hours: "7:30 AM - 5:30 PM",
-      reviews: [
-        {
-          id: 1,
-          user: {
-            username: 'TravelerBeijing',
-            profile: 'https://randomuser.me/api/portraits/men/30.jpg'
-          },
-          rating: 4,
-          review: 'Incredible historical monument!',
-          updatedAt: new Date().toISOString()
-        },
-        {
-          id: 2,
-          user: {
-            username: 'Adventurer',
-            profile: 'https://randomuser.me/api/portraits/women/30.jpg'
-          },
-          rating: 4,
-          review: 'Crowded but worth it!',
-          updatedAt: new Date().toISOString()
-        }
-      ]
-    },
-    {
-      id: 4,
-      name: "Taj Mahal",
-      imageUrl: "https://th.bing.com/th/id/OIP.gUlxaGCTm1180mEfjLnbOgHaEQ?rs=1&pid=ImgDetMain",
-      description: "An ivory-white marble mausoleum on the south bank of the Yamuna river in Agra, India.",
-      coordinates: { latitude: 27.1751, longitude: 78.0421 },
-      rating: 5,
-      location: { city: "Agra", country: "India" },
-      reviewCount: 932,
-      hours: "6:00 AM - 7:00 PM"
-    },
-    {
-      id: 5,
-      name: "Machu Picchu",
-      imageUrl: "https://th.bing.com/th/id/R.85a17e0b6b26a5edf858be3f0dcaed57?rik=TO2ae5aBd3BkmA&riu=http%3a%2f%2fwww.destination360.com%2fcontents%2fpictures%2fsouth-america%2fperu%2fmachu-picchu.jpg&ehk=CRBVkEg5C4m%2b9D06kckOpVknNQo8ZcY6Cl7T0Qzsu5s%3d&risl=&pid=ImgRaw&r=0",
-      description: "An Incan citadel set high in the Andes Mountains in Peru.",
-      coordinates: { latitude: -13.1631, longitude: -72.5450 },
-      rating: 4,
-      location: { city: "Cusco", country: "Peru" },
-      reviewCount: 765,
-      hours: "6:00 AM - 5:30 PM"
-    },
-    {
-      id: 6,
-      name: "Colosseum",
-      imageUrl: "https://th.bing.com/th/id/OIP.-X2XZs7QYgzjhkZP_Fq4sAHaEo?w=297&h=186&c=7&r=0&o=5&pid=1.7",
-      description: "An oval amphitheatre in the centre of the city of Rome, Italy.",
-      coordinates: { latitude: 41.8902, longitude: 12.4922 },
-      rating: 5,
-      location: { city: "Rome", country: "Italy" },
-      reviewCount: 1543,
-      hours: "8:30 AM - 7:00 PM"
-    },
-    {
-      id: 7,
-      name: "Sydney Opera House",
-      imageUrl: "https://th.bing.com/th/id/OIP.8WXqr4q0sWA9fBhUGVYXtAHaEK?pid=ImgDet&rs=1",
-      description: "A multi-venue performing arts centre at Sydney Harbour in Sydney, Australia.",
-      coordinates: { latitude: -33.8568, longitude: 151.2153 },
-      rating: 5,
-      location: { city: "Sydney", country: "Australia" },
-      reviewCount: 486,
-      hours: "9:00 AM - 5:00 PM"
-    }
-  ];
-
   const navigation = useNavigation();
+  const route = useRoute();
+  const { attractions } = route.params || {};
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <SearchComponent />
-        <TouchableOpacity style={styles.filterButton} onPress={() => navigation.navigate('AttractionsFilter')}>
-          <Text style={styles.filterButtonText}>Filter</Text>
-          <Ionicons name="options-outline" size={24} color="black" style={{ marginLeft: 8 }} />
-        </TouchableOpacity>
-        <ScrollView style={styles.attractionsList}>
-          {attractions.map((attraction, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.attractionCard}
-              onPress={() => navigation.navigate('AttractionDetails', { attraction })}
-            >
-              <Image source={{ uri: attraction.imageUrl }} style={styles.image} />
-              <View style={styles.textContainer}>
-                <Text style={styles.imageText}>{attraction.name}</Text>
-                <Text style={styles.hoursText}>{attraction.hours}</Text>
-              </View>
+        {attractions && attractions.length > 0 ? (
+          <>
+            <TouchableOpacity style={styles.filterButton} onPress={() => navigation.navigate('AttractionsFilter')}>
+              <Text style={styles.filterButtonText}>Filter</Text>
+              <Ionicons name="options-outline" size={24} color="black" style={{ marginLeft: 8 }} />
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Picker
-                selectedValue={selectedCountry}
-                onValueChange={(itemValue, itemIndex) => setSelectedCountry(itemValue)}
-                style={{ width: 200, height: 180 }}
-              >
-                <Picker.Item label="USA" value="USA" />
-                <Picker.Item label="France" value="France" />
-              </Picker>
-              <Picker
-                selectedValue={selectedCity}
-                onValueChange={(itemValue, itemIndex) => setSelectedCity(itemValue)}
-                style={{ width: 200, height: 180 }}
-              >
-                <Picker.Item label="New York" value="New York" />
-                <Picker.Item label="Paris" value="Paris" />
-              </Picker>
-              <View style={styles.buttonContainer}>
+            <ScrollView style={styles.attractionsList}>
+              {attractions.map((attraction, index) => (
                 <TouchableOpacity
-                  style={styles.confirmButton}
-                  onPress={() => {
-                    console.log("Confirming selection: ", selectedCountry, selectedCity);
-                    setModalVisible(false);  
-                  }}
+                  key={index}
+                  style={styles.attractionCard}
+                  onPress={() => navigation.navigate('AttractionDetails', { attraction })}
                 >
-                  <Text style={styles.buttonText}>Confirm</Text>
+                  <Image source={{ uri: attraction.imageUrl }} style={styles.image} />
+                  <View style={styles.textContainer}>
+                    <Text style={styles.imageText}>{attraction.name}</Text>
+                    <Text style={styles.hoursText}>{attraction.hours}</Text>
+                  </View>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.closeButton}
-                  onPress={() => setModalVisible(false)}
-                >
-                  <Text style={styles.buttonText}>Close</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+              ))}
+            </ScrollView>
+          </>
+        ) : (
+          <View style={styles.noResultsContainer}>
+            <Text style={styles.noResultsText}>No attractions found</Text>
+            <Button
+              title="Search Again"
+              onPress={() => navigation.navigate('AttractionsWhereTo')}
+              color={COLORS.red}
+            />
           </View>
-        </Modal>
-        <ForumActionButton />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -265,10 +80,6 @@ const styles = StyleSheet.create({
   },
   attractionsList: {
     marginTop: 10,
-    marginBottom: TAB_BAR_HEIGHT,
-  },
-  scrollViewContent: {
-    paddingBottom: 50, 
   },
   attractionCard: {
     marginHorizontal: 10,
@@ -300,48 +111,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 5,
   },
-  centeredView: {
+  noResultsContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
   },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-  },
-  confirmButton: {
-    backgroundColor: COLORS.red,
-    marginRight: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-  closeButton: {
-    backgroundColor: 'grey',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-  },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
+  noResultsText: {
+    fontSize: 18,
+    color: COLORS.gray,
+    marginBottom: 20,
   }
 });
 
