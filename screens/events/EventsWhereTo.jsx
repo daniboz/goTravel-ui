@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Button } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Button, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import SearchComponent from '../../components/search/SearchComponent';
-import { COLORS } from '../../constants/theme';
+import axios from 'axios';
 
-// Sample data for popular event destinations
 const popularDestinations = [
   {
     id: '1',
@@ -48,32 +48,48 @@ const DestinationCard = ({ destination, onPress }) => (
 
 const EventsWhereTo = () => {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
-  const handleSelectDestination = (destination) => {
-    navigation.navigate('EventsPage', { location: `${destination.city}, ${destination.country}` });
+  const handleSearch = async (query) => {
+    if (!query.trim()) {
+      Alert.alert('Invalid Search', 'Please enter a city, country, or event.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.get('http://localhost:5003/api/search', {
+        params: { query },
+      });
+      navigation.navigate('EventsPage', { events: response.data.events });
+    } catch (error) {
+      console.error('Error performing search:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const navigateToEventsPage = () => {
-    navigation.navigate('EventsPage');
+  const handleSelectDestination = (destination) => {
+    handleSearch(destination.city);
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SearchComponent />
-      <ScrollView contentContainerStyle={styles.container}>
-        {popularDestinations.map((destination) => (
-          <DestinationCard
-            key={destination.id}
-            destination={destination}
-            onPress={() => handleSelectDestination(destination)}
-          />
-        ))}
-        <Button
-          title="View All Events"
-          onPress={navigateToEventsPage}
-          color={COLORS.red}
-        />
-      </ScrollView>
+      <SearchComponent onSearch={handleSearch} />
+      {loading ? (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      ) : (
+        <ScrollView contentContainerStyle={styles.container}>
+          <Text style={styles.title}>Most Popular Places</Text>
+          {popularDestinations.map((destination) => (
+            <DestinationCard
+              key={destination.id}
+              destination={destination}
+              onPress={() => handleSelectDestination(destination)}
+            />
+          ))}
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
@@ -85,6 +101,12 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     padding: 10,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: COLORS.red,
+    marginBottom: 20,
   },
   card: {
     flexDirection: 'row',
