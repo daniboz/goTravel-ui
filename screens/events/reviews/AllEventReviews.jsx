@@ -1,9 +1,9 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import EventReviewTle from "./EventReviewTle";
 import AppBar from "../../../components/reusable/AppBar";
-import { COLORS } from "../../../constants/theme";
+import { COLORS, TAB_BAR_HEIGHT } from "../../../constants/theme";
 
 const AllEventReviews = ({ navigation, route }) => {
   const { reviews = [] } = route.params || {};
@@ -21,21 +21,28 @@ const AllEventReviews = ({ navigation, route }) => {
         />
       </View>
 
-      <View style={{ paddingTop: 20 }}>
-        <FlatList
-          data={reviews}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <View style={{ marginBottom: 10 }}>
-              <EventReviewTle review={item} />
-            </View>
-          )}
-        />
-      </View>
+      <ScrollView style={styles.scrollView}>
+        <View style={{ paddingTop: 20 }}>
+          <FlatList
+            data={reviews}
+            keyExtractor={(item) => item._id}
+            renderItem={({ item }) => (
+              <View style={{ marginBottom: 10 }}>
+                <EventReviewTle review={item} />
+              </View>
+            )}
+          />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default AllEventReviews;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  scrollView: {
+    marginTop: 10,
+    marginBottom: TAB_BAR_HEIGHT,
+  },
+});

@@ -8,7 +8,7 @@ const RestaurantReviewsList = ({ reviews }) => {
       data={reviews}
       scrollEnabled={false}
       showsVerticalScrollIndicator={false}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item._id}
       renderItem={({ item }) => (
         <View style={{ marginBottom: 10 }}>
           <RestaurantReviewTle review={item} />

@@ -1,26 +1,56 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Button } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '../../constants/theme';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { COLORS, TAB_BAR_HEIGHT } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import axios from 'axios';
+import NoResultsScreen from '../../components/reusable/NoResultsScreen';
 
 const AttractionsPage = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { attractions } = route.params || {};
+  const [attractions, setAttractions] = useState(route.params?.attractions || []);
+  const [filteredAttractions, setFilteredAttractions] = useState(attractions);
+  const query = route.params?.query || '';
+
+  useEffect(() => {
+    if (route.params?.filters) {
+      console.log('Filters applied:', route.params.filters);
+      const fetchFilteredAttractions = async () => {
+        try {
+          const response = await axios.get('http://localhost:5003/api/attractions/filter', {
+            params: { ...route.params.filters, query },
+          });
+          console.log('Filtered attractions:', response.data.attractions);
+          setFilteredAttractions(response.data.attractions);
+        } catch (error) {
+          console.error('Error fetching filtered attractions:', error);
+        }
+      };
+      fetchFilteredAttractions();
+    } else {
+      setFilteredAttractions(attractions);
+    }
+  }, [route.params]);
+
+  const handleTryAgain = () => {
+    navigation.goBack();
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        {attractions && attractions.length > 0 ? (
+        {filteredAttractions && filteredAttractions.length > 0 ? (
           <>
-            <TouchableOpacity style={styles.filterButton} onPress={() => navigation.navigate('AttractionsFilter')}>
+            <TouchableOpacity
+              style={styles.filterButton}
+              onPress={() => navigation.navigate('AttractionsFilter', { query })}
+            >
               <Text style={styles.filterButtonText}>Filter</Text>
               <Ionicons name="options-outline" size={24} color="black" style={{ marginLeft: 8 }} />
             </TouchableOpacity>
             <ScrollView style={styles.attractionsList}>
-              {attractions.map((attraction, index) => (
+              {filteredAttractions.map((attraction, index) => (
                 <TouchableOpacity
                   key={index}
                   style={styles.attractionCard}
@@ -36,14 +66,11 @@ const AttractionsPage = () => {
             </ScrollView>
           </>
         ) : (
-          <View style={styles.noResultsContainer}>
-            <Text style={styles.noResultsText}>No attractions found</Text>
-            <Button
-              title="Search Again"
-              onPress={() => navigation.navigate('AttractionsWhereTo')}
-              color={COLORS.red}
-            />
-          </View>
+          <NoResultsScreen
+            message="No attractions found"
+            buttonText="Try Again"
+            onPress={handleTryAgain}
+          />
         )}
       </View>
     </SafeAreaView>
@@ -58,7 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   filterButton: {
-    flexDirection: 'row', 
+    flexDirection: 'row',
     alignSelf: 'flex-end',
     marginRight: 20,
     marginTop: 5,
@@ -71,15 +98,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 5,
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   filterButtonText: {
     color: 'black',
     fontWeight: 'bold',
-    fontSize: 15,  
+    fontSize: 15,
   },
   attractionsList: {
     marginTop: 10,
+    marginBottom: TAB_BAR_HEIGHT,
   },
   attractionCard: {
     marginHorizontal: 10,
@@ -111,16 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 5,
   },
-  noResultsContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noResultsText: {
-    fontSize: 18,
-    color: COLORS.gray,
-    marginBottom: 20,
-  }
 });
 
 export default AttractionsPage;
+
