@@ -6,10 +6,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigation from './navigation/BottomTabNavigator';
+import HomeStackNavigator from './navigation/HomeStackNavigator';
+import AuthStackNavigator from './navigation/AuthStackNavigator';
+import RootNavigator from './navigation/RootNavigator';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const [fontsLoaded] = useFonts({
     regular: require('./assets/fonts/regular.otf'),
@@ -25,6 +30,14 @@ export default function App() {
     }
   }, [fontsLoaded]);
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = await AsyncStorage.getItem('token');
+      setIsAuthenticated(!!token);
+    };
+    checkAuth();
+  }, []);
+
   if (!fontsLoaded) {
     return null;
   }
@@ -32,7 +45,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar  />
-      <BottomTabNavigation />
+      {/* {isAuthenticated ? <BottomTabNavigation /> : <AuthStackNavigator />} */}
+      <RootNavigator />
     </NavigationContainer>
   );
 }
