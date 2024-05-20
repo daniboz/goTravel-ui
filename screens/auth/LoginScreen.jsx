@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { COLORS } from '../../constants/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { AuthContext } from '../../context/AuthContext';
+import Modal from 'react-native-modal';
 
 const validationSchema = Yup.object().shape({
   usernameOrEmail: Yup.string().required('Username or Email is required'),
@@ -13,15 +15,26 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginScreen = ({ navigation }) => {
+  const { login } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
   const handleLogin = async (values) => {
     try {
-      const response = await axios.post('http://your-api-url/login', values);
+      const response = await axios.post('http://localhost:5003/api/login', values);
       if (response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
+        login(response.data.token);
         navigation.replace('Main');
       }
     } catch (error) {
-      console.error(error);
+      if (error.response) {
+        setModalMessage(error.response.data.message);
+      } else {
+        setModalMessage('An error occurred. Please try again.');
+      }
+      setModalVisible(true);
     }
   };
 
@@ -45,6 +58,7 @@ const LoginScreen = ({ navigation }) => {
                   onChangeText={handleChange('usernameOrEmail')}
                   onBlur={handleBlur('usernameOrEmail')}
                   value={values.usernameOrEmail}
+                  autoCapitalize="none"
                 />
               </View>
               {touched.usernameOrEmail && errors.usernameOrEmail && <Text style={styles.error}>{errors.usernameOrEmail}</Text>}
@@ -54,11 +68,15 @@ const LoginScreen = ({ navigation }) => {
                   style={[styles.input, touched.password && errors.password && styles.inputError]}
                   placeholder="Password"
                   placeholderTextColor={COLORS.gray}
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
+                  autoCapitalize="none"
                 />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Icon name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color={COLORS.gray} />
+                </TouchableOpacity>
               </View>
               {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
               <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -70,12 +88,20 @@ const LoginScreen = ({ navigation }) => {
                   Register
                 </Text>
               </Text>
-              <TouchableOpacity style={styles.testButton} onPress={() => navigation.replace('Main')}>
+              {/* <TouchableOpacity style={styles.testButton} onPress={() => navigation.replace('Main')}>
                 <Text style={styles.buttonText}>Go to Home (Test)</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           )}
         </Formik>
+        <Modal isVisible={modalVisible}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+            <TouchableOpacity style={styles.modalButton} onPress={() => setModalVisible(false)}>
+              <Text style={styles.modalButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -148,6 +174,29 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '80%',
     alignSelf: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalText: {
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  modalButton: {
+    backgroundColor: COLORS.red,
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    width: '50%',
+  },
+  modalButtonText: {
+    color: COLORS.white,
+    fontWeight: 'bold',
   },
 });
 
