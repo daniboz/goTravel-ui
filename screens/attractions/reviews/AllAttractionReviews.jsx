@@ -1,14 +1,11 @@
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AttractionReviewTle from "./AttractionReviewTle";
 import AppBar from "../../../components/reusable/AppBar";
-import { COLORS } from "../../../constants/theme";
+import { COLORS, TAB_BAR_HEIGHT } from "../../../constants/theme";
 
 const AllAttractionReviews = ({navigation, route}) => {
-    //const router = useRoute();
-    //const id = router.params;
-    //const {reviews, isLoading, error, refetch} = fetchReviews(id);
 
     const { reviews = {} } = route.params || {};
 
@@ -25,31 +22,7 @@ const AllAttractionReviews = ({navigation, route}) => {
         />
       </View>
 
-      {/* {isLoading ? 
-      ( <HorizontalShimmer
-        horizontal={false}
-        width={'100%'}
-        height={95}
-        radius={12}
-        paddingTop={12}
-      />) : (
-        <View style={{ paddingTop: 20 }}>
-          <FlatList
-            data={reviews}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => (
-              <View style={{ marginBottom: 10 }}>
-                <ReviewTle
-                  review={item}
-                  
-                />
-              </View>
-            )}
-          />
-        </View>
-      )} */}
-
-     
+      <ScrollView style={styles.scrollView}>
         <View style={{ paddingTop: 20 }}>
           <FlatList
             data={reviews}
@@ -64,10 +37,16 @@ const AllAttractionReviews = ({navigation, route}) => {
             )}
           />
         </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default AllAttractionReviews;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  scrollView: {
+    marginTop: 10,
+    marginBottom: TAB_BAR_HEIGHT,
+  },
+});

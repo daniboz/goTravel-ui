@@ -1,37 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, Button, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../../constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import SearchComponent from '../../components/search/SearchComponent';
 import axios from 'axios';
+import NoResultsScreen from '../../components/reusable/NoResultsScreen';
 
 const popularDestinations = [
-  {
-    id: '1',
-    city: 'Paris',
-    country: 'France'
-  },
-  {
-    id: '2',
-    city: 'Tokyo',
-    country: 'Japan'
-  },
-  {
-    id: '3',
-    city: 'New York',
-    country: 'USA'
-  },
-  {
-    id: '4',
-    city: 'Sydney',
-    country: 'Australia'
-  },
-  {
-    id: '5',
-    city: 'Cairo',
-    country: 'Egypt'
-  }
+  { id: '1', city: 'Paris', country: 'France' },
+  { id: '2', city: 'Tokyo', country: 'Japan' },
+  { id: '3', city: 'New York', country: 'USA' },
+  { id: '4', city: 'Sydney', country: 'Australia' },
+  { id: '5', city: 'Cairo', country: 'Egypt' }
 ];
 
 const DestinationCard = ({ destination, onPress }) => (
@@ -49,6 +30,7 @@ const DestinationCard = ({ destination, onPress }) => (
 const AttractionsWhereTo = () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const [noResults, setNoResults] = useState(false);
 
   const handleSearch = async (query) => {
     if (!query.trim()) {
@@ -61,9 +43,15 @@ const AttractionsWhereTo = () => {
       const response = await axios.get('http://localhost:5003/api/search', {
         params: { query },
       });
-      navigation.navigate('AttractionsPage', { attractions: response.data.attractions });
+      if (response.data.attractions.length === 0) {
+        setNoResults(true);
+      } else {
+        setNoResults(false);
+        navigation.navigate('AttractionsPage', { attractions: response.data.attractions, query });
+      }
     } catch (error) {
       console.error('Error performing search:', error);
+      Alert.alert('Search Error', 'There was an error performing the search. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -78,6 +66,12 @@ const AttractionsWhereTo = () => {
       <SearchComponent onSearch={handleSearch} />
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.primary} />
+      ) : noResults ? (
+        <NoResultsScreen
+          message="No attractions found"
+          buttonText="Search Again"
+          onPress={() => setNoResults(false)}
+        />
       ) : (
         <ScrollView contentContainerStyle={styles.container}>
           <Text style={styles.title}>Most Popular Places</Text>
@@ -142,3 +136,4 @@ const styles = StyleSheet.create({
 });
 
 export default AttractionsWhereTo;
+

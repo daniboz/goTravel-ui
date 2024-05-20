@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Button } from 'react-native';
-import { COLORS } from '../../constants/theme';
+import { COLORS, TAB_BAR_HEIGHT } from '../../constants/theme';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const AttractionsFilter = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const query = route.params?.query || '';
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [selectedRating, setSelectedRating] = useState([]);
   const [selectedDuration, setSelectedDuration] = useState([]);
@@ -23,8 +27,8 @@ const AttractionsFilter = () => {
     { id: 'Amusement Parks', name: 'Amusement Parks' }
   ];
 
-  const ratings = ["1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"];
-  const durations = ["<1hr", "1-3hr", ">3h"];
+  const ratings = [1, 2, 3, 4, 5];
+  const durations = ["<1hr", "1-3hr", ">3hr"];
   const suitabilities = ["Rainy Day", "Date Night", "Free Entry", "Families"];
 
   const handleSelect = (item, list, setList) => {
@@ -41,11 +45,13 @@ const AttractionsFilter = () => {
   };
 
   const applyFilters = () => {
-    console.log('Selected Types:', selectedTypes);
-    console.log('Selected Ratings:', selectedRating);
-    console.log('Selected Durations:', selectedDuration);
-    console.log('Selected Suitability:', selectedSuitability);
-    // navigation.goBack(); 
+    const filters = {
+      types: selectedTypes,
+      ratings: selectedRating,
+      durations: selectedDuration,
+      suitabilities: selectedSuitability,
+    };
+    navigation.navigate('AttractionsPage', { filters, query });
   };
 
   const clearFilters = () => {
@@ -88,14 +94,14 @@ const AttractionsFilter = () => {
               key={rating}
               style={[styles.option, selectedRating.includes(rating) ? styles.selectedOption : styles.unselectedOption]}
               onPress={() => handleSelect(rating, selectedRating, setSelectedRating)}>
-              <Text style={styles.optionText}>{rating}</Text>
+              <Text style={styles.optionText}>{`${rating} Star${rating > 1 ? 's' : ''}`}</Text>
             </TouchableOpacity>
           )) : ratings.slice(0, 3).map(rating => (
             <TouchableOpacity
               key={rating}
               style={[styles.option, selectedRating.includes(rating) ? styles.selectedOption : styles.unselectedOption]}
               onPress={() => handleSelect(rating, selectedRating, setSelectedRating)}>
-              <Text style={styles.optionText}>{rating}</Text>
+              <Text style={styles.optionText}>{`${rating} Star${rating > 1 ? 's' : ''}`}</Text>
             </TouchableOpacity>
           ))}
           <TouchableOpacity onPress={() => setExpandedRating(!expandedRating)} style={styles.viewMoreButton}>
@@ -161,6 +167,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     backgroundColor: '#fff',
+    marginTop: 10,
+    marginBottom: TAB_BAR_HEIGHT,
   },
   scrollContent: {
     paddingRight: 15,
@@ -232,5 +240,3 @@ const styles = StyleSheet.create({
 });
 
 export default AttractionsFilter;
-
-
