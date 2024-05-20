@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import { View, TextInput, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { COLORS } from '../../constants/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Modal from 'react-native-modal';
+import { AuthContext } from '../../context/AuthContext';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -16,13 +19,27 @@ const validationSchema = Yup.object().shape({
 });
 
 const RegisterScreen = ({ navigation }) => {
+  const { login } = useContext(AuthContext); // Get login function from AuthContext
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+
   const handleRegister = async (values) => {
     try {
-      const response = await axios.post('http://your-api-url/register', values);
-      if (response.data.success) {
-        navigation.navigate('Login');
+      const response = await axios.post('http://localhost:5003/api/register', values);
+      if (response.data.status) {
+        await AsyncStorage.setItem('token', response.data.token);
+        login(response.data.token); // Log in the user after successful registration
+        navigation.replace('Main');
       }
     } catch (error) {
+      if (error.response && error.response.status === 409) {
+        setModalMessage('Username or email already exists');
+      } else {
+        setModalMessage('An error occurred during registration. Please try again.');
+      }
+      setModalVisible(true);
       console.error(error);
     }
   };
@@ -47,6 +64,7 @@ const RegisterScreen = ({ navigation }) => {
                   onChangeText={handleChange('username')}
                   onBlur={handleBlur('username')}
                   value={values.username}
+                  autoCapitalize="none"
                 />
               </View>
               {touched.username && errors.username && <Text style={styles.error}>{errors.username}</Text>}
@@ -59,6 +77,7 @@ const RegisterScreen = ({ navigation }) => {
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
+                  autoCapitalize="none"
                 />
               </View>
               {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
@@ -68,11 +87,15 @@ const RegisterScreen = ({ navigation }) => {
                   style={[styles.input, touched.password && errors.password && styles.inputError]}
                   placeholder="Password"
                   placeholderTextColor={COLORS.gray}
-                  secureTextEntry
+                  secureTextEntry={!showPassword}
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
+                  autoCapitalize="none"
                 />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Icon name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color={COLORS.gray} />
+                </TouchableOpacity>
               </View>
               {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
               <View style={styles.inputContainer}>
@@ -81,11 +104,15 @@ const RegisterScreen = ({ navigation }) => {
                   style={[styles.input, touched.confirmPassword && errors.confirmPassword && styles.inputError]}
                   placeholder="Confirm Password"
                   placeholderTextColor={COLORS.gray}
-                  secureTextEntry
+                  secureTextEntry={!showConfirmPassword}
                   onChangeText={handleChange('confirmPassword')}
                   onBlur={handleBlur('confirmPassword')}
                   value={values.confirmPassword}
+                  autoCapitalize="none"
                 />
+                <TouchableOpacity onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                  <Icon name={showConfirmPassword ? "eye-off-outline" : "eye-outline"} size={20} color={COLORS.gray} />
+                </TouchableOpacity>
               </View>
               {touched.confirmPassword && errors.confirmPassword && <Text style={styles.error}>{errors.confirmPassword}</Text>}
               <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -97,12 +124,20 @@ const RegisterScreen = ({ navigation }) => {
                   Login
                 </Text>
               </Text>
-              <TouchableOpacity style={styles.testButton} onPress={() => navigation.replace('Main')}>
+              {/* <TouchableOpacity style={styles.testButton} onPress={() => navigation.replace('Main')}>
                 <Text style={styles.buttonText}>Go to Home (Test)</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
           )}
         </Formik>
+        <Modal isVisible={modalVisible}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalText}>{modalMessage}</Text>
+            <TouchableOpacity style={styles.modalButton} onPress={() => setModalVisible(false)}>
+              <Text style={styles.modalButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -175,6 +210,29 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '80%',
     alignSelf: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  modalText: {
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  modalButton: {
+    backgroundColor: COLORS.red,
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    width: '50%',
+  },
+  modalButtonText: {
+    color: COLORS.white,
+    fontWeight: 'bold',
   },
 });
 
