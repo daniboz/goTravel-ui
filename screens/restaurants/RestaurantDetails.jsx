@@ -1,31 +1,29 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  Alert
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { Rating } from "react-native-stock-star-rating";
-import { Feather } from "@expo/vector-icons";
-import { COLORS, SIZES, TAB_BAR_HEIGHT } from '../../constants/theme';
-import NetworkImage from '../../components/reusable/NetworkImage';
-import HeightSpacer from '../../components/reusable/HeightSpacer';
-import ReusableText from '../../components/reusable/ReusableText';
-import ExpandableText from '../../components/reusable/ExpandableText';
-import AppBar from '../../components/reusable/AppBar';
 import RestaurantReviewsList from './reviews/RestaurantReviewsList';
-
+import AppBar from '../../components/reusable/AppBar';
+import NetworkImage from '../../components/reusable/NetworkImage';
+import { COLORS, SIZES, TAB_BAR_HEIGHT } from '../../constants/theme';
+import ReusableText from '../../components/reusable/ReusableText';
+import HeightSpacer from '../../components/reusable/HeightSpacer';
+import ExpandableText from '../../components/reusable/ExpandableText';
 
 const windowWidth = Dimensions.get('window').width;
 
 const RestaurantDetails = ({ route, navigation }) => {
-  const { restaurant } = route.params;
+  const { restaurant, userLogin, id } = route.params;
+
+  const handleNavigationToLocation = () => {
+    navigation.navigate('Location', {
+      latitude: restaurant.coordinates.latitude,
+      longitude: restaurant.coordinates.longitude,
+      name: restaurant.name,
+      reset: false, // Do not reset when navigating from RestaurantDetails
+    });
+  };
 
   const RatingStars = ({ rating }) => (
     <View style={styles.ratingContainer}>
@@ -51,168 +49,95 @@ const RestaurantDetails = ({ route, navigation }) => {
       navigation.navigate("AddRestaurantReviews", id);
     } else {
       Alert.alert("Auth Error", "Please login to add comments", [
-        {
-          text: "Cancel",
-          onPress: () => {},
-        },
-        {
-          text: "Continue",
-          onPress: () => {navigation.navigate('AuthTop')},
-        },
+        { text: "Cancel", onPress: () => {} },
+        { text: "Continue", onPress: () => navigation.navigate('AuthTop') },
         { defaultIndex: 1 },
       ]);
     }
   };
 
   const handleReviewsMock = () => {
-      navigation.navigate("AddRestaurantReviews");
+    navigation.navigate("AddRestaurantReviews");
   };
 
   return (
     <View style={styles.scrollView}>
       <View style={{ height: 80 }}>
-          <AppBar
-            top={50}
-            left={20}
-            right={20}
-            title={restaurant.name}
-            color={COLORS.grey}
-            icon={"message1"}
-            color1={COLORS.grey}
-            onPress={() => navigation.goBack()}
-            onPress1={handleReviewsMock}
-          />
+        <AppBar
+          top={50}
+          left={20}
+          right={20}
+          title={restaurant.name}
+          color={COLORS.grey}
+          icon={"message1"}
+          color1={COLORS.grey}
+          onPress={() => navigation.goBack()}
+          onPress1={handleReviewsMock}
+        />
       </View>
 
       <ScrollView style={styles.scrollView}>
         <View>
           <View style={styles.container}>
-            <NetworkImage
-                  source={restaurant.imageUrl}
-                  width={"100%"}
-                  height={220}
-                  radius={25}
-            />
+            <NetworkImage source={restaurant.imageUrl} width={"100%"} height={220} radius={25} />
           </View>
 
           <View style={styles.titleContainer}>
-                <View style={styles.titleColumn}>
-                    <View style={styles.rowWithSpace("space-between")}>
-                        <ReusableText
-                            text={restaurant.name}
-                            family={"medium"}
-                            size={SIZES.xLarge}
-                            color={COLORS.black}
-                        />
-
-                        <ReusableText
-                            text={`${restaurant.hours}`}
-                            family={"medium"}
-                            size={SIZES.medium}
-                            color={COLORS.gray}
-                        />
-                    </View>    
-
-                  <HeightSpacer height={10} />
-                  <ReusableText
-                    text={`${restaurant.location.city}, ${restaurant.location.country}`}
-                    family={"medium"}
-                    size={SIZES.medium}
-                    color={COLORS.black}
-                  />
-
-                  <HeightSpacer height={15} />
-
-                  <View style={styles.rowWithSpace("space-between")}>
-                    <Rating
-                      maxStars={5}
-                      stars={restaurant.rating}
-                      bordered={false}
-                      color={"#FD9942"}
-                    />
-                    
-                    <ReusableText
-                      text={`(${restaurant.reviewCount} reviews)`}
-                      family={"medium"}
-                      size={SIZES.medium}
-                      color={COLORS.gray}
-                    />
-                  </View>
-                </View>
+            <View style={styles.titleColumn}>
+              <View style={styles.rowWithSpace("space-between")}>
+                <ReusableText text={restaurant.name} family={"medium"} size={SIZES.xLarge} color={COLORS.black} />
+                <ReusableText text={`${restaurant.hours}`} family={"medium"} size={SIZES.medium} color={COLORS.gray} />
+              </View>
+              <HeightSpacer height={10} />
+              <ReusableText text={`${restaurant.location.city}, ${restaurant.location.country}`} family={"medium"} size={SIZES.medium} color={COLORS.black} />
+              <HeightSpacer height={15} />
+              <View style={styles.rowWithSpace("space-between")}>
+                <Rating maxStars={5} stars={restaurant.rating} bordered={false} color={"#FD9942"} />
+                <ReusableText text={`(${restaurant.reviewCount} reviews)`} family={"medium"} size={SIZES.medium} color={COLORS.gray} />
+              </View>
+            </View>
           </View>
         </View>
 
         <View style={[styles.container, { paddingTop: 90 }]}>
-            <ReusableText
-              text={"Description"}
-              family={"medium"}
-              size={SIZES.large}
-              color={COLORS.black}
-            />
-
-            <HeightSpacer height={10} />
-
-            <ExpandableText text={restaurant.description} numberOfLines={3}/>
-
-            <HeightSpacer height={10} />
-
-            <ReusableText
-              text={"Location"}
-              family={"medium"}
-              size={SIZES.large}
-              color={COLORS.black}
-            />
-
-            <HeightSpacer height={15} />
-
-            <ReusableText
-              text={`${restaurant.location.city}, ${restaurant.location.country}`}
-              family={"regular"}
-              size={SIZES.small + 2}
-              color={COLORS.gray}
-            />
-
+          <ReusableText text={"Description"} family={"medium"} size={SIZES.large} color={COLORS.black} />
+          <HeightSpacer height={10} />
+          <ExpandableText text={restaurant.description} numberOfLines={3} />
+          <HeightSpacer height={10} />
+          <ReusableText text={"Location"} family={"medium"} size={SIZES.large} color={COLORS.black} />
+          <HeightSpacer height={15} />
+          <ReusableText text={`${restaurant.location.city}, ${restaurant.location.country}`} family={"regular"} size={SIZES.small + 2} color={COLORS.gray} />
+          <TouchableOpacity onPress={handleNavigationToLocation} style={styles.mapContainer}>
             <MapView
               style={styles.map}
               initialRegion={{
                 latitude: restaurant.coordinates.latitude,
                 longitude: restaurant.coordinates.longitude,
-                latitudeDelta: 0.01,  
-                longitudeDelta: 0.01  
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01
               }}
             >
               <Marker coordinate={restaurant.coordinates} />
             </MapView>
-
-            <View style={styles.rowWithSpace("space-between")}>
-              <ReusableText
-                text={"Reviews"}
-                family={"medium"}
-                size={SIZES.large}
-                color={COLORS.black}
-              />
-
-              <TouchableOpacity
-                onPress={() => navigation.navigate("AllRestaurantReviews", { reviews: restaurant.reviews })}
-              >
-                <Feather name="list" size={20} />
-              </TouchableOpacity>
-            </View>
-
-            <HeightSpacer height={10} />
-
-            <RestaurantReviewsList reviews={restaurant.reviews} />
+          </TouchableOpacity>
+          <View style={styles.rowWithSpace("space-between")}>
+            <ReusableText text={"Reviews"} family={"medium"} size={SIZES.large} color={COLORS.black} />
+            <TouchableOpacity onPress={() => navigation.navigate("AllRestaurantReviews", { reviews: restaurant.reviews })}>
+              <Feather name="list" size={20} />
+            </TouchableOpacity>
+          </View>
+          <HeightSpacer height={10} />
+          <RestaurantReviewsList reviews={restaurant.reviews} />
         </View>
-
       </ScrollView>
-    </View> 
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   scrollView: {
     marginTop: 20,
-    marginBottom: TAB_BAR_HEIGHT +28,
+    marginBottom: TAB_BAR_HEIGHT + 28,
   },
   container: {
     paddingTop: 0,
@@ -231,8 +156,8 @@ const styles = StyleSheet.create({
   titleContainer: {
     margin: 15,
     backgroundColor: COLORS.lightWhite,
-    height:120,
-    position:"absolute",
+    height: 120,
+    position: "absolute",
     top: 170,
     left: 0,
     right: 0,
@@ -263,11 +188,15 @@ const styles = StyleSheet.create({
     color: COLORS.darkgray,
     marginBottom: 20,
   },
-  map: {
+  mapContainer: {
     width: '100%',
     height: 150,
     borderRadius: 10,
+    overflow: 'hidden',
     marginBottom: 20,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
   reviewsSection: {
     marginTop: 20,

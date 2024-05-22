@@ -2,9 +2,10 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigator from "./HomeStackNavigator";
-import { Home, Calendar, Wallet, Location, Profile } from "../screens";
+import { Home, Calendar, Wallet, Profile } from "../screens";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/theme";
+import LocationScreen from "../screens/location/Location";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,7 +29,6 @@ const CustomTabBarIcon = (props) => {
 };
 
 const BottomTabNavigation = () => {
-
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -57,7 +57,8 @@ const BottomTabNavigation = () => {
 
       <Tab.Screen
         name="Location"
-        component={Location}
+        component={LocationScreen}
+        initialParams={{ reset: true }} // Always start with an empty params object
         options={{
           tabBarStyle: tabBarStyle,
           tabBarShowLabel: false,
@@ -70,9 +71,14 @@ const BottomTabNavigation = () => {
             />
           ),
         }}
+        listeners={({ navigation }) => ({
+          tabPress: () => {
+            navigation.navigate('Location', { reset: true });
+          },
+        })}
       />
 
-<Tab.Screen
+      <Tab.Screen
         name="Calendar"
         component={Calendar}
         options={{
@@ -138,3 +144,4 @@ const styles = StyleSheet.create({
 });
 
 export default BottomTabNavigation;
+

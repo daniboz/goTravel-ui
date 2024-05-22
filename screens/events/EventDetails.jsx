@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Ionicons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { Rating } from "react-native-stock-star-rating";
 import EventReviewsList from './reviews/EventReviewsList';
 import AppBar from '../../components/reusable/AppBar';
@@ -15,7 +14,16 @@ import ExpandableText from '../../components/reusable/ExpandableText';
 const windowWidth = Dimensions.get('window').width;
 
 const EventDetails = ({ route, navigation }) => {
-  const { event } = route.params;
+  const { event, userLogin, id } = route.params;
+
+  const handleNavigationToLocation = () => {
+    navigation.navigate('Location', {
+      latitude: event.coordinates.latitude,
+      longitude: event.coordinates.longitude,
+      name: event.name,
+      reset: false, // Do not reset when navigating from EventDetails
+    });
+  };
 
   const RatingStars = ({ rating }) => (
     <View style={styles.ratingContainer}>
@@ -41,15 +49,17 @@ const EventDetails = ({ route, navigation }) => {
       navigation.navigate("AddEventReviews", id);
     } else {
       Alert.alert("Auth Error", "Please login to add comments", [
-        {
-          text: "Cancel",
-          onPress: () => {},
+        { 
+          text: "Cancel", 
+          onPress: () => {} 
         },
-        {
-          text: "Continue",
-          onPress: () => {navigation.navigate('AuthTop')},
+        { 
+          text: "Continue", 
+          onPress: () => navigation.navigate('AuthTop') 
         },
-        { defaultIndex: 1 },
+        { 
+          defaultIndex: 1 
+        },
       ]);
     }
   };
@@ -77,123 +87,56 @@ const EventDetails = ({ route, navigation }) => {
       <ScrollView style={styles.scrollView}>
         <View>
           <View style={styles.container}>
-            <NetworkImage
-              source={event.imageUrl}
-              width={"100%"}
-              height={220}
-              radius={25}
-            />
+            <NetworkImage source={event.imageUrl} width={"100%"} height={220} radius={25} />
           </View>
 
           <View style={styles.titleContainer}>
             <View style={styles.titleColumn}>
-                <View style={styles.rowWithSpace("space-between")}>
-                    <ReusableText
-                        text={event.name}
-                        family={"medium"}
-                        size={SIZES.xLarge}
-                        color={COLORS.black}
-                    />
-
-                    <ReusableText
-                    text={`${event.date}`}
-                    family={"medium"}
-                    size={SIZES.medium}
-                    color={COLORS.gray}
-                    />
-                </View>
-
-              <HeightSpacer height={10} />
-              <ReusableText
-                text={`${event.location.city}, ${event.location.country}`}
-                family={"medium"}
-                size={SIZES.medium}
-                color={COLORS.black}
-              />
-
-              <HeightSpacer height={15} />
-
               <View style={styles.rowWithSpace("space-between")}>
-                <Rating
-                  maxStars={5}
-                  stars={event.rating}
-                  bordered={false}
-                  color={"#FD9942"}
-                />
-
-                <ReusableText
-                  text={`(${event.reviewCount} reviews)`}
-                  family={"medium"}
-                  size={SIZES.medium}
-                  color={COLORS.gray}
-                />
+                <ReusableText text={event.name} family={"medium"} size={SIZES.xLarge} color={COLORS.black} />
+                <ReusableText text={`${event.date}`} family={"medium"} size={SIZES.medium} color={COLORS.gray} />
+              </View>
+              <HeightSpacer height={10} />
+              <ReusableText text={`${event.location.city}, ${event.location.country}`} family={"medium"} size={SIZES.medium} color={COLORS.black} />
+              <HeightSpacer height={15} />
+              <View style={styles.rowWithSpace("space-between")}>
+                <Rating maxStars={5} stars={event.rating} bordered={false} color={"#FD9942"} />
+                <ReusableText text={`(${event.reviewCount} reviews)`} family={"medium"} size={SIZES.medium} color={COLORS.gray} />
               </View>
             </View>
           </View>
         </View>
 
         <View style={[styles.container, { paddingTop: 90 }]}>
-          <ReusableText
-            text={"Description"}
-            family={"medium"}
-            size={SIZES.large}
-            color={COLORS.black}
-          />
-
+          <ReusableText text={"Description"} family={"medium"} size={SIZES.large} color={COLORS.black} />
           <HeightSpacer height={10} />
-
           <ExpandableText text={event.description} numberOfLines={3} />
-
           <HeightSpacer height={10} />
-
-          <ReusableText
-            text={"Location"}
-            family={"medium"}
-            size={SIZES.large}
-            color={COLORS.black}
-          />
-
+          <ReusableText text={"Location"} family={"medium"} size={SIZES.large} color={COLORS.black} />
           <HeightSpacer height={15} />
-
-          <ReusableText
-            text={`${event.location.city}, ${event.location.country}`}
-            family={"regular"}
-            size={SIZES.small + 2}
-            color={COLORS.gray}
-          />
-
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: event.coordinates.latitude,
-              longitude: event.coordinates.longitude,
-              latitudeDelta: 0.01,
-              longitudeDelta: 0.01
-            }}
-          >
-            <Marker coordinate={event.coordinates} />
-          </MapView>
-
-          <View style={styles.rowWithSpace("space-between")}>
-            <ReusableText
-              text={"Reviews"}
-              family={"medium"}
-              size={SIZES.large}
-              color={COLORS.black}
-            />
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate("AllEventReviews", { reviews: event.reviews })}
+          <ReusableText text={`${event.location.city}, ${event.location.country}`} family={"regular"} size={SIZES.small + 2} color={COLORS.gray} />
+          <TouchableOpacity onPress={handleNavigationToLocation} style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: event.coordinates.latitude,
+                longitude: event.coordinates.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01
+              }}
             >
+              <Marker coordinate={event.coordinates} />
+            </MapView>
+          </TouchableOpacity>
+          <View style={styles.rowWithSpace("space-between")}>
+            <ReusableText text={"Reviews"} family={"medium"} size={SIZES.large} color={COLORS.black} />
+            <TouchableOpacity onPress={() => navigation.navigate("AllEventReviews", { reviews: event.reviews })}>
               <Feather name="list" size={20} />
             </TouchableOpacity>
           </View>
-
           <HeightSpacer height={10} />
-
           <EventReviewsList reviews={event.reviews} />
         </View>
-
       </ScrollView>
     </View>
   );
@@ -253,11 +196,15 @@ const styles = StyleSheet.create({
     color: COLORS.darkgray,
     marginBottom: 20,
   },
-  map: {
+  mapContainer: {
     width: '100%',
     height: 150,
     borderRadius: 10,
+    overflow: 'hidden',
     marginBottom: 20,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
   },
   reviewsSection: {
     marginTop: 20,
