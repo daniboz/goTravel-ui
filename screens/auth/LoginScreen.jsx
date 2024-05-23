@@ -21,14 +21,18 @@ const LoginScreen = ({ navigation }) => {
   const [modalMessage, setModalMessage] = useState('');
 
   const handleLogin = async (values) => {
+    console.log('handleLogin called with values:', values);
     try {
       const response = await axios.post('http://localhost:5003/api/login', values);
+      console.log('Login response:', response.data);
       if (response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
+        await AsyncStorage.setItem('id', response.data.id); // Use response.data.id
         login(response.data.token);
         navigation.replace('Main');
       }
     } catch (error) {
+      console.error('Login error:', error);
       if (error.response) {
         setModalMessage(error.response.data.message);
       } else {
@@ -88,9 +92,6 @@ const LoginScreen = ({ navigation }) => {
                   Register
                 </Text>
               </Text>
-              {/* <TouchableOpacity style={styles.testButton} onPress={() => navigation.replace('Main')}>
-                <Text style={styles.buttonText}>Go to Home (Test)</Text>
-              </TouchableOpacity> */}
             </View>
           )}
         </Formik>
@@ -165,15 +166,6 @@ const styles = StyleSheet.create({
   link: {
     color: COLORS.red,
     textDecorationLine: 'underline',
-  },
-  testButton: {
-    backgroundColor: COLORS.red,
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 20,
-    width: '80%',
-    alignSelf: 'center',
   },
   modalContent: {
     backgroundColor: 'white',

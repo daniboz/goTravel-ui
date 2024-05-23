@@ -1,13 +1,7 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  Alert
-} from 'react-native';
+// AttractionDetails.js
+
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { Rating } from "react-native-stock-star-rating";
@@ -23,7 +17,7 @@ import AppBar from '../../components/reusable/AppBar';
 const windowWidth = Dimensions.get('window').width;
 
 const AttractionDetails = ({ route, navigation }) => {
-  const { attraction, userLogin, id } = route.params;
+  const { attraction, userLogin } = route.params;
 
   const handleNavigationToLocation = () => {
     navigation.navigate('Location', {
@@ -55,7 +49,7 @@ const AttractionDetails = ({ route, navigation }) => {
 
   const handleReviews = () => {
     if (userLogin) {
-      navigation.navigate("AddAttractionReviews", id);
+      navigation.navigate("AddAttractionReviews", { placeId: attraction._id });
     } else {
       Alert.alert("Auth Error", "Please login to add comments", [
         {
@@ -72,8 +66,12 @@ const AttractionDetails = ({ route, navigation }) => {
   };
 
   const handleReviewsMock = () => {
-    navigation.navigate("AddAttractionReviews");
+    navigation.navigate("AddAttractionReviews", { placeId: attraction._id });
   };
+
+  if (!attraction) {
+    return <View><Text>Loading...</Text></View>;
+  }
 
   return (
     <View style={styles.scrollView}>
@@ -84,7 +82,7 @@ const AttractionDetails = ({ route, navigation }) => {
           right={20}
           title={attraction.name}
           color={COLORS.grey}
-          icon={"message1"}
+          icon={"create-outline"}
           color1={COLORS.grey}
           onPress={() => navigation.goBack()}
           onPress1={handleReviewsMock}
@@ -131,7 +129,7 @@ const AttractionDetails = ({ route, navigation }) => {
                   maxStars={5}
                   stars={attraction.rating}
                   bordered={false}
-                  color={"#FD9942"}
+                  color={COLORS.red}
                 />
                 <ReusableText
                   text={`(${attraction.reviewCount} reviews)`}

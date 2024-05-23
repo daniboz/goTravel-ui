@@ -12,61 +12,62 @@ import AppBar from "../../../components/reusable/AppBar";
 import { COLORS, SIZES } from "../../../constants/theme";
 
 const AddAttractionReviews = ({navigation}) => {
-  const router = useRoute();
-  const placeId = router.params;
-  const [rating,setRating] = React.useState(0);
+  const route = useRoute();
+  const { placeId } = route.params;
+  const [rating, setRating] = useState(0);
   const [reviewInput, setReviewInput] = useState("");
 
-//   const postReviews = async (review, rating)=> {
-//     const userId = await AsyncStorage.getItem('id') 
-//     const token = await AsyncStorage.getItem('token') 
-//     const accessToken = JSON.parse(token)
-//     const id = JSON.parse(userId)
+  const postReview = async () => {
+    const userId = await AsyncStorage.getItem('id');
+    if (!userId) {
+      console.error('No user ID found in AsyncStorage');
+      return;
+    }
 
-//     const endpoint = 'https://travelappbackend-production.up.railway.app/api/reviews'
+    const token = await AsyncStorage.getItem('token');
+    const data = {
+      placeId,
+      userId,
+      review: reviewInput,
+      rating,
+    };
 
-//     const data = {
-//         "review": review,
-//         "rating": rating,
-//         "user": id,
-//         "place": placeId
-//     }
+    console.log('Posting review with data:', data);
 
-//     try {
-//        const response = await axios.post(endpoint,data,
-//             {
-//               headers: {
-//                 Authorization: `Bearer ${accessToken}`,
-//               },
-//             }
-//           );
+    try {
+      const response = await axios.post('http://localhost:5003/api/reviews/add', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-//           if(response.status === 200){
-//           navigation.replace("HotelDetails", placeId)
-//         }
-//     } catch (error) {
-//        console.log(error);
-//     } 
-// }
+      console.log('Response:', response.data);
 
+      if (response.status === 200) {
+        // Passing updated attraction data to the AttractionDetails screen
+        navigation.replace("AttractionDetails", { attraction: response.data });
+      }
+    } catch (error) {
+      console.error('Error posting review:', error);
+    }
+  };
 
   return (
     <View>
       <View style={{ height: 100 }}>
-      <AppBar
-        top={60}
-        left={20}
-        right={20}
-        title={'Add Comment'}
-        color={COLORS.grey}
-        onPress={() => navigation.goBack()}
-        
-      />
+        <AppBar
+          top={60}
+          left={20}
+          right={20}
+          title={'Add Your Review'}
+          color={COLORS.grey}
+          onPress={() => navigation.goBack()}
+        />
       </View>
 
       <View style={{ margin: 20, paddingTop: 30 }}>
         <ReusableText
-          text={"Rate your stay"}
+          text={"Rate this attraction"}
           family={"medium"}
           size={SIZES.large - 3}
           color={COLORS.black}
@@ -74,7 +75,7 @@ const AddAttractionReviews = ({navigation}) => {
 
         <HeightSpacer height={15} />
 
-        <RatingInput rating={rating} setRating={setRating} size={70}  maxStars={5} bordered={false}  color={"#FD9942"}/>
+        <RatingInput rating={rating} setRating={setRating} size={70}  maxStars={5} bordered={false}  color={COLORS.red}/>
 
         <HeightSpacer height={15} />
 
@@ -92,18 +93,19 @@ const AddAttractionReviews = ({navigation}) => {
             style={styles.input}
             value={reviewInput}
             onChangeText={setReviewInput}
-            placeholder="Write your stay experience"
+            placeholder="Write your thoughts on this attraction..."
+            autoCapitalize="none"
           />
         </View>
 
         <HeightSpacer height={20} />
 
         <ReusableBtn
-          //onPress={()=> { postReviews(reviewInput, rating)}}
+          onPress={postReview}
           btnText={"Submit your review"}
           width={SIZES.width - 50}
-          backgroundColor={COLORS.green}
-          borderColor={COLORS.green}
+          backgroundColor={COLORS.red}
+          borderColor={COLORS.red}
           borderWidth={0.5}
           textColor={COLORS.white}
         />
@@ -128,4 +130,4 @@ const styles = StyleSheet.create({
       marginRight: SIZES.small,
       borderRadius: SIZES.small 
   }
-})
+});

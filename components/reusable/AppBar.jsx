@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from '@expo/vector-icons';
 import ReusableText from "./ReusableText";
 import { COLORS, SIZES, TEXT } from "../../constants/theme";
 
@@ -20,7 +21,7 @@ const AppBar = ({ color, title, color1, icon, onPress, onPress1, top, left, righ
         />
 
         <TouchableOpacity style={styles.box1(color1)} onPress={onPress1}>
-          <AntDesign name={icon} size={26} />
+          <Ionicons name={icon} size={26} />
         </TouchableOpacity>
       </View>
     </View>
