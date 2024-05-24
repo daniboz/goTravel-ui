@@ -11,7 +11,7 @@ import ReusableBtn from "../../../components/reusable/ReusableBtn";
 import AppBar from "../../../components/reusable/AppBar";
 import { COLORS, SIZES } from "../../../constants/theme";
 
-const AddAttractionReviews = ({navigation}) => {
+const AddAttractionReviews = ({ navigation }) => {
   const route = useRoute();
   const { placeId } = route.params;
   const [rating, setRating] = useState(0);
@@ -44,8 +44,8 @@ const AddAttractionReviews = ({navigation}) => {
       console.log('Response:', response.data);
 
       if (response.status === 200) {
-        // Passing updated attraction data to the AttractionDetails screen
-        navigation.replace("AttractionDetails", { attraction: response.data });
+        // Navigate back to AttractionDetails screen with the attractionId
+        navigation.replace("AttractionDetails", { attractionId: placeId });
       }
     } catch (error) {
       console.error('Error posting review:', error);
@@ -75,7 +75,7 @@ const AddAttractionReviews = ({navigation}) => {
 
         <HeightSpacer height={15} />
 
-        <RatingInput rating={rating} setRating={setRating} size={70}  maxStars={5} bordered={false}  color={COLORS.red}/>
+        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.red} />
 
         <HeightSpacer height={15} />
 
@@ -118,16 +118,16 @@ export default AddAttractionReviews;
 
 const styles = StyleSheet.create({
   input: {
-      fontFamily: "regular",
-      width: "100%",
-      height: "100%",
-      paddingHorizontal: SIZES.small
+    fontFamily: "regular",
+    width: "100%",
+    height: "100%",
+    paddingHorizontal: SIZES.small
   },
   wrapper: {
-      width: SIZES.width-50,
-      height: 50,
-      backgroundColor: COLORS.lightWhite,
-      marginRight: SIZES.small,
-      borderRadius: SIZES.small 
+    width: SIZES.width - 50,
+    height: 50,
+    backgroundColor: COLORS.lightWhite,
+    marginRight: SIZES.small,
+    borderRadius: SIZES.small
   }
 });

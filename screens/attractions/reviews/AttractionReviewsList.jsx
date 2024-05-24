@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
 import AttractionReviewTle from './AttractionReviewTle';
 
 const fetchUserData = async (userId) => {
@@ -37,9 +37,7 @@ const fetchReviewsWithUserDetails = async (reviews) => {
   );
 };
 
-
-
-const AttractionReviewsList = ({ reviews }) => {
+const AttractionReviewsList = ({ reviews, onDeleteReview }) => {
   const [reviewsWithUserDetails, setReviewsWithUserDetails] = useState([]);
   const [error, setError] = useState(null);
 
@@ -68,7 +66,7 @@ const AttractionReviewsList = ({ reviews }) => {
       keyExtractor={(item) => item._id}
       renderItem={({ item }) => (
         <View style={{ marginBottom: 10 }}>
-          <AttractionReviewTle review={item} />
+          <AttractionReviewTle review={item} onDelete={onDeleteReview} />
         </View>
       )}
     />

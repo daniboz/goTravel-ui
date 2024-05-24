@@ -54,7 +54,7 @@ const AttractionsPage = () => {
                 <TouchableOpacity
                   key={index}
                   style={styles.attractionCard}
-                  onPress={() => navigation.navigate('AttractionDetails', { attraction })}
+                  onPress={() => navigation.navigate('AttractionDetails', { attractionId: attraction._id })}
                 >
                   <Image source={{ uri: attraction.imageUrl }} style={styles.image} />
                   <View style={styles.textContainer}>
