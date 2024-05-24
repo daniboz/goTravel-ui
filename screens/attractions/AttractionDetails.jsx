@@ -1,11 +1,11 @@
 // AttractionDetails.js
 
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert, ActivityIndicator } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Ionicons } from '@expo/vector-icons';
 import { Rating } from "react-native-stock-star-rating";
-import { Feather } from "@expo/vector-icons";
+import { Feather } from '@expo/vector-icons';
 import { COLORS, SIZES, TAB_BAR_HEIGHT } from '../../constants/theme';
 import NetworkImage from '../../components/reusable/NetworkImage';
 import HeightSpacer from '../../components/reusable/HeightSpacer';
@@ -13,39 +13,49 @@ import ReusableText from '../../components/reusable/ReusableText';
 import ExpandableText from '../../components/reusable/ExpandableText';
 import AttractionReviewsList from './reviews/AttractionReviewsList';
 import AppBar from '../../components/reusable/AppBar';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 
 const AttractionDetails = ({ route, navigation }) => {
-  const { attraction, userLogin } = route.params;
+  const { attractionId, userLogin } = route.params;
+  const [attraction, setAttraction] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchAttractionDetails = useCallback(async () => {
+    if (!attractionId) {
+      setError('Invalid attraction ID');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      console.log(`Fetching attraction details for attractionId: ${attractionId}`);
+      const response = await axios.get(`http://localhost:5003/api/attractions/${attractionId}`);
+      console.log('Fetched attraction details:', response.data);
+      setAttraction(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching attraction details:', error.response || error.message || error);
+      setError('Failed to load attraction details.');
+      setLoading(false);
+    }
+  }, [attractionId]);
+
+  useEffect(() => {
+    fetchAttractionDetails();
+  }, [fetchAttractionDetails, refresh]);
 
   const handleNavigationToLocation = () => {
     navigation.navigate('Location', {
       latitude: attraction.coordinates.latitude,
       longitude: attraction.coordinates.longitude,
       name: attraction.name,
-      reset: false, // Do not reset when navigating from AttractionDetails
+      reset: false,
     });
   };
-
-  const RatingStars = ({ rating }) => (
-    <View style={styles.ratingContainer}>
-      {[...Array(rating)].map((_, index) => (
-        <Ionicons key={index} name="star" size={24} color={COLORS.golden} />
-      ))}
-    </View>
-  );
-
-  const ReviewsSection = ({ reviews }) => (
-    <View style={styles.reviewsSection}>
-      {reviews.map(review => (
-        <View key={review.id} style={styles.reviewCard}>
-          <Text style={styles.reviewText}>{review.username} - {review.text}</Text>
-          <RatingStars rating={review.rating} />
-        </View>
-      ))}
-    </View>
-  );
 
   const handleReviews = () => {
     if (userLogin) {
@@ -58,7 +68,7 @@ const AttractionDetails = ({ route, navigation }) => {
         },
         {
           text: "Continue",
-          onPress: () => {navigation.navigate('AuthTop')},
+          onPress: () => { navigation.navigate('AuthTop') },
         },
         { defaultIndex: 1 },
       ]);
@@ -69,8 +79,50 @@ const AttractionDetails = ({ route, navigation }) => {
     navigation.navigate("AddAttractionReviews", { placeId: attraction._id });
   };
 
+  const handleRefresh = () => {
+    setRefresh(prev => !prev);
+  };
+
+  const handleDeleteReview = (deletedReviewId) => {
+    setAttraction((prevAttraction) => ({
+      ...prevAttraction,
+      reviews: prevAttraction.reviews.filter((review) => review._id !== deletedReviewId),
+    }));
+  };
+
+  const handleReviewsNavigation = () => {
+    navigation.navigate("AllAttractionReviews", { 
+      placeId: attraction._id, 
+      handleDeleteReview: (deletedReviewId) => {
+        handleDeleteReview(deletedReviewId);
+        fetchAttractionDetails(); // Refresh the attraction details
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color={COLORS.red} />
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loader}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
+
   if (!attraction) {
-    return <View><Text>Loading...</Text></View>;
+    return (
+      <View style={styles.loader}>
+        <Text>Failed to load attraction details.</Text>
+      </View>
+    );
   }
 
   return (
@@ -186,13 +238,13 @@ const AttractionDetails = ({ route, navigation }) => {
               color={COLORS.black}
             />
             <TouchableOpacity
-              onPress={() => navigation.navigate("AllAttractionReviews", { reviews: attraction.reviews })}
+              onPress={handleReviewsNavigation}
             >
               <Feather name="list" size={20} />
             </TouchableOpacity>
           </View>
           <HeightSpacer height={10} />
-          <AttractionReviewsList reviews={attraction.reviews} />
+          <AttractionReviewsList reviews={attraction.reviews} onDeleteReview={handleDeleteReview} />
         </View>
       </ScrollView>
     </View>
@@ -207,6 +259,11 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 0,
     paddingHorizontal: 20,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backButton: {
     position: 'absolute',

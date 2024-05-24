@@ -1,64 +1,127 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert, ActivityIndicator } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import { Ionicons, Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Rating } from "react-native-stock-star-rating";
+import { Feather } from '@expo/vector-icons';
+import { COLORS, SIZES, TAB_BAR_HEIGHT } from '../../constants/theme';
+import NetworkImage from '../../components/reusable/NetworkImage';
+import HeightSpacer from '../../components/reusable/HeightSpacer';
+import ReusableText from '../../components/reusable/ReusableText';
+import ExpandableText from '../../components/reusable/ExpandableText';
 import RestaurantReviewsList from './reviews/RestaurantReviewsList';
 import AppBar from '../../components/reusable/AppBar';
-import NetworkImage from '../../components/reusable/NetworkImage';
-import { COLORS, SIZES, TAB_BAR_HEIGHT } from '../../constants/theme';
-import ReusableText from '../../components/reusable/ReusableText';
-import HeightSpacer from '../../components/reusable/HeightSpacer';
-import ExpandableText from '../../components/reusable/ExpandableText';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 
 const RestaurantDetails = ({ route, navigation }) => {
-  const { restaurant, userLogin, id } = route.params;
+  const { restaurantId, userLogin } = route.params;
+  const [restaurant, setRestaurant] = useState(null);
+  const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchRestaurantDetails = useCallback(async () => {
+    if (!restaurantId) {
+      setError('Invalid restaurant ID');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      console.log(`Fetching restaurant details for restaurantId: ${restaurantId}`);
+      const response = await axios.get(`http://localhost:5003/api/restaurants/${restaurantId}`);
+      console.log('Fetched restaurant details:', response.data);
+      setRestaurant(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching restaurant details:', error.response || error.message || error);
+      setError('Failed to load restaurant details.');
+      setLoading(false);
+    }
+  }, [restaurantId]);
+
+  useEffect(() => {
+    fetchRestaurantDetails();
+  }, [fetchRestaurantDetails, refresh]);
 
   const handleNavigationToLocation = () => {
     navigation.navigate('Location', {
       latitude: restaurant.coordinates.latitude,
       longitude: restaurant.coordinates.longitude,
       name: restaurant.name,
-      reset: false, // Do not reset when navigating from RestaurantDetails
+      reset: false,
     });
   };
 
-  const RatingStars = ({ rating }) => (
-    <View style={styles.ratingContainer}>
-      {[...Array(rating)].map((_, index) => (
-        <Ionicons key={index} name="star" size={24} color={COLORS.golden} />
-      ))}
-    </View>
-  );
-
-  const ReviewsSection = ({ reviews }) => (
-    <View style={styles.reviewsSection}>
-      {reviews.map(review => (
-        <View key={review.id} style={styles.reviewCard}>
-          <Text style={styles.reviewText}>{review.user.username} - {review.review}</Text>
-          <RatingStars rating={review.rating} />
-        </View>
-      ))}
-    </View>
-  );
-
   const handleReviews = () => {
     if (userLogin) {
-      navigation.navigate("AddRestaurantReviews", id);
+      navigation.navigate("AddRestaurantReviews", { placeId: restaurant._id });
     } else {
       Alert.alert("Auth Error", "Please login to add comments", [
-        { text: "Cancel", onPress: () => {} },
-        { text: "Continue", onPress: () => navigation.navigate('AuthTop') },
+        {
+          text: "Cancel",
+          onPress: () => {},
+        },
+        {
+          text: "Continue",
+          onPress: () => { navigation.navigate('AuthTop') },
+        },
         { defaultIndex: 1 },
       ]);
     }
   };
 
   const handleReviewsMock = () => {
-    navigation.navigate("AddRestaurantReviews");
+    navigation.navigate("AddRestaurantReviews", { placeId: restaurant._id });
   };
+
+  const handleRefresh = () => {
+    setRefresh(prev => !prev);
+  };
+
+  const handleDeleteReview = (deletedReviewId) => {
+    setRestaurant((prevRestaurant) => ({
+      ...prevRestaurant,
+      reviews: prevRestaurant.reviews.filter((review) => review._id !== deletedReviewId),
+    }));
+  };
+
+  const handleReviewsNavigation = () => {
+    navigation.navigate("AllRestaurantReviews", { 
+      placeId: restaurant._id, 
+      handleDeleteReview: (deletedReviewId) => {
+        handleDeleteReview(deletedReviewId);
+        fetchRestaurantDetails(); // Refresh the restaurant details
+      }
+    });
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loader}>
+        <ActivityIndicator size="large" color={COLORS.red} />
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.loader}>
+        <Text>{error}</Text>
+      </View>
+    );
+  }
+
+  if (!restaurant) {
+    return (
+      <View style={styles.loader}>
+        <Text>Failed to load restaurant details.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.scrollView}>
@@ -69,7 +132,7 @@ const RestaurantDetails = ({ route, navigation }) => {
           right={20}
           title={restaurant.name}
           color={COLORS.grey}
-          icon={"message1"}
+          icon={"create-outline"}
           color1={COLORS.grey}
           onPress={() => navigation.goBack()}
           onPress1={handleReviewsMock}
@@ -79,34 +142,79 @@ const RestaurantDetails = ({ route, navigation }) => {
       <ScrollView style={styles.scrollView}>
         <View>
           <View style={styles.container}>
-            <NetworkImage source={restaurant.imageUrl} width={"100%"} height={220} radius={25} />
+            <NetworkImage
+              source={restaurant.imageUrl}
+              width={"100%"}
+              height={220}
+              radius={25}
+            />
           </View>
 
           <View style={styles.titleContainer}>
             <View style={styles.titleColumn}>
               <View style={styles.rowWithSpace("space-between")}>
-                <ReusableText text={restaurant.name} family={"medium"} size={SIZES.xLarge} color={COLORS.black} />
-                <ReusableText text={`${restaurant.hours}`} family={"medium"} size={SIZES.medium} color={COLORS.gray} />
+                <ReusableText
+                  text={restaurant.name}
+                  family={"medium"}
+                  size={SIZES.xLarge}
+                  color={COLORS.black}
+                />
+                <ReusableText
+                  text={`${restaurant.hours}`}
+                  family={"medium"}
+                  size={SIZES.medium}
+                  color={COLORS.gray}
+                />
               </View>
               <HeightSpacer height={10} />
-              <ReusableText text={`${restaurant.location.city}, ${restaurant.location.country}`} family={"medium"} size={SIZES.medium} color={COLORS.black} />
+              <ReusableText
+                text={`${restaurant.location.city}, ${restaurant.location.country}`}
+                family={"medium"}
+                size={SIZES.medium}
+                color={COLORS.black}
+              />
               <HeightSpacer height={15} />
               <View style={styles.rowWithSpace("space-between")}>
-                <Rating maxStars={5} stars={restaurant.rating} bordered={false} color={"#FD9942"} />
-                <ReusableText text={`(${restaurant.reviewCount} reviews)`} family={"medium"} size={SIZES.medium} color={COLORS.gray} />
+                <Rating
+                  maxStars={5}
+                  stars={restaurant.rating}
+                  bordered={false}
+                  color={COLORS.red}
+                />
+                <ReusableText
+                  text={`(${restaurant.reviewCount} reviews)`}
+                  family={"medium"}
+                  size={SIZES.medium}
+                  color={COLORS.gray}
+                />
               </View>
             </View>
           </View>
         </View>
 
         <View style={[styles.container, { paddingTop: 90 }]}>
-          <ReusableText text={"Description"} family={"medium"} size={SIZES.large} color={COLORS.black} />
+          <ReusableText
+            text={"Description"}
+            family={"medium"}
+            size={SIZES.large}
+            color={COLORS.black}
+          />
           <HeightSpacer height={10} />
           <ExpandableText text={restaurant.description} numberOfLines={3} />
           <HeightSpacer height={10} />
-          <ReusableText text={"Location"} family={"medium"} size={SIZES.large} color={COLORS.black} />
+          <ReusableText
+            text={"Location"}
+            family={"medium"}
+            size={SIZES.large}
+            color={COLORS.black}
+          />
           <HeightSpacer height={15} />
-          <ReusableText text={`${restaurant.location.city}, ${restaurant.location.country}`} family={"regular"} size={SIZES.small + 2} color={COLORS.gray} />
+          <ReusableText
+            text={`${restaurant.location.city}, ${restaurant.location.country}`}
+            family={"regular"}
+            size={SIZES.small + 2}
+            color={COLORS.gray}
+          />
           <TouchableOpacity onPress={handleNavigationToLocation} style={styles.mapContainer}>
             <MapView
               style={styles.map}
@@ -121,13 +229,20 @@ const RestaurantDetails = ({ route, navigation }) => {
             </MapView>
           </TouchableOpacity>
           <View style={styles.rowWithSpace("space-between")}>
-            <ReusableText text={"Reviews"} family={"medium"} size={SIZES.large} color={COLORS.black} />
-            <TouchableOpacity onPress={() => navigation.navigate("AllRestaurantReviews", { reviews: restaurant.reviews })}>
+            <ReusableText
+              text={"Reviews"}
+              family={"medium"}
+              size={SIZES.large}
+              color={COLORS.black}
+            />
+            <TouchableOpacity
+              onPress={handleReviewsNavigation}
+            >
               <Feather name="list" size={20} />
             </TouchableOpacity>
           </View>
           <HeightSpacer height={10} />
-          <RestaurantReviewsList reviews={restaurant.reviews} />
+          <RestaurantReviewsList reviews={restaurant.reviews} onDeleteReview={handleDeleteReview} />
         </View>
       </ScrollView>
     </View>
@@ -142,6 +257,11 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 0,
     paddingHorizontal: 20,
+  },
+  loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backButton: {
     position: 'absolute',

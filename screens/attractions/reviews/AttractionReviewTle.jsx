@@ -32,7 +32,10 @@ const AttractionReviewTle = ({ review, onDelete }) => {
         data: { reviewId: review._id, userId },
       });
       if (response.status === 200) {
+        console.log(`Review with id: ${review._id} deleted successfully`);
         onDelete(review._id);
+      } else {
+        console.error('Failed to delete review:', response.data);
       }
     } catch (error) {
       console.error('Error deleting review:', error);
@@ -44,26 +47,30 @@ const AttractionReviewTle = ({ review, onDelete }) => {
     return null; // Skip rendering if user data is missing
   }
 
+  const isCurrentUser = review.user._id === userId;
+
   return (
     <View style={styles.reviewBorder}>
       <View style={styles.rowWithSpace("space-between")}>
         <View style={styles.rowWithSpace("flex-start")}>
           <NetworkImage source={review.user.profile} width={54} height={54} radius={10} />
           <WidthSpacer width={20} />
-          <View style={{ width: "80%" }}>
+          <View style={{ width: isCurrentUser ? "70%" : "80%" }}>
             <View style={styles.rowWithSpace("space-between")}>
               <ReusableText text={review.user.username} family={"medium"} size={SIZES.small + 2} color={COLORS.black} />
               <WidthSpacer width={"30%"} />
               <View style={styles.rowWithSpace("space-between")}>
                 <Rating rating={review.rating} />
                 <WidthSpacer width={10} />
-                <ReusableText text={review.updatedAt.split('T')[0]} family={"medium"} size={SIZES.small + 2} color={COLORS.black} />
+                <Text style={{ fontFamily: 'medium', fontSize: SIZES.small + 2, color: COLORS.black }}>
+                  {review.updatedAt.split('T')[0]}
+                </Text>
               </View>
             </View>
             <ExpandableText text={review.review} numberOfLines={2} />
           </View>
         </View>
-        {review.user._id === userId && (
+        {isCurrentUser && (
           <TouchableOpacity onPress={handleDelete} style={styles.deleteButton}>
             <Ionicons name="trash-outline" size={16} color={COLORS.white} />
           </TouchableOpacity>
@@ -86,9 +93,6 @@ const styles = StyleSheet.create({
     justifyContent: justifyContent,
   }),
   deleteButton: {
-    position: 'absolute',
-    bottom: 5,
-    right: 10,
     backgroundColor: COLORS.red,
     padding: 5,
     borderRadius: 15,

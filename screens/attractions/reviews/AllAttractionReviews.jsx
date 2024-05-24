@@ -5,6 +5,7 @@ import AttractionReviewTle from "./AttractionReviewTle";
 import AppBar from "../../../components/reusable/AppBar";
 import { COLORS, TAB_BAR_HEIGHT } from "../../../constants/theme";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const fetchUserData = async (userId) => {
   try {
@@ -41,20 +42,24 @@ const fetchReviewsWithUserDetails = async (reviews) => {
   );
 };
 
-
-
-
 const AllAttractionReviews = ({ navigation, route }) => {
-  const { reviews = [] } = route.params || {};
+  const { placeId, handleDeleteReview } = route.params || {};
   const [reviewsWithUserDetails, setReviewsWithUserDetails] = useState([]);
   const [userId, setUserId] = useState(null);
 
-  useEffect(() => {
-    const fetchAndSetReviews = async () => {
-      const detailedReviews = await fetchReviewsWithUserDetails(reviews);
+  const fetchAndSetReviews = async () => {
+    try {
+      console.log(`Fetching reviews for attraction ID: ${placeId}`);
+      const response = await axios.get(`http://localhost:5003/api/reviews/${placeId}/reviews`);
+      console.log(`Fetched reviews response:`, response.data);
+      const detailedReviews = await fetchReviewsWithUserDetails(response.data);
       setReviewsWithUserDetails(detailedReviews);
-    };
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
 
+  useEffect(() => {
     const getUserId = async () => {
       const id = await AsyncStorage.getItem('id');
       setUserId(id);
@@ -62,7 +67,7 @@ const AllAttractionReviews = ({ navigation, route }) => {
 
     fetchAndSetReviews();
     getUserId();
-  }, [reviews]);
+  }, [placeId]);
 
   const handleDelete = (reviewId) => {
     setReviewsWithUserDetails((prevReviews) => prevReviews.filter((review) => review._id !== reviewId));
@@ -76,7 +81,10 @@ const AllAttractionReviews = ({ navigation, route }) => {
         right={0}
         title={"Reviews"}
         color={COLORS.grey}
-        onPress={() => navigation.goBack()}
+        onPress={() => {
+          handleDeleteReview();
+          navigation.goBack();
+        }}
       />
       <FlatList
         data={reviewsWithUserDetails}
