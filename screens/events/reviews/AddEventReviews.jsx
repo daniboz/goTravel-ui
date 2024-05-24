@@ -10,40 +10,45 @@ import HeightSpacer from "../../../components/reusable/HeightSpacer";
 import { COLORS, SIZES } from "../../../constants/theme";
 import ReusableBtn from "../../../components/reusable/ReusableBtn";
 
-const AddEventReviews = ({navigation}) => {
-  const router = useRoute();
-  const placeId = router.params;
+const AddEventReviews = ({ navigation }) => {
+  const route = useRoute();
+  const { placeId } = route.params;
   const [rating, setRating] = useState(0);
   const [reviewInput, setReviewInput] = useState("");
 
-  const postReviews = async (review, rating) => {
-    const userId = await AsyncStorage.getItem('id'); 
-    const token = await AsyncStorage.getItem('token'); 
-    const accessToken = JSON.parse(token);
-    const id = JSON.parse(userId);
+  const postReview = async () => {
+    const userId = await AsyncStorage.getItem('id');
+    if (!userId) {
+      console.error('No user ID found in AsyncStorage');
+      return;
+    }
 
-    const endpoint = 'https://your-api-endpoint/api/reviews'; 
-
+    const token = await AsyncStorage.getItem('token');
     const data = {
-        review: review,
-        rating: rating,
-        user: id,
-        place: placeId
+      placeId,
+      userId,
+      review: reviewInput,
+      rating,
     };
 
-    try {
-       const response = await axios.post(endpoint, data, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+    console.log('Posting review with data:', data);
 
-        if(response.status === 200){
-          navigation.replace("EventDetails", placeId);
-        }
+    try {
+      const response = await axios.post('http://localhost:5003/api/event-reviews/add', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log('Response:', response.data);
+
+      if (response.status === 200) {
+        // Navigate back to EventDetails screen with the eventId
+        navigation.replace("EventDetails", { eventId: placeId });
+      }
     } catch (error) {
-       console.log(error);
-    } 
+      console.error('Error posting review:', error);
+    }
   };
 
   return (
@@ -53,7 +58,7 @@ const AddEventReviews = ({navigation}) => {
           top={60}
           left={20}
           right={20}
-          title={'Add Comment'}
+          title={'Add Your Review'}
           color={COLORS.grey}
           onPress={() => navigation.goBack()}
         />
@@ -61,7 +66,7 @@ const AddEventReviews = ({navigation}) => {
 
       <View style={{ margin: 20, paddingTop: 30 }}>
         <ReusableText
-          text={"Rate your experience"}
+          text={"Rate this event"}
           family={"medium"}
           size={SIZES.large - 3}
           color={COLORS.black}
@@ -69,7 +74,7 @@ const AddEventReviews = ({navigation}) => {
 
         <HeightSpacer height={15} />
 
-        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={"#FD9942"} />
+        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.red} />
 
         <HeightSpacer height={15} />
 
@@ -87,18 +92,19 @@ const AddEventReviews = ({navigation}) => {
             style={styles.input}
             value={reviewInput}
             onChangeText={setReviewInput}
-            placeholder="Write your experience"
+            placeholder="Write your thoughts on this event..."
+            autoCapitalize="none"
           />
         </View>
 
         <HeightSpacer height={20} />
 
         <ReusableBtn
-          onPress={() => { postReviews(reviewInput, rating) }}
+          onPress={postReview}
           btnText={"Submit your review"}
           width={SIZES.width - 50}
-          backgroundColor={COLORS.green}
-          borderColor={COLORS.green}
+          backgroundColor={COLORS.red}
+          borderColor={COLORS.red}
           borderWidth={0.5}
           textColor={COLORS.white}
         />
@@ -121,6 +127,6 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: COLORS.lightWhite,
     marginRight: SIZES.small,
-    borderRadius: SIZES.small 
+    borderRadius: SIZES.small
   }
 });

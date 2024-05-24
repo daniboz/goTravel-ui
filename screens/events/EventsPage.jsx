@@ -180,7 +180,7 @@ const EventsPage = () => {
                 <TouchableOpacity
                   key={index}
                   style={styles.eventCard}
-                  onPress={() => navigation.navigate('EventDetails', { event })}
+                  onPress={() => navigation.navigate('EventDetails', { eventId: event._id })}
                 >
                   <Image source={{ uri: event.imageUrl }} style={styles.image} />
                   <View style={styles.textContainer}>
