@@ -35,7 +35,7 @@ const AddAttractionReviews = ({ navigation }) => {
     console.log('Posting review with data:', data);
 
     try {
-      const response = await axios.post('http://localhost:5003/api/reviews/add', data, {
+      const response = await axios.post('http://localhost:5003/api/attraction-reviews/add', data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

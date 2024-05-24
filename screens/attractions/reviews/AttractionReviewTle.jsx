@@ -28,7 +28,7 @@ const AttractionReviewTle = ({ review, onDelete }) => {
     }
 
     try {
-      const response = await axios.delete('http://localhost:5003/api/reviews/delete', {
+      const response = await axios.delete('http://localhost:5003/api/attraction-reviews/delete', {
         data: { reviewId: review._id, userId },
       });
       if (response.status === 200) {

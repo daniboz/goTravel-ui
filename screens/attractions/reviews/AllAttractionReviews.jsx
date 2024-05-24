@@ -50,7 +50,7 @@ const AllAttractionReviews = ({ navigation, route }) => {
   const fetchAndSetReviews = async () => {
     try {
       console.log(`Fetching reviews for attraction ID: ${placeId}`);
-      const response = await axios.get(`http://localhost:5003/api/reviews/${placeId}/reviews`);
+      const response = await axios.get(`http://localhost:5003/api/attraction-reviews/${placeId}/reviews`);
       console.log(`Fetched reviews response:`, response.data);
       const detailedReviews = await fetchReviewsWithUserDetails(response.data);
       setReviewsWithUserDetails(detailedReviews);
