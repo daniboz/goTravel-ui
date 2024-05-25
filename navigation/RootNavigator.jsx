@@ -4,14 +4,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
 import AuthStackNavigator from './AuthStackNavigator';
 import BottomTabNavigation from './BottomTabNavigator';
+import AdminStackNavigator from './AdminStackNavigator';
 
 const RootStack = createNativeStackNavigator();
 
 const RootNavigator = () => {
-  const { isAuthenticated, loading } = useContext(AuthContext); // Use AuthContext
+  const { isAuthenticated, loading, user } = useContext(AuthContext);
 
   if (loading) {
-    // Show loading spinner while checking authentication
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -22,7 +22,11 @@ const RootNavigator = () => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       {isAuthenticated ? (
-        <RootStack.Screen name="Main" component={BottomTabNavigation} />
+        user?.isAdmin ? (
+          <RootStack.Screen name="Admin" component={AdminStackNavigator} />
+        ) : (
+          <RootStack.Screen name="Main" component={BottomTabNavigation} />
+        )
       ) : (
         <RootStack.Screen name="Auth" component={AuthStackNavigator} />
       )}

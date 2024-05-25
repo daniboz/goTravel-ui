@@ -23,7 +23,7 @@ const Profile = ({ navigation }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
       {/* Other profile details */}
-      <TouchableOpacity style={styles.button} onPress={handleLogout}>
+      <TouchableOpacity style={styles.button} onPress={logout}>
         <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>

@@ -1,29 +1,30 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet, TouchableWithoutFeedback, Keyboard, Button } from 'react-native';
 import CircularMenu from '../../components/home/CircularMenu';
 import SearchComponent from '../../components/search/SearchComponent';
 import ForumActionButton from '../../components/forum/ForumActionButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
-export default class Home extends Component {
-  handleForumPress = () => {
+const Home = () => {
+  const navigation = useNavigation();
+
+  const handleForumPress = () => {
     console.log('Forum button pressed');
-  }
-  
-  render() {
-    return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+  };
+
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
           <SearchComponent />
           <CircularMenu />
-          <ForumActionButton onPress={this.handleForumPress} />
+          <ForumActionButton onPress={handleForumPress} />
         </View>
       </SafeAreaView>
-      </TouchableWithoutFeedback>
-    );
-  }
-}
+    </TouchableWithoutFeedback>
+  );
+};
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -35,6 +36,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  content: {
-  },
+  content: {},
 });
+
+export default Home;
