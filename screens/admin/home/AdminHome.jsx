@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import AdminCircularMenu from './AdminCircularMenu';
-import { AuthContext } from '../../context/AuthContext';
-import { COLORS } from '../../constants/theme';
+import AdminCircularMenu from '../../../components/admin/AdminCircularMenu';
+import { AuthContext } from '../../../context/AuthContext';
+import { COLORS } from '../../../constants/theme';
 
 const AdminHome = () => {
   const { logout } = useContext(AuthContext);
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   logoutButtonText: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

@@ -3,22 +3,22 @@ import { View, TextInput, StyleSheet, ScrollView, TouchableOpacity, Text, Alert 
 import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '../../constants/theme';
+import { COLORS } from '../../../constants/theme';
 
-const typesOfRestaurants = [
-  { id: 'Italian', name: 'Italian' },
-  { id: 'Chinese', name: 'Chinese' },
-  { id: 'Indian', name: 'Indian' },
-  { id: 'Mexican', name: 'Mexican' },
-  { id: 'Japanese', name: 'Japanese' },
-  { id: 'American', name: 'American' },
-  { id: 'Thai', name: 'Thai' }
+const typesOfAttractions = [
+  { id: 'Sights', name: 'Sights' },
+  { id: 'Museums', name: 'Museums' },
+  { id: 'Fun', name: 'Fun' },
+  { id: 'Spas', name: 'Spas' },
+  { id: 'Nightlife', name: 'Nightlife' },
+  { id: 'Zoos', name: 'Zoos' },
+  { id: 'Amusement Parks', name: 'Amusement Parks' }
 ];
 
-const priceRanges = ["$", "$$", "$$$"];
-const dietaryOptions = ["Vegetarian", "Vegan", "Gluten-Free", "Halal"];
+const durations = ["<1hr", "1-3hr", ">3hr"];
+const suitabilities = ["Rainy Day", "Date Night", "Free Entry", "Families"];
 
-const AdminRestaurantForm = () => {
+const AdminAttractionForm = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [hours, setHours] = useState('');
@@ -28,10 +28,10 @@ const AdminRestaurantForm = () => {
   const [longitude, setLongitude] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [selectedTypes, setSelectedTypes] = useState([]);
-  const [selectedPriceRange, setSelectedPriceRange] = useState('');
-  const [selectedDietaryOptions, setSelectedDietaryOptions] = useState([]);
+  const [selectedDuration, setSelectedDuration] = useState('');
+  const [selectedSuitabilities, setSelectedSuitabilities] = useState([]);
   const [expandedTypes, setExpandedTypes] = useState(false);
-  const [expandedDietaryOptions, setExpandedDietaryOptions] = useState(false);
+  const [expandedSuitabilities, setExpandedSuitabilities] = useState(false);
   const [confirmationVisible, setConfirmationVisible] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState('');
   const route = useRoute();
@@ -40,14 +40,14 @@ const AdminRestaurantForm = () => {
 
   useEffect(() => {
     if (id) {
-      fetchRestaurantDetails();
+      fetchAttractionDetails();
     }
   }, [id]);
 
-  const fetchRestaurantDetails = async () => {
+  const fetchAttractionDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5003/api/restaurants/${id}`);
-      const { name, description, hours, location, coordinates, imageUrl, types, priceRange, dietaryOptions } = response.data;
+      const response = await axios.get(`http://localhost:5003/api/attractions/${id}`);
+      const { name, description, hours, location, coordinates, imageUrl, types, duration, suitability } = response.data;
       setName(name);
       setDescription(description);
       setHours(hours);
@@ -57,10 +57,10 @@ const AdminRestaurantForm = () => {
       setLongitude(coordinates.longitude.toString());
       setImageUrl(imageUrl);
       setSelectedTypes(types);
-      setSelectedPriceRange(priceRange);
-      setSelectedDietaryOptions(dietaryOptions);
+      setSelectedDuration(duration);
+      setSelectedSuitabilities(suitability);
     } catch (error) {
-      console.error('Error fetching restaurant details:', error);
+      console.error('Error fetching attraction details:', error);
     }
   };
 
@@ -82,12 +82,12 @@ const AdminRestaurantForm = () => {
   };
 
   const handleSubmit = async () => {
-    if (!name || !description || !hours || !locationCity || !locationCountry || !latitude || !longitude || !imageUrl || !selectedPriceRange) {
+    if (!name || !description || !hours || !locationCity || !locationCountry || !latitude || !longitude || !imageUrl || !selectedDuration) {
       Alert.alert('Error', 'Please fill all required fields');
       return;
     }
 
-    const restaurantData = {
+    const attractionData = {
       name,
       description,
       hours,
@@ -95,28 +95,28 @@ const AdminRestaurantForm = () => {
       coordinates: { latitude: parseFloat(latitude), longitude: parseFloat(longitude) },
       imageUrl,
       types: selectedTypes,
-      priceRange: selectedPriceRange,
-      dietaryOptions: selectedDietaryOptions
+      duration: selectedDuration,
+      suitability: selectedSuitabilities
     };
 
     try {
       if (id) {
-        await axios.put(`http://localhost:5003/api/restaurants/${id}`, restaurantData);
+        await axios.put(`http://localhost:5003/api/attractions/${id}`, attractionData);
         setConfirmationMessage(`${name} was updated successfully!`);
       } else {
-        await axios.post('http://localhost:5003/api/restaurants', restaurantData);
+        await axios.post('http://localhost:5003/api/attractions', attractionData);
         setConfirmationMessage(`${name} was added successfully!`);
       }
       setConfirmationVisible(true);
     } catch (error) {
-      console.error('Error saving restaurant:', error.response ? error.response.data : error.message);
+      console.error('Error saving attraction:', error.response ? error.response.data : error.message);
       Alert.alert('Error', error.response ? error.response.data.error : error.message);
     }
   };
 
   const handleConfirmation = () => {
     setConfirmationVisible(false);
-    navigation.navigate('AdminRestaurantsPage', { refresh: true });
+    navigation.navigate('AdminAttractionsPage', { refresh: true });
   };
 
   return (
@@ -128,6 +128,7 @@ const AdminRestaurantForm = () => {
             placeholder="Name*"
             value={name}
             onChangeText={setName}
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
@@ -135,24 +136,28 @@ const AdminRestaurantForm = () => {
             value={description}
             onChangeText={setDescription}
             multiline
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
             placeholder="Hours*"
             value={hours}
             onChangeText={setHours}
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
             placeholder="Location City*"
             value={locationCity}
             onChangeText={setLocationCity}
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
             placeholder="Location Country*"
             value={locationCountry}
             onChangeText={setLocationCountry}
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
@@ -160,6 +165,7 @@ const AdminRestaurantForm = () => {
             value={latitude}
             onChangeText={setLatitude}
             keyboardType="numeric"
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
@@ -167,22 +173,24 @@ const AdminRestaurantForm = () => {
             value={longitude}
             onChangeText={setLongitude}
             keyboardType="numeric"
+            autoCapitalize="none"
           />
           <TextInput
             style={styles.input}
             placeholder="Image URL*"
             value={imageUrl}
             onChangeText={setImageUrl}
+            autoCapitalize="none"
           />
-          <Text style={styles.label}>Types of Cuisine:</Text>
-          {expandedTypes ? typesOfRestaurants.map((type) => (
+          <Text style={styles.label}>Types of Attractions:</Text>
+          {expandedTypes ? typesOfAttractions.map((type) => (
             <TouchableOpacity
               key={type.id}
               style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
               onPress={() => handleSelect(type.id, selectedTypes, setSelectedTypes)}>
               <Text style={styles.optionText}>{type.name}</Text>
             </TouchableOpacity>
-          )) : typesOfRestaurants.slice(0, 3).map((type) => (
+          )) : typesOfAttractions.slice(0, 3).map((type) => (
             <TouchableOpacity
               key={type.id}
               style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
@@ -194,34 +202,34 @@ const AdminRestaurantForm = () => {
             <Text style={styles.viewMoreText}>{expandedTypes ? "View Less" : "View More"}</Text>
           </TouchableOpacity>
 
-          <Text style={styles.label}>Dietary Options:</Text>
-          {expandedDietaryOptions ? dietaryOptions.map(option => (
+          <Text style={styles.label}>Suitabilities:</Text>
+          {expandedSuitabilities ? suitabilities.map(option => (
             <TouchableOpacity
               key={option}
-              style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
+              style={[styles.option, selectedSuitabilities.includes(option) ? styles.selectedOption : styles.unselectedOption]}
+              onPress={() => handleSelect(option, selectedSuitabilities, setSelectedSuitabilities)}>
               <Text style={styles.optionText}>{option}</Text>
             </TouchableOpacity>
-          )) : dietaryOptions.slice(0, 3).map(option => (
+          )) : suitabilities.slice(0, 3).map(option => (
             <TouchableOpacity
               key={option}
-              style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
+              style={[styles.option, selectedSuitabilities.includes(option) ? styles.selectedOption : styles.unselectedOption]}
+              onPress={() => handleSelect(option, selectedSuitabilities, setSelectedSuitabilities)}>
               <Text style={styles.optionText}>{option}</Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity onPress={() => setExpandedDietaryOptions(!expandedDietaryOptions)} style={styles.viewMoreButton}>
-            <Text style={styles.viewMoreText}>{expandedDietaryOptions ? "View Less" : "View More"}</Text>
+          <TouchableOpacity onPress={() => setExpandedSuitabilities(!expandedSuitabilities)} style={styles.viewMoreButton}>
+            <Text style={styles.viewMoreText}>{expandedSuitabilities ? "View Less" : "View More"}</Text>
           </TouchableOpacity>
 
-          <Text style={styles.label}>Price Range*:</Text>
-          {priceRanges.map(priceRange => (
+          <Text style={styles.label}>Duration*:</Text>
+          {durations.map(duration => (
             <TouchableOpacity
-              key={priceRange}
-              style={[styles.option, selectedPriceRange === priceRange ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(priceRange, selectedPriceRange, setSelectedPriceRange, true)}
+              key={duration}
+              style={[styles.option, selectedDuration === duration ? styles.selectedOption : styles.unselectedOption]}
+              onPress={() => handleSelect(duration, selectedDuration, setSelectedDuration, true)}
             >
-              <Text style={styles.optionText}>{priceRange}</Text>
+              <Text style={styles.optionText}>{duration}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -280,7 +288,6 @@ const styles = StyleSheet.create({
   },
   selectedOption: {
     borderColor: '#000',
-    backgroundColor: '#e0e0e0',
   },
   optionText: {
     fontSize: 16,
@@ -335,5 +342,4 @@ const styles = StyleSheet.create({
   },
 });
 
-
-export default AdminRestaurantForm;
+export default AdminAttractionForm;

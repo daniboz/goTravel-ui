@@ -1,61 +1,80 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, Button, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import axios from 'axios';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const AdminRestaurantsPage = () => {
-  const [restaurants, setRestaurants] = useState([]);
+const AdminAttractionsPage = () => {
+  const [attractions, setAttractions] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [filteredAttractions, setFilteredAttractions] = useState([]);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
-      fetchRestaurants();
+      fetchAttractions();
     }
   }, [isFocused]);
 
   useEffect(() => {
     if (searchQuery === '') {
-      setFilteredRestaurants(restaurants);
+      setFilteredAttractions(attractions);
     } else {
-      setFilteredRestaurants(
-        restaurants.filter(restaurant =>
-          restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
+      setFilteredAttractions(
+        attractions.filter(attraction =>
+          attraction.name.toLowerCase().includes(searchQuery.toLowerCase())
         )
       );
     }
-  }, [searchQuery, restaurants]);
+  }, [searchQuery, attractions]);
 
-  const fetchRestaurants = async () => {
+  const fetchAttractions = async () => {
     try {
-      const response = await axios.get('http://localhost:5003/api/restaurants');
-      setRestaurants(response.data);
-      setFilteredRestaurants(response.data);
+      const response = await axios.get('http://localhost:5003/api/attractions');
+      setAttractions(response.data);
+      setFilteredAttractions(response.data);
     } catch (error) {
-      console.error('Error fetching restaurants:', error);
+      console.error('Error fetching attractions:', error);
     }
+  };
+
+  const confirmDelete = (id) => {
+    Alert.alert(
+      'Delete Attraction',
+      'Are you sure you want to delete this attraction? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => handleDelete(id),
+          style: 'destructive',
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5003/api/restaurants/${id}`);
-      fetchRestaurants();
+      await axios.delete(`http://localhost:5003/api/attractions/${id}`);
+      fetchAttractions();
     } catch (error) {
-      console.error('Error deleting restaurant:', error);
+      console.error('Error deleting attraction:', error);
     }
   };
 
-  const renderRestaurant = ({ item }) => (
+  const renderAttraction = ({ item }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.itemText}>{item.name}</Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('AdminRestaurantForm', { id: item._id })} style={styles.editButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('AdminAttractionForm', { id: item._id })} style={styles.editButton}>
           <Text style={styles.buttonText}>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => handleDelete(item._id)} style={styles.deleteButton}>
+        <TouchableOpacity onPress={() => confirmDelete(item._id)} style={styles.deleteButton}>
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -67,17 +86,17 @@ const AdminRestaurantsPage = () => {
       <View style={styles.container}>
         <TextInput
           style={styles.searchInput}
-          placeholder="Search for a restaurant"
+          placeholder="Search for an attraction"
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
-        <TouchableOpacity onPress={() => navigation.navigate('AdminRestaurantForm')} style={styles.addButton}>
-          <Text style={styles.addButtonText}>Add New Restaurant</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('AdminAttractionForm')} style={styles.addButton}>
+          <Text style={styles.addButtonText}>Add New Attraction</Text>
         </TouchableOpacity>
         <FlatList
-          data={filteredRestaurants}
+          data={filteredAttractions}
           keyExtractor={(item) => item._id}
-          renderItem={renderRestaurant}
+          renderItem={renderAttraction}
           contentContainerStyle={styles.listContainer}
         />
       </View>
@@ -154,4 +173,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdminRestaurantsPage;
+export default AdminAttractionsPage;
