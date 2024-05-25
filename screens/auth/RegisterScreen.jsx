@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, StyleSheet, TouchableWithoutFeedback, Keyboard, Switch } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,10 +24,11 @@ const RegisterScreen = ({ navigation }) => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false); // State for admin switch
 
   const handleRegister = async (values) => {
     try {
-      const response = await axios.post('http://localhost:5003/api/register', values);
+      const response = await axios.post('http://localhost:5003/api/register', { ...values, isAdmin });
       if (response.data.status) {
         await AsyncStorage.setItem('token', response.data.token);
         login(response.data.token); // Log in the user after successful registration
@@ -115,6 +116,13 @@ const RegisterScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
               {touched.confirmPassword && errors.confirmPassword && <Text style={styles.error}>{errors.confirmPassword}</Text>}
+              <View style={styles.switchContainer}>
+                <Text style={styles.switchLabel}>Register as Admin</Text>
+                <Switch
+                  value={isAdmin}
+                  onValueChange={(value) => setIsAdmin(value)}
+                />
+              </View>
               <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                 <Text style={styles.buttonText}>Register</Text>
               </TouchableOpacity>
@@ -124,9 +132,6 @@ const RegisterScreen = ({ navigation }) => {
                   Login
                 </Text>
               </Text>
-              {/* <TouchableOpacity style={styles.testButton} onPress={() => navigation.replace('Main')}>
-                <Text style={styles.buttonText}>Go to Home (Test)</Text>
-              </TouchableOpacity> */}
             </View>
           )}
         </Formik>
@@ -202,14 +207,16 @@ const styles = StyleSheet.create({
     color: COLORS.red,
     textDecorationLine: 'underline',
   },
-  testButton: {
-    backgroundColor: COLORS.red,
-    padding: 15,
-    borderRadius: 8,
+  switchContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
-    width: '80%',
-    alignSelf: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    paddingHorizontal: 10,
+  },
+  switchLabel: {
+    fontSize: 16,
+    color: COLORS.gray,
   },
   modalContent: {
     backgroundColor: 'white',

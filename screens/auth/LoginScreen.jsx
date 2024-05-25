@@ -29,7 +29,11 @@ const LoginScreen = ({ navigation }) => {
         await AsyncStorage.setItem('token', response.data.token);
         await AsyncStorage.setItem('id', response.data.id); // Use response.data.id
         login(response.data.token);
-        navigation.replace('Main');
+        if (response.data.isAdmin) {
+          navigation.navigate('Admin'); // Navigate to admin stack
+        } else {
+          navigation.navigate('Main'); // Navigate to main stack
+        }
       }
     } catch (error) {
       console.error('Login error:', error);
