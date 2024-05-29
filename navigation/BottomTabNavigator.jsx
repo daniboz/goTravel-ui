@@ -2,10 +2,11 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeStackNavigator from "./HomeStackNavigator";
-import { Home, Calendar, Wallet, Profile } from "../screens";
+import { Home, Calendar, Profile } from "../screens";
 import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../constants/theme";
 import LocationScreen from "../screens/location/Location";
+import CalendarStackNavigator from "./CalendarStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,14 +19,6 @@ const tabBarStyle = {
   bottom: 30,
   left: 20,
   right: 20,
-};
-
-const CustomTabBarIcon = (props) => {
-  return (
-    <View style={props.focused ? styles.customIconFocused : styles.customIcon}>
-      <Ionicons name={props.name} size={26} color={props.focused ? COLORS.red : COLORS.gray} />
-    </View>
-  );
 };
 
 const BottomTabNavigation = () => {
@@ -80,33 +73,16 @@ const BottomTabNavigation = () => {
 
       <Tab.Screen
         name="Calendar"
-        component={Calendar}
+        component={CalendarStackNavigator}
         options={{
           tabBarStyle: tabBarStyle,
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <CustomTabBarIcon
-              focused={focused}
+            <Ionicons 
               name={focused ? "calendar" : "calendar-outline"}
-            />
-          ),
-        }}
-      />
-
-      <Tab.Screen
-        name="Wallet"
-        component={Wallet}
-        options={{
-          tabBarStyle: tabBarStyle,
-          tabBarShowLabel: false,
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Ionicons
-              name={focused ? "wallet" : "wallet-outline"}
-              color={focused ? COLORS.red : COLORS.gray}
-              size={26}
-            />
+              size={26} 
+              color={focused ? COLORS.red : COLORS.gray} />
           ),
         }}
       />
