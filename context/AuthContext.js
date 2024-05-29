@@ -47,12 +47,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateUser = (userData) => {
+    console.log('Updating user data:', userData);
+    setUser(userData);
+  };
+
   useEffect(() => {
     checkAuthStatus();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, loading, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
