@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.get('http://localhost:5003/api/users/me', {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log('User data:', response.data);
       setUser(response.data);
       setIsAuthenticated(true);
     } catch (error) {
