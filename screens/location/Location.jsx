@@ -320,10 +320,10 @@ const styles = StyleSheet.create({
   },
   directionsButton: {
     position: 'absolute',
-    bottom: 40, // Adjusted position
+    bottom: 40,
     left: 20,
     right: 20,
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     borderRadius: 10,
     paddingVertical: 15,
     paddingHorizontal: 20,
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 10,

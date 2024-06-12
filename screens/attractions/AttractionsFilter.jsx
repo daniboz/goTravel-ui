@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   viewMoreText: {
-    color: COLORS.red,
+    color: COLORS.green,
     fontSize: 16,
   },
   buttonContainer: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   applyButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 15,

@@ -10,7 +10,7 @@ const NoResultsScreen = ({ message, buttonText, onPress }) => {
       <Button
         title={buttonText}
         onPress={onPress}
-        color={COLORS.red}
+        color={COLORS.green}
       />
     </View>
   );

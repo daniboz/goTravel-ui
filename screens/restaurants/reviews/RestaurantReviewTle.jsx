@@ -29,8 +29,6 @@ const RestaurantReviewTle = ({ review, onDelete }) => {
     };
   };
 
-  //const handleDeleteDebounced = debounce(handleDelete, 500);
-
   const handleDelete = async () => {
     if (!userId) {
       console.error('No user ID found in AsyncStorage');
@@ -54,7 +52,7 @@ const RestaurantReviewTle = ({ review, onDelete }) => {
 
   if (!review.user) {
     console.error('No user data found for review:', review);
-    return null; // Skip rendering if user data is missing
+    return null;
   }
 
   const isCurrentUser = review.user._id === userId;
@@ -103,7 +101,7 @@ const styles = StyleSheet.create({
     justifyContent: justifyContent,
   }),
   deleteButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 5,
     borderRadius: 15,
     alignItems: 'center',

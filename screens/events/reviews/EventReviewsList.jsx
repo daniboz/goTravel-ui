@@ -4,7 +4,7 @@ import EventReviewTle from './EventReviewTle';
 
 const fetchUserData = async (userId) => {
   try {
-    console.log(`Fetching user data for userId: ${userId}`); // Debug log
+    console.log(`Fetching user data for userId: ${userId}`);
     const response = await fetch(`http://localhost:5003/api/users/${userId}`);
     if (!response.ok) {
       const errorText = await response.text();
@@ -22,7 +22,6 @@ const fetchReviewsWithUserDetails = async (reviews) => {
   return await Promise.all(
     reviews.map(async (review) => {
       try {
-        // Ensure userId is correctly extracted whether `user` is an object or a string
         const userId = typeof review.user === 'object' ? review.user._id : review.user;
         if (!userId) {
           throw new Error('User ID is missing');
@@ -60,7 +59,7 @@ const EventReviewsList = ({ reviews, onDeleteReview }) => {
 
   return (
     <FlatList 
-      data={reviewsWithUserDetails.slice(0, 2)} // Only display the first 2 reviews
+      data={reviewsWithUserDetails.slice(0, 2)}
       scrollEnabled={false}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item) => item._id}

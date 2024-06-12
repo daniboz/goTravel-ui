@@ -27,12 +27,12 @@ const LoginScreen = ({ navigation }) => {
       console.log('Login response:', response.data);
       if (response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);
-        await AsyncStorage.setItem('id', response.data.id); // Use response.data.id
+        await AsyncStorage.setItem('id', response.data.id); 
         login(response.data.token);
         if (response.data.isAdmin) {
-          navigation.navigate('Admin'); // Navigate to admin stack
+          navigation.navigate('Admin'); 
         } else {
-          navigation.navigate('Main'); // Navigate to main stack
+          navigation.navigate('Main'); 
         }
       }
     } catch (error) {
@@ -58,7 +58,7 @@ const LoginScreen = ({ navigation }) => {
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <View>
               <View style={styles.inputContainer}>
-                <Icon name="person-outline" size={20} color={COLORS.red} style={styles.icon} />
+                <Icon name="person-outline" size={20} color={COLORS.green} style={styles.icon} />
                 <TextInput
                   style={[styles.input, touched.usernameOrEmail && errors.usernameOrEmail && styles.inputError]}
                   placeholder="Username or Email"
@@ -71,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
               </View>
               {touched.usernameOrEmail && errors.usernameOrEmail && <Text style={styles.error}>{errors.usernameOrEmail}</Text>}
               <View style={styles.inputContainer}>
-                <Icon name="lock-closed-outline" size={20} color={COLORS.red} style={styles.icon} />
+                <Icon name="lock-closed-outline" size={20} color={COLORS.green} style={styles.icon} />
                 <TextInput
                   style={[styles.input, touched.password && errors.password && styles.inputError]}
                   placeholder="Password"
@@ -124,12 +124,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 24,
     textAlign: 'center',
-    color: COLORS.red,
+    color: COLORS.green,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: COLORS.red,
+    borderColor: COLORS.green,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 12,
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   button: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   link: {
-    color: COLORS.red,
+    color: COLORS.green,
     textDecorationLine: 'underline',
   },
   modalContent: {
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',

@@ -4,7 +4,6 @@ import Home from '../screens/home/Home';
 import AttractionsPage from '../screens/attractions/AttractionsPage';
 import RestaurantsPage from '../screens/restaurants/RestaurantsPage';
 import EventsPage from '../screens/events/EventsPage';
-import AllPage from '../screens/all/AllPage';
 import AttractionsWhereTo from '../screens/attractions/AttractionsWhereTo';
 import RestaurantDetails from '../screens/restaurants/RestaurantDetails';
 import AttractionDetails from '../screens/attractions/AttractionDetails';
@@ -45,7 +44,6 @@ const HomeStackNavigator = () => {
       <Stack.Screen name="EventsFilter" component={EventsFilter} />
       <Stack.Screen name='AddEventReviews' component={AddEventReviews} options={{ headerShown: false }} />
       <Stack.Screen name='AllEventReviews' component={AllEventReviews} options={{ headerShown: false }} />
-      <Stack.Screen name="AllPage" component={AllPage} />
     </Stack.Navigator>
   );
 };

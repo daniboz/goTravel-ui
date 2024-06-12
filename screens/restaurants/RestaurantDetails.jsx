@@ -93,7 +93,7 @@ const RestaurantDetails = ({ route, navigation }) => {
       placeId: restaurant._id, 
       handleDeleteReview: (deletedReviewId) => {
         handleDeleteReview(deletedReviewId);
-        fetchRestaurantDetails(); // Refresh the restaurant details
+        fetchRestaurantDetails();
       }
     });
   };
@@ -101,7 +101,7 @@ const RestaurantDetails = ({ route, navigation }) => {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color={COLORS.red} />
+        <ActivityIndicator size="large" color={COLORS.green} />
         <Text>Loading...</Text>
       </View>
     );
@@ -179,7 +179,7 @@ const RestaurantDetails = ({ route, navigation }) => {
                   maxStars={5}
                   stars={restaurant.rating}
                   bordered={false}
-                  color={COLORS.red}
+                  color={COLORS.green}
                 />
                 <ReusableText
                   text={`(${restaurant.reviewCount} reviews)`}

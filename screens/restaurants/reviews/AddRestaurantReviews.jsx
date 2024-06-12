@@ -1,5 +1,3 @@
-
-
 import { View, Text, TextInput } from "react-native";
 import React, { useState } from "react";
 import { Rating, RatingInput } from "react-native-stock-star-rating";
@@ -46,7 +44,6 @@ const AddRestaurantReviews = ({ navigation }) => {
       console.log('Response:', response.data);
 
       if (response.status === 200) {
-        // Navigate back to RestaurantDetails screen with the restaurantId
         navigation.replace("RestaurantDetails", { restaurantId: placeId });
       }
     } catch (error) {
@@ -77,7 +74,7 @@ const AddRestaurantReviews = ({ navigation }) => {
 
         <HeightSpacer height={15} />
 
-        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.red} />
+        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.green} />
 
         <HeightSpacer height={15} />
 
@@ -106,8 +103,8 @@ const AddRestaurantReviews = ({ navigation }) => {
           onPress={postReview}
           btnText={"Submit your review"}
           width={SIZES.width - 50}
-          backgroundColor={COLORS.red}
-          borderColor={COLORS.red}
+          backgroundColor={COLORS.green}
+          borderColor={COLORS.green}
           borderWidth={0.5}
           textColor={COLORS.white}
         />

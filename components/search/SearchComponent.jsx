@@ -10,7 +10,7 @@ const SearchComponent = ({ onSearch, placeholder, onSelect }) => {
   const handleSearch = async () => {
     if (onSearch) {
       const searchResults = await onSearch(query);
-      setResults(searchResults);
+      setResults(searchResults || []);
     }
   };
 
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
-    maxHeight: 200, // Add maxHeight to limit the dropdown size
+    maxHeight: 200,
   },
   resultsListContainer: {
     paddingBottom: 10,
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   addButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     borderRadius: 8,
     alignItems: 'center',
     marginHorizontal: 10,

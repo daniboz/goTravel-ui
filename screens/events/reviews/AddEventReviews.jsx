@@ -43,7 +43,6 @@ const AddEventReviews = ({ navigation }) => {
       console.log('Response:', response.data);
 
       if (response.status === 200) {
-        // Navigate back to EventDetails screen with the eventId
         navigation.replace("EventDetails", { eventId: placeId });
       }
     } catch (error) {
@@ -74,7 +73,7 @@ const AddEventReviews = ({ navigation }) => {
 
         <HeightSpacer height={15} />
 
-        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.red} />
+        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.green} />
 
         <HeightSpacer height={15} />
 
@@ -103,8 +102,8 @@ const AddEventReviews = ({ navigation }) => {
           onPress={postReview}
           btnText={"Submit your review"}
           width={SIZES.width - 50}
-          backgroundColor={COLORS.red}
-          borderColor={COLORS.red}
+          backgroundColor={COLORS.green}
+          borderColor={COLORS.green}
           borderWidth={0.5}
           textColor={COLORS.white}
         />

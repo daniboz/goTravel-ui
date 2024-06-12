@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 24,
-    color: COLORS.red,
+    color: COLORS.green,
   },
   profileImage: {
     width: 100,
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',

@@ -297,11 +297,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   viewMoreText: {
-    color: COLORS.red,
+    color: COLORS.green,
     fontSize: 16,
   },
   saveButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   okButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
