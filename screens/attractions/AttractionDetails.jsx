@@ -1,5 +1,3 @@
-// AttractionDetails.js
-
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Alert, ActivityIndicator } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
@@ -58,29 +56,7 @@ const AttractionDetails = ({ route, navigation }) => {
   };
 
   const handleReviews = () => {
-    if (userLogin) {
-      navigation.navigate("AddAttractionReviews", { placeId: attraction._id });
-    } else {
-      Alert.alert("Auth Error", "Please login to add comments", [
-        {
-          text: "Cancel",
-          onPress: () => {},
-        },
-        {
-          text: "Continue",
-          onPress: () => { navigation.navigate('AuthTop') },
-        },
-        { defaultIndex: 1 },
-      ]);
-    }
-  };
-
-  const handleReviewsMock = () => {
     navigation.navigate("AddAttractionReviews", { placeId: attraction._id });
-  };
-
-  const handleRefresh = () => {
-    setRefresh(prev => !prev);
   };
 
   const handleDeleteReview = (deletedReviewId) => {
@@ -95,7 +71,7 @@ const AttractionDetails = ({ route, navigation }) => {
       placeId: attraction._id, 
       handleDeleteReview: (deletedReviewId) => {
         handleDeleteReview(deletedReviewId);
-        fetchAttractionDetails(); // Refresh the attraction details
+        fetchAttractionDetails();
       }
     });
   };
@@ -103,7 +79,7 @@ const AttractionDetails = ({ route, navigation }) => {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color={COLORS.red} />
+        <ActivityIndicator size="large" color={COLORS.green} />
         <Text>Loading...</Text>
       </View>
     );
@@ -137,7 +113,7 @@ const AttractionDetails = ({ route, navigation }) => {
           icon={"create-outline"}
           color1={COLORS.grey}
           onPress={() => navigation.goBack()}
-          onPress1={handleReviewsMock}
+          onPress1={handleReviews}
         />
       </View>
 
@@ -181,7 +157,7 @@ const AttractionDetails = ({ route, navigation }) => {
                   maxStars={5}
                   stars={attraction.rating}
                   bordered={false}
-                  color={COLORS.red}
+                  color={COLORS.green}
                 />
                 <ReusableText
                   text={`(${attraction.reviewCount} reviews)`}

@@ -137,7 +137,7 @@ const EntryForm = () => {
         <View style={styles.selectedItemContainer}>
           <Text style={styles.selectedItemText}>Linked to: {selectedAttraction.name}</Text>
           <TouchableOpacity onPress={clearSelection}>
-            <Icon name="close" size={20} color={COLORS.red} />
+            <Icon name="close" size={20} color={COLORS.green} />
           </TouchableOpacity>
         </View>
       )}
@@ -145,7 +145,7 @@ const EntryForm = () => {
         <View style={styles.selectedItemContainer}>
           <Text style={styles.selectedItemText}>Linked to: {selectedEvent.name}</Text>
           <TouchableOpacity onPress={clearSelection}>
-            <Icon name="close" size={20} color={COLORS.red} />
+            <Icon name="close" size={20} color={COLORS.green} />
           </TouchableOpacity>
         </View>
       )}
@@ -153,7 +153,7 @@ const EntryForm = () => {
         <View style={styles.selectedItemContainer}>
           <Text style={styles.selectedItemText}>Linked to: {selectedRestaurant.name}</Text>
           <TouchableOpacity onPress={clearSelection}>
-            <Icon name="close" size={20} color={COLORS.red} />
+            <Icon name="close" size={20} color={COLORS.green} />
           </TouchableOpacity>
         </View>
       )}
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   saveButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',

@@ -60,7 +60,7 @@ const AttractionReviewsList = ({ reviews, onDeleteReview }) => {
 
   return (
     <FlatList 
-      data={reviewsWithUserDetails.slice(0, 2)} // Only display the first 2 reviews
+      data={reviewsWithUserDetails.slice(0, 2)}
       scrollEnabled={false}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item) => item._id}

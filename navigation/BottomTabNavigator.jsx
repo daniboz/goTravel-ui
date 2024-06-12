@@ -42,7 +42,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name={focused ? "grid" : "grid-outline"}
-              color={focused ? COLORS.red : COLORS.gray}
+              color={focused ? COLORS.green : COLORS.gray}
               size={26}
             />
           ),
@@ -52,7 +52,7 @@ const BottomTabNavigation = () => {
       <Tab.Screen
         name="Location"
         component={LocationScreen}
-        initialParams={{ reset: true }} // Always start with an empty params object
+        initialParams={{ reset: true }} 
         options={{
           tabBarStyle: tabBarStyle,
           tabBarShowLabel: false,
@@ -60,7 +60,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name={focused ? "location" : "location-outline"}
-              color={focused ? COLORS.red : COLORS.gray}
+              color={focused ? COLORS.green : COLORS.gray}
               size={26}
             />
           ),
@@ -83,7 +83,7 @@ const BottomTabNavigation = () => {
             <Ionicons 
               name={focused ? "calendar" : "calendar-outline"}
               size={26} 
-              color={focused ? COLORS.red : COLORS.gray} />
+              color={focused ? COLORS.green : COLORS.gray} />
           ),
         }}
       />
@@ -98,7 +98,7 @@ const BottomTabNavigation = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name={focused ? "person" : "person-outline"}
-              color={focused ? COLORS.red : COLORS.gray}
+              color={focused ? COLORS.green : COLORS.gray}
               size={26}
             />
           ),

@@ -19,7 +19,7 @@ const Home = () => {
             <Text style={styles.userText}>{user?.username}</Text>
           </View>
           <Text style={styles.logoText}>
-            <Text style={styles.goText}>go</Text>
+            <Text style={styles.goText}>Go</Text>
             <Text style={styles.travelText}>Travel</Text>
           </Text>
         </View>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   userText: {
     fontSize: 28,
     fontWeight: '700',
-    color: COLORS.red,
+    color: COLORS.green,
     textTransform: 'capitalize',
     marginTop: 4,
   },
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     color: COLORS.black,
   },
   travelText: {
-    color: COLORS.red,
+    color: COLORS.green,
   },
   container: {
     flex: 1,

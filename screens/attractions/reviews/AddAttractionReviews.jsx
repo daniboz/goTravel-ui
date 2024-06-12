@@ -44,7 +44,6 @@ const AddAttractionReviews = ({ navigation }) => {
       console.log('Response:', response.data);
 
       if (response.status === 200) {
-        // Navigate back to AttractionDetails screen with the attractionId
         navigation.replace("AttractionDetails", { attractionId: placeId });
       }
     } catch (error) {
@@ -75,7 +74,7 @@ const AddAttractionReviews = ({ navigation }) => {
 
         <HeightSpacer height={15} />
 
-        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.red} />
+        <RatingInput rating={rating} setRating={setRating} size={70} maxStars={5} bordered={false} color={COLORS.green} />
 
         <HeightSpacer height={15} />
 
@@ -104,8 +103,8 @@ const AddAttractionReviews = ({ navigation }) => {
           onPress={postReview}
           btnText={"Submit your review"}
           width={SIZES.width - 50}
-          backgroundColor={COLORS.red}
-          borderColor={COLORS.red}
+          backgroundColor={COLORS.green}
+          borderColor={COLORS.green}
           borderWidth={0.5}
           textColor={COLORS.white}
         />

@@ -8,14 +8,14 @@ import { COLORS } from "../../constants/theme";
 const Rating = ({ rating }) => {
   return (
     <View style={styles.rowWithSpace("flex-start")}>
-      <MaterialCommunityIcons name="star" size={20} color={COLORS.red} />
+      <MaterialCommunityIcons name="star" size={20} color={COLORS.green} />
       <WidthSpacer width={5} />
 
       <ReusableText
         text={rating}
         family={"medium"}
         size={15}
-        color={COLORS.red}
+        color={COLORS.green}
       />
     </View>
   );

@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const fetchUserData = async (userId) => {
   try {
-    console.log(`Fetching user data for userId: ${userId}`); // Debug log
+    console.log(`Fetching user data for userId: ${userId}`);
     const response = await fetch(`http://localhost:5003/api/users/${userId}`);
     if (!response.ok) {
       const errorText = await response.text();
@@ -27,7 +27,6 @@ const fetchReviewsWithUserDetails = async (reviews) => {
   return await Promise.all(
     reviews.map(async (review) => {
       try {
-        // Ensure userId is correctly extracted whether `user` is an object or a string
         const userId = typeof review.user === 'object' ? review.user._id : review.user;
         if (!userId) {
           throw new Error('User ID is missing');
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 20,
-    marginTop: 50, // Adjust this value to move the content lower
+    marginTop: 50, 
   },
   contentContainer: {
     marginTop: 10,

@@ -92,7 +92,7 @@ const EventDetails = ({ route, navigation }) => {
       placeId: event._id, 
       handleDeleteReview: (deletedReviewId) => {
         handleDeleteReview(deletedReviewId);
-        fetchEventDetails(); // Refresh the event details
+        fetchEventDetails();
       }
     });
   };
@@ -100,7 +100,7 @@ const EventDetails = ({ route, navigation }) => {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color={COLORS.red} />
+        <ActivityIndicator size="large" color={COLORS.green} />
         <Text>Loading...</Text>
       </View>
     );
@@ -178,7 +178,7 @@ const EventDetails = ({ route, navigation }) => {
                   maxStars={5}
                   stars={event.rating}
                   bordered={false}
-                  color={COLORS.red}
+                  color={COLORS.green}
                 />
                 <ReusableText
                   text={`(${event.reviewCount} reviews)`}

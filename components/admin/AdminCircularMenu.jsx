@@ -1,4 +1,3 @@
-// components/admin/AdminCircularMenu.jsx
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -59,17 +58,6 @@ const styles = StyleSheet.create({
     borderRadius: buttonSize / 2,
     backgroundColor: '#FFF',
   },
-  centralButton: {
-    position: 'absolute',
-    bottom: windowWidth / 3.5 - centralButtonSize,
-    left: windowWidth / 2 - centralButtonSize / 2,
-    width: centralButtonSize,
-    height: centralButtonSize,
-    borderRadius: centralButtonSize / 2,
-    backgroundColor: COLORS.red, 
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   buttonText: {
     textAlign: 'center', 
     fontSize: 13, 
@@ -78,14 +66,6 @@ const styles = StyleSheet.create({
     marginTop: 4, 
     width: buttonSize, 
   },
-  centralButtonText: {
-    textAlign: 'center', 
-    fontSize: 16, 
-    fontWeight: 'bold', 
-    color: '#000', 
-    marginTop: 4, 
-    width: buttonSize, 
-  }
 });
 
 export default AdminCircularMenu;

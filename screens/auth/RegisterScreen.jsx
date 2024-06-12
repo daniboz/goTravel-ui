@@ -19,19 +19,19 @@ const validationSchema = Yup.object().shape({
 });
 
 const RegisterScreen = ({ navigation }) => {
-  const { login } = useContext(AuthContext); // Get login function from AuthContext
+  const { login } = useContext(AuthContext); 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false); // State for admin switch
+  const [isAdmin, setIsAdmin] = useState(false); 
 
   const handleRegister = async (values) => {
     try {
       const response = await axios.post('http://localhost:5003/api/register', { ...values, isAdmin });
       if (response.data.status) {
         await AsyncStorage.setItem('token', response.data.token);
-        login(response.data.token); // Log in the user after successful registration
+        login(response.data.token); 
         navigation.replace('Main');
       }
     } catch (error) {
@@ -57,7 +57,7 @@ const RegisterScreen = ({ navigation }) => {
           {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
             <View>
               <View style={styles.inputContainer}>
-                <Icon name="person-outline" size={20} color={COLORS.red} style={styles.icon} />
+                <Icon name="person-outline" size={20} color={COLORS.green} style={styles.icon} />
                 <TextInput
                   style={[styles.input, touched.username && errors.username && styles.inputError]}
                   placeholder="Username"
@@ -70,7 +70,7 @@ const RegisterScreen = ({ navigation }) => {
               </View>
               {touched.username && errors.username && <Text style={styles.error}>{errors.username}</Text>}
               <View style={styles.inputContainer}>
-                <Icon name="mail-outline" size={20} color={COLORS.red} style={styles.icon} />
+                <Icon name="mail-outline" size={20} color={COLORS.green} style={styles.icon} />
                 <TextInput
                   style={[styles.input, touched.email && errors.email && styles.inputError]}
                   placeholder="Email"
@@ -83,7 +83,7 @@ const RegisterScreen = ({ navigation }) => {
               </View>
               {touched.email && errors.email && <Text style={styles.error}>{errors.email}</Text>}
               <View style={styles.inputContainer}>
-                <Icon name="lock-closed-outline" size={20} color={COLORS.red} style={styles.icon} />
+                <Icon name="lock-closed-outline" size={20} color={COLORS.green} style={styles.icon} />
                 <TextInput
                   style={[styles.input, touched.password && errors.password && styles.inputError]}
                   placeholder="Password"
@@ -100,7 +100,7 @@ const RegisterScreen = ({ navigation }) => {
               </View>
               {touched.password && errors.password && <Text style={styles.error}>{errors.password}</Text>}
               <View style={styles.inputContainer}>
-                <Icon name="lock-closed-outline" size={20} color={COLORS.red} style={styles.icon} />
+                <Icon name="lock-closed-outline" size={20} color={COLORS.green} style={styles.icon} />
                 <TextInput
                   style={[styles.input, touched.confirmPassword && errors.confirmPassword && styles.inputError]}
                   placeholder="Confirm Password"
@@ -160,12 +160,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 24,
     textAlign: 'center',
-    color: COLORS.red,
+    color: COLORS.green,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: COLORS.red,
+    borderColor: COLORS.green,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 12,
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   button: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   link: {
-    color: COLORS.red,
+    color: COLORS.green,
     textDecorationLine: 'underline',
   },
   switchContainer: {
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',

@@ -4,8 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import RootNavigator from './navigation/RootNavigator';
-import { AuthProvider } from './context/AuthContext'; // Import AuthProvider
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Correct import
+import { AuthProvider } from './context/AuthContext'; 
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,14 +20,6 @@ export default function App() {
       await SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
-
-  // // Clear AsyncStorage once when the app loads
-  // useEffect(() => {
-  //   const clearStorage = async () => {
-  //     await AsyncStorage.clear();
-  //   };
-  //   clearStorage();
-  // }, []);
 
   if (!fontsLoaded) {
     return null;

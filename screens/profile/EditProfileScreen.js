@@ -103,7 +103,7 @@ const EditProfileScreen = ({ navigation }) => {
             <Text style={styles.changeImageText}>Change Profile Picture</Text>
           </TouchableOpacity>
           <View style={styles.inputContainer}>
-            <Icon name="person-outline" size={20} color={COLORS.red} style={styles.icon} />
+            <Icon name="person-outline" size={20} color={COLORS.green} style={styles.icon} />
             <TextInput
               style={[styles.input]}
               placeholder="Username"
@@ -114,7 +114,7 @@ const EditProfileScreen = ({ navigation }) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Icon name="lock-closed-outline" size={20} color={COLORS.red} style={styles.icon} />
+            <Icon name="lock-closed-outline" size={20} color={COLORS.green} style={styles.icon} />
             <TextInput
               style={[styles.input]}
               placeholder="Password"
@@ -129,7 +129,7 @@ const EditProfileScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={styles.inputContainer}>
-            <Icon name="lock-closed-outline" size={20} color={COLORS.red} style={styles.icon} />
+            <Icon name="lock-closed-outline" size={20} color={COLORS.green} style={styles.icon} />
             <TextInput
               style={[styles.input]}
               placeholder="Confirm Password"
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     marginBottom: 24,
-    color: COLORS.red,
+    color: COLORS.green,
   },
   form: {
     width: '100%',
@@ -190,14 +190,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   changeImageText: {
-    color: COLORS.red,
+    color: COLORS.green,
     fontSize: 14,
     textDecorationLine: 'underline',
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: COLORS.red,
+    borderColor: COLORS.green,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 12,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   button: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   modalButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 10,
     borderRadius: 8,
     alignItems: 'center',

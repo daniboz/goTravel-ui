@@ -151,7 +151,7 @@ const Calendar = () => {
             <Icon name="edit" size={20} color={COLORS.black} />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleDelete(item._id)} style={styles.iconButton}>
-            <Icon name="delete" size={20} color={COLORS.red} />
+            <Icon name="delete" size={20} color={COLORS.green} />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -173,7 +173,7 @@ const Calendar = () => {
   if (loading && Object.keys(items).length === 0) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color={COLORS.red} />
+        <ActivityIndicator size="large" color={COLORS.green} />
         <Text>Loading...</Text>
       </View>
     );
@@ -191,11 +191,11 @@ const Calendar = () => {
           <View style={styles.emptyDate}><Text>Nothing planned to do!</Text></View>
         )}
         theme={{
-          agendaTodayColor: COLORS.red,
-          agendaKnobColor: COLORS.red,
-          selectedDayBackgroundColor: COLORS.red,
-          dotColor: COLORS.red,
-          todayTextColor: COLORS.red,
+          agendaTodayColor: COLORS.black,
+          agendaKnobColor: COLORS.green,
+          selectedDayBackgroundColor: COLORS.green,
+          dotColor: COLORS.green,
+          todayTextColor: COLORS.green,
         }}
       />
 
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   detailButton: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     padding: 5,
     borderRadius: 5,
     alignItems: 'center',
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: TAB_BAR_HEIGHT + 20,
     right: 20,
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.green,
     width: 60,
     height: 60,
     borderRadius: 30,
