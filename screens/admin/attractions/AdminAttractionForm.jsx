@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../../../constants/theme';
+import {BASE_URL} from '../../../constants/config'
 
 const typesOfAttractions = [
   { id: 'Sights', name: 'Sights' },
@@ -46,7 +47,7 @@ const AdminAttractionForm = () => {
 
   const fetchAttractionDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5003/api/attractions/${id}`);
+      const response = await axios.get(`${BASE_URL}/api/attractions/${id}`);
       const { name, description, hours, location, coordinates, imageUrl, types, duration, suitability } = response.data;
       setName(name);
       setDescription(description);
@@ -101,10 +102,10 @@ const AdminAttractionForm = () => {
 
     try {
       if (id) {
-        await axios.put(`http://localhost:5003/api/attractions/${id}`, attractionData);
+        await axios.put(`${BASE_URL}/api/attractions/${id}`, attractionData);
         setConfirmationMessage(`${name} was updated successfully!`);
       } else {
-        await axios.post('http://localhost:5003/api/attractions', attractionData);
+        await axios.post(`${BASE_URL}/api/attractions`, attractionData);
         setConfirmationMessage(`${name} was added successfully!`);
       }
       setConfirmationVisible(true);

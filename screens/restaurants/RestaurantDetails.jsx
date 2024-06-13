@@ -12,6 +12,7 @@ import ExpandableText from '../../components/reusable/ExpandableText';
 import RestaurantReviewsList from './reviews/RestaurantReviewsList';
 import AppBar from '../../components/reusable/AppBar';
 import axios from 'axios';
+import { BASE_URL } from '../../constants/config';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -31,7 +32,7 @@ const RestaurantDetails = ({ route, navigation }) => {
 
     try {
       console.log(`Fetching restaurant details for restaurantId: ${restaurantId}`);
-      const response = await axios.get(`http://localhost:5003/api/restaurants/${restaurantId}`);
+      const response = await axios.get(`${BASE_URL}/api/restaurants/${restaurantId}`);
       console.log('Fetched restaurant details:', response.data);
       setRestaurant(response.data);
       setLoading(false);

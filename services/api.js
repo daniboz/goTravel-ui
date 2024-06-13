@@ -1,12 +1,11 @@
-// src/services/api.js
-import axios from 'axios';
 
-const API_URL = 'http://localhost:5003/api'; // Replace with your backend URL
+import axios from 'axios';
+import { BASE_URL } from '../constants/config';
 
 const getCalendarEntries = async (token) => {
   try {
     console.log('Using token:', token);
-    const response = await axios.get(`${API_URL}/calendar-entries`, {
+    const response = await axios.get(`${BASE_URL}/api/calendar-entries`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -19,11 +18,10 @@ const getCalendarEntries = async (token) => {
   }
 };
 
-// Repeat for other functions
 
 
 const createCalendarEntry = (entry, token) => {
-  return axios.post(`${API_URL}/calendar-entries`, entry, {
+  return axios.post(`${BASE_URL}/api/calendar-entries`, entry, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -31,7 +29,7 @@ const createCalendarEntry = (entry, token) => {
 };
 
 const updateCalendarEntry = (id, entry, token) => {
-  return axios.put(`${API_URL}/calendar-entries/${id}`, entry, {
+  return axios.put(`${BASE_URL}/api/calendar-entries/${id}`, entry, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -39,7 +37,7 @@ const updateCalendarEntry = (id, entry, token) => {
 };
 
 const deleteCalendarEntry = (id, token) => {
-  return axios.delete(`${API_URL}/calendar-entries/${id}`, {
+  return axios.delete(`${BASE_URL}/api/calendar-entries/${id}`, {
     headers: {
       'Authorization': `Bearer ${token}`,
     },
@@ -47,7 +45,7 @@ const deleteCalendarEntry = (id, token) => {
 };
 
 const searchItems = async (query, token) => {
-  const response = await fetch(`http://localhost:5003/api/search?query=${query}`, {
+  const response = await fetch(`${BASE_URL}/api/search?query=${query}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${token}`,
@@ -56,7 +54,6 @@ const searchItems = async (query, token) => {
 
   const data = await response.json();
 
-  // Add __typename to each item
   const attractions = data.attractions.map(item => ({ ...item, __typename: 'Attraction' }));
   const events = data.events.map(item => ({ ...item, __typename: 'Event' }));
   const restaurants = data.restaurants.map(item => ({ ...item, __typename: 'Restaurant' }));

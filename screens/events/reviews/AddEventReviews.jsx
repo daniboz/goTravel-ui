@@ -9,6 +9,7 @@ import ReusableText from "../../../components/reusable/ReusableText";
 import HeightSpacer from "../../../components/reusable/HeightSpacer";
 import { COLORS, SIZES } from "../../../constants/theme";
 import ReusableBtn from "../../../components/reusable/ReusableBtn";
+import { BASE_URL } from "../../../constants/config";
 
 const AddEventReviews = ({ navigation }) => {
   const route = useRoute();
@@ -34,7 +35,7 @@ const AddEventReviews = ({ navigation }) => {
     console.log('Posting review with data:', data);
 
     try {
-      const response = await axios.post('http://localhost:5003/api/event-reviews/add', data, {
+      const response = await axios.post(`${BASE_URL}/api/event-reviews/add`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

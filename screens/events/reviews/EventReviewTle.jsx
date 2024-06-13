@@ -9,6 +9,7 @@ import { COLORS, SIZES } from "../../../constants/theme";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
+import { BASE_URL } from '../../../constants/config';
 
 const EventReviewTle = ({ review, onDelete }) => {
   const [userId, setUserId] = useState(null);
@@ -28,7 +29,7 @@ const EventReviewTle = ({ review, onDelete }) => {
     }
 
     try {
-      const response = await axios.delete('http://localhost:5003/api/event-reviews/delete', {
+      const response = await axios.delete(`${BASE_URL}/api/event-reviews/delete`, {
         data: { reviewId: review._id, userId },
       });
       if (response.status === 200) {
@@ -44,7 +45,7 @@ const EventReviewTle = ({ review, onDelete }) => {
 
   if (!review.user) {
     console.error('No user data found for review:', review);
-    return null; // Skip rendering if user data is missing
+    return null;
   }
 
   const isCurrentUser = review.user._id === userId;

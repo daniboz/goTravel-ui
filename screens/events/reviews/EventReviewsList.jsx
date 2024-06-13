@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import EventReviewTle from './EventReviewTle';
+import { BASE_URL } from '../../../constants/config';
 
 const fetchUserData = async (userId) => {
   try {
     console.log(`Fetching user data for userId: ${userId}`);
-    const response = await fetch(`http://localhost:5003/api/users/${userId}`);
+    const response = await fetch(`${BASE_URL}/api/users/${userId}`);
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`Error fetching user data for ${userId}:`, errorText);

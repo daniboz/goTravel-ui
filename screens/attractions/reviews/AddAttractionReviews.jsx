@@ -10,6 +10,7 @@ import ReusableText from "../../../components/reusable/ReusableText";
 import ReusableBtn from "../../../components/reusable/ReusableBtn";
 import AppBar from "../../../components/reusable/AppBar";
 import { COLORS, SIZES } from "../../../constants/theme";
+import { BASE_URL } from "../../../constants/config";
 
 const AddAttractionReviews = ({ navigation }) => {
   const route = useRoute();
@@ -35,7 +36,7 @@ const AddAttractionReviews = ({ navigation }) => {
     console.log('Posting review with data:', data);
 
     try {
-      const response = await axios.post('http://localhost:5003/api/attraction-reviews/add', data, {
+      const response = await axios.post(`${BASE_URL}/api/attraction-reviews/add`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

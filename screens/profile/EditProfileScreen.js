@@ -7,6 +7,7 @@ import { COLORS } from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
+import { BASE_URL } from '../../constants/config';
 
 const EditProfileScreen = ({ navigation }) => {
   const { user, updateUser } = useContext(AuthContext);
@@ -70,7 +71,7 @@ const EditProfileScreen = ({ navigation }) => {
 
       const token = await AsyncStorage.getItem('token');
       console.log('Token retrieved:', token);
-      const response = await axios.put('http://localhost:5003/api/users/me', formData, {
+      const response = await axios.put(`${BASE_URL}/api/users/me`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

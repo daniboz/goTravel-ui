@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../../../constants/theme';
+import { BASE_URL } from '../../../constants/config';
 
 const typesOfEvents = [
   { id: 'Concerts', name: 'Concerts' },
@@ -43,7 +44,7 @@ const AdminEventForm = () => {
 
   const fetchEventDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5003/api/events/${id}`);
+      const response = await axios.get(`${BASE_URL}/api/events/${id}`);
       const { name, description, date, location, coordinates, imageUrl, types, duration, suitability } = response.data;
       setName(name);
       setDescription(description);
@@ -98,10 +99,10 @@ const AdminEventForm = () => {
 
     try {
       if (id) {
-        await axios.put(`http://localhost:5003/api/events/${id}`, eventData);
+        await axios.put(`${BASE_URL}/api/events/${id}`, eventData);
         setConfirmationMessage(`${name} was updated successfully!`);
       } else {
-        await axios.post('http://localhost:5003/api/events', eventData);
+        await axios.post(`${BASE_URL}/api/events`, eventData);
         setConfirmationMessage(`${name} was added successfully!`);
       }
       setConfirmationVisible(true);

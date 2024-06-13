@@ -8,6 +8,7 @@ import { COLORS } from '../../constants/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '../../context/AuthContext';
 import Modal from 'react-native-modal';
+import { BASE_URL } from '../../constants/config';
 
 const validationSchema = Yup.object().shape({
   usernameOrEmail: Yup.string().required('Username or Email is required'),
@@ -23,7 +24,7 @@ const LoginScreen = ({ navigation }) => {
   const handleLogin = async (values) => {
     console.log('handleLogin called with values:', values);
     try {
-      const response = await axios.post('http://localhost:5003/api/login', values);
+      const response = await axios.post(`${BASE_URL}/api/login`, values);
       console.log('Login response:', response.data);
       if (response.data.token) {
         await AsyncStorage.setItem('token', response.data.token);

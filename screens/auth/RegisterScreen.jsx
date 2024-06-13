@@ -8,6 +8,7 @@ import { COLORS } from '../../constants/theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 import { AuthContext } from '../../context/AuthContext';
+import { BASE_URL } from '../../constants/config';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required('Username is required'),
@@ -28,7 +29,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleRegister = async (values) => {
     try {
-      const response = await axios.post('http://localhost:5003/api/register', { ...values, isAdmin });
+      const response = await axios.post(`${BASE_URL}/api/register`, { ...values, isAdmin });
       if (response.data.status) {
         await AsyncStorage.setItem('token', response.data.token);
         login(response.data.token); 

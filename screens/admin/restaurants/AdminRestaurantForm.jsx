@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '../../../constants/theme';
+import { BASE_URL } from '../../../constants/config';
 
 const typesOfRestaurants = [
   { id: 'Italian', name: 'Italian' },
@@ -46,7 +47,7 @@ const AdminRestaurantForm = () => {
 
   const fetchRestaurantDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5003/api/restaurants/${id}`);
+      const response = await axios.get(`${BASE_URL}/api/restaurants/${id}`);
       const { name, description, hours, location, coordinates, imageUrl, types, priceRange, dietaryOptions } = response.data;
       setName(name);
       setDescription(description);
@@ -101,10 +102,10 @@ const AdminRestaurantForm = () => {
 
     try {
       if (id) {
-        await axios.put(`http://localhost:5003/api/restaurants/${id}`, restaurantData);
+        await axios.put(`${BASE_URL}/api/restaurants/${id}`, restaurantData);
         setConfirmationMessage(`${name} was updated successfully!`);
       } else {
-        await axios.post('http://localhost:5003/api/restaurants', restaurantData);
+        await axios.post(`${BASE_URL}/api/restaurants`, restaurantData);
         setConfirmationMessage(`${name} was added successfully!`);
       }
       setConfirmationVisible(true);

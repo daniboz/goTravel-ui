@@ -6,11 +6,12 @@ import AppBar from "../../../components/reusable/AppBar";
 import { COLORS, TAB_BAR_HEIGHT } from "../../../constants/theme";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { BASE_URL } from "../../../constants/config";
 
 const fetchUserData = async (userId) => {
   try {
     console.log(`Fetching user data for userId: ${userId}`);
-    const response = await fetch(`http://localhost:5003/api/users/${userId}`);
+    const response = await fetch(`${BASE_URL}/api/users/${userId}`);
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`Error fetching user data for ${userId}:`, errorText);
@@ -49,7 +50,7 @@ const AllEventReviews = ({ navigation, route }) => {
   const fetchAndSetReviews = async () => {
     try {
       console.log(`Fetching reviews for event ID: ${placeId}`);
-      const response = await axios.get(`http://localhost:5003/api/event-reviews/${placeId}/reviews`);
+      const response = await axios.get(`${BASE_URL}/api/event-reviews/${placeId}/reviews`);
       console.log(`Fetched reviews response:`, response.data);
       const detailedReviews = await fetchReviewsWithUserDetails(response.data);
       setReviewsWithUserDetails(detailedReviews);

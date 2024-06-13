@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
 import NoResultsScreen from '../../components/reusable/NoResultsScreen';
+import { BASE_URL } from '../../constants/config';
 
 const RestaurantsPage = () => {
   const navigation = useNavigation();
@@ -18,7 +19,7 @@ const RestaurantsPage = () => {
       console.log('Filters applied:', route.params.filters);
       const fetchFilteredRestaurants = async () => {
         try {
-          const response = await axios.get('http://localhost:5003/api/restaurants/filter', {
+          const response = await axios.get(`${BASE_URL}/api/restaurants/filter`, {
             params: { ...route.params.filters, query },
           });
           console.log('Filtered restaurants:', response.data.restaurants);

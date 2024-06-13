@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import SearchComponent from '../../components/search/SearchComponent';
 import axios from 'axios';
 import NoResultsScreen from '../../components/reusable/NoResultsScreen';
+import { BASE_URL } from '../../constants/config';
 
 const popularDestinations = [
   { id: '1', city: 'Paris', country: 'France' },
@@ -40,7 +41,7 @@ const AttractionsWhereTo = () => {
 
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5003/api/search', {
+      const response = await axios.get(`${BASE_URL}/api/search`, {
         params: { query },
       });
       if (response.data.attractions.length === 0) {

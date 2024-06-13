@@ -11,6 +11,7 @@ import ReusableText from '../../components/reusable/ReusableText';
 import HeightSpacer from '../../components/reusable/HeightSpacer';
 import ExpandableText from '../../components/reusable/ExpandableText';
 import axios from 'axios';
+import { BASE_URL } from '../../constants/config';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -30,7 +31,7 @@ const EventDetails = ({ route, navigation }) => {
 
     try {
       console.log(`Fetching event details for eventId: ${eventId}`);
-      const response = await axios.get(`http://localhost:5003/api/events/${eventId}`);
+      const response = await axios.get(`${BASE_URL}/api/events/${eventId}`);
       console.log('Fetched event details:', response.data);
       setEvent(response.data);
       setLoading(false);

@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   welcomeText: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: '300',
     color: COLORS.black,
   },
