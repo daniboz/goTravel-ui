@@ -5,6 +5,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { COLORS } from '../../constants/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { BASE_URL } from '../../constants/config';
 
 const Profile = ({ navigation }) => {
   const { user, logout, updateUser } = useContext(AuthContext);
@@ -17,7 +18,7 @@ const Profile = ({ navigation }) => {
       if (!token) {
         throw new Error('No token found');
       }
-      const response = await axios.get('http://localhost:5003/api/users/me', {
+      const response = await axios.get(`${BASE_URL}/api/users/me`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('Fetched user data:', response.data); 
@@ -36,7 +37,7 @@ const Profile = ({ navigation }) => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:5003/api/logout');
+      await axios.post(`${BASE_URL}/api/logout`);
       await AsyncStorage.removeItem('token');
       logout();
       navigation.replace('Auth');

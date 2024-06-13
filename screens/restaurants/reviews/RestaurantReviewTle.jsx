@@ -9,6 +9,7 @@ import { COLORS, SIZES } from "../../../constants/theme";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
+import { BASE_URL } from '../../../constants/config';
 
 const RestaurantReviewTle = ({ review, onDelete }) => {
   const [userId, setUserId] = useState(null);
@@ -36,7 +37,7 @@ const RestaurantReviewTle = ({ review, onDelete }) => {
     }
 
     try {
-      const response = await axios.delete('http://localhost:5003/api/restaurant-reviews/delete', {
+      const response = await axios.delete(`${BASE_URL}/api/restaurant-reviews/delete`, {
         data: { reviewId: review._id, userId },
       });
       if (response.status === 200) {

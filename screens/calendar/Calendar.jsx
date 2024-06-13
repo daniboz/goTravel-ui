@@ -54,7 +54,6 @@ const Calendar = () => {
           newItems[date] = [];
         }
 
-        // Check for duplicate entries
         const isDuplicate = newItems[date].some(item => item._id === entry._id);
         if (!isDuplicate) {
           newItems[date].push({

@@ -3,6 +3,7 @@ import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, Alert } 
 import axios from 'axios';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BASE_URL } from '../../../constants/config';
 
 const AdminAttractionsPage = () => {
   const [attractions, setAttractions] = useState([]);
@@ -31,7 +32,7 @@ const AdminAttractionsPage = () => {
 
   const fetchAttractions = async () => {
     try {
-      const response = await axios.get('http://localhost:5003/api/attractions');
+      const response = await axios.get(`${BASE_URL}/api/attractions`);
       setAttractions(response.data);
       setFilteredAttractions(response.data);
     } catch (error) {
@@ -60,7 +61,7 @@ const AdminAttractionsPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5003/api/attractions/${id}`);
+      await axios.delete(`${BASE_URL}/api/attractions/${id}`);
       fetchAttractions();
     } catch (error) {
       console.error('Error deleting attraction:', error);

@@ -3,6 +3,7 @@ import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, Alert } 
 import axios from 'axios';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BASE_URL } from '../../../constants/config';
 
 const AdminRestaurantsPage = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -31,7 +32,7 @@ const AdminRestaurantsPage = () => {
 
   const fetchRestaurants = async () => {
     try {
-      const response = await axios.get('http://localhost:5003/api/restaurants');
+      const response = await axios.get(`${BASE_URL}/api/restaurants`);
       setRestaurants(response.data);
       setFilteredRestaurants(response.data);
     } catch (error) {
@@ -60,7 +61,7 @@ const AdminRestaurantsPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5003/api/restaurants/${id}`);
+      await axios.delete(`${BASE_URL}/api/restaurants/${id}`);
       fetchRestaurants();
     } catch (error) {
       console.error('Error deleting restaurant:', error);

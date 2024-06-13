@@ -3,6 +3,7 @@ import { View, Text, FlatList, TextInput, TouchableOpacity, StyleSheet, Alert } 
 import axios from 'axios';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { BASE_URL } from '../../../constants/config';
 
 const AdminEventsPage = () => {
   const [events, setEvents] = useState([]);
@@ -31,7 +32,7 @@ const AdminEventsPage = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('http://localhost:5003/api/events');
+      const response = await axios.get(`${BASE_URL}/api/events`);
       setEvents(response.data);
       setFilteredEvents(response.data);
     } catch (error) {
@@ -60,7 +61,7 @@ const AdminEventsPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5003/api/events/${id}`);
+      await axios.delete(`${BASE_URL}/api/events/${id}`);
       fetchEvents();
     } catch (error) {
       console.error('Error deleting event:', error);

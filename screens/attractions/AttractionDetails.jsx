@@ -12,6 +12,7 @@ import ExpandableText from '../../components/reusable/ExpandableText';
 import AttractionReviewsList from './reviews/AttractionReviewsList';
 import AppBar from '../../components/reusable/AppBar';
 import axios from 'axios';
+import { BASE_URL } from '../../constants/config';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -31,7 +32,7 @@ const AttractionDetails = ({ route, navigation }) => {
 
     try {
       console.log(`Fetching attraction details for attractionId: ${attractionId}`);
-      const response = await axios.get(`http://localhost:5003/api/attractions/${attractionId}`);
+      const response = await axios.get(`${BASE_URL}/api/attractions/${attractionId}`);
       console.log('Fetched attraction details:', response.data);
       setAttraction(response.data);
       setLoading(false);

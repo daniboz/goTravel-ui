@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import AttractionReviewTle from './AttractionReviewTle';
+import { BASE_URL } from '../../../constants/config';
 
 const fetchUserData = async (userId) => {
   try {
-    console.log(`Fetching user data for userId: ${userId}`); // Debug log
-    const response = await fetch(`http://localhost:5003/api/users/${userId}`);
+    console.log(`Fetching user data for userId: ${userId}`); 
+    const response = await fetch(`${BASE_URL}/api/users/${userId}`);
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`Error fetching user data for ${userId}:`, errorText);
@@ -22,7 +23,6 @@ const fetchReviewsWithUserDetails = async (reviews) => {
   return await Promise.all(
     reviews.map(async (review) => {
       try {
-        // Ensure userId is correctly extracted whether `user` is an object or a string
         const userId = typeof review.user === 'object' ? review.user._id : review.user;
         if (!userId) {
           throw new Error('User ID is missing');
