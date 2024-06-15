@@ -12,12 +12,11 @@ const LocationScreen = ({ route, navigation }) => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [destination, setDestination] = useState(null);
   const [showDirectionsButton, setShowDirectionsButton] = useState(false);
-  const [shouldReset, setShouldReset] = useState(false);
   const [loading, setLoading] = useState(true);
   const mapRef = useRef(null);
   const { latitude, longitude, name, reset } = route.params || {};
 
-  const getLocation = async (callback) => {
+  const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
@@ -27,58 +26,49 @@ const LocationScreen = ({ route, navigation }) => {
     let location = await Location.getCurrentPositionAsync({});
     console.log('Current Location:', location.coords);
     setCurrentLocation(location.coords);
-    setLoading(false);
-
-    if (callback) {
-      callback(location.coords);
-    }
-
-    if ((shouldReset || reset) && mapRef.current) {
-      mapRef.current.animateToRegion({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      }, 1000);
-      setShouldReset(false);
-    }
+    return location.coords;
   };
-
-  useEffect(() => {
-    if (!latitude && !longitude) {
-      getLocation();
-    } else {
-      setLoading(false);
-    }
-  }, [latitude, longitude]);
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log('LocationScreen focused');
-      setLoading(true);
-      if (reset) {
-        console.log('Resetting state to current location');
-        setDestination(null);
-        setShouldReset(true);
-        getLocation();
-      } else if (latitude && longitude) {
-        console.log('Setting destination from route params', { latitude, longitude, name });
-        setDestination({ latitude, longitude, name });
-        setShowDirectionsButton(true);
-        setLoading(false);
-        if (mapRef.current) {
-          mapRef.current.animateToRegion({
-            latitude,
-            longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }, 1000);
+      let isActive = true;
+
+      const fetchLocation = async () => {
+        setLoading(true);
+        const location = await getLocation();
+        if (isActive) {
+          if (reset) {
+            console.log('Resetting state to current location');
+            setDestination(null);
+            if (mapRef.current) {
+              mapRef.current.animateToRegion({
+                latitude: location.latitude,
+                longitude: location.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }, 1000);
+            }
+          } else if (latitude && longitude) {
+            console.log('Setting destination from route params', { latitude, longitude, name });
+            setDestination({ latitude, longitude, name });
+            setShowDirectionsButton(true);
+            if (mapRef.current) {
+              mapRef.current.animateToRegion({
+                latitude,
+                longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }, 1000);
+            }
+          }
+          setLoading(false);
         }
-      } else {
-        setLoading(false);
-      }
+      };
+
+      fetchLocation();
 
       return () => {
+        isActive = false;
         console.log('LocationScreen unfocused, clearing state');
         setDestination(null);
         setShowDirectionsButton(false);
@@ -103,33 +93,22 @@ const LocationScreen = ({ route, navigation }) => {
       const url = `https://www.google.com/maps/dir/?api=1&origin=${currentLocation.latitude},${currentLocation.longitude}&destination=${destination.latitude},${destination.longitude}&travelmode=driving`;
       console.log('Opening URL:', url);
       Linking.openURL(url).catch(err => console.error('An error occurred', err));
+    } else {
+      console.log('Current location or destination not set');
     }
   };
 
-  const handleBackToCurrentLocation = () => {
+  const handleBackToCurrentLocation = async () => {
     console.log('Back to current location button pressed');
-    if (!currentLocation) {
-      getLocation((location) => {
-        console.log('Animating to current location from callback:', location);
-        if (mapRef.current) {
-          mapRef.current.animateToRegion({
-            latitude: location.latitude,
-            longitude: location.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }, 1000);
-        }
-      });
-    } else {
-      console.log('Animating to current location:', currentLocation);
-      if (mapRef.current) {
-        mapRef.current.animateToRegion({
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }, 1000);
-      }
+    const location = await getLocation();
+    if (mapRef.current && location) {
+      console.log('Animating to current location:', location);
+      mapRef.current.animateToRegion({
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      }, 1000);
     }
   };
 
@@ -245,7 +224,7 @@ const LocationScreen = ({ route, navigation }) => {
               )}
             </MapView>
           )}
-          {showDirectionsButton && (
+          {showDirectionsButton && currentLocation && destination && (
             <TouchableOpacity
               style={styles.directionsButton}
               onPress={handleGetDirections}
