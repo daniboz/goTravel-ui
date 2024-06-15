@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, ScrollView, TouchableOpacity, Text, Alert } from 'react-native';
+import { View, TextInput, StyleSheet, ScrollView, TouchableOpacity, Text, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import axios from 'axios';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
