@@ -57,29 +57,7 @@ const RestaurantDetails = ({ route, navigation }) => {
   };
 
   const handleReviews = () => {
-    if (userLogin) {
-      navigation.navigate("AddRestaurantReviews", { placeId: restaurant._id });
-    } else {
-      Alert.alert("Auth Error", "Please login to add comments", [
-        {
-          text: "Cancel",
-          onPress: () => {},
-        },
-        {
-          text: "Continue",
-          onPress: () => { navigation.navigate('AuthTop') },
-        },
-        { defaultIndex: 1 },
-      ]);
-    }
-  };
-
-  const handleReviewsMock = () => {
     navigation.navigate("AddRestaurantReviews", { placeId: restaurant._id });
-  };
-
-  const handleRefresh = () => {
-    setRefresh(prev => !prev);
   };
 
   const handleDeleteReview = (deletedReviewId) => {
@@ -136,7 +114,7 @@ const RestaurantDetails = ({ route, navigation }) => {
           icon={"create-outline"}
           color1={COLORS.grey}
           onPress={() => navigation.goBack()}
-          onPress1={handleReviewsMock}
+          onPress1={handleReviews}
         />
       </View>
 

@@ -5,6 +5,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import RootNavigator from './navigation/RootNavigator';
 import { AuthProvider } from './context/AuthContext'; 
+import { LogBox } from 'react-native';
+
+LogBox.ignoreAllLogs();
 
 export default function App() {
   const [fontsLoaded] = useFonts({

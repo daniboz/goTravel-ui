@@ -56,30 +56,9 @@ const EventDetails = ({ route, navigation }) => {
   };
 
   const handleReviews = () => {
-    if (userLogin) {
-      navigation.navigate("AddEventReviews", { placeId: event._id });
-    } else {
-      Alert.alert("Auth Error", "Please login to add comments", [
-        {
-          text: "Cancel",
-          onPress: () => {},
-        },
-        {
-          text: "Continue",
-          onPress: () => { navigation.navigate('AuthTop') },
-        },
-        { defaultIndex: 1 },
-      ]);
-    }
-  };
-
-  const handleReviewsMock = () => {
     navigation.navigate("AddEventReviews", { placeId: event._id });
   };
 
-  const handleRefresh = () => {
-    setRefresh(prev => !prev);
-  };
 
   const handleDeleteReview = (deletedReviewId) => {
     setEvent((prevEvent) => ({
@@ -135,7 +114,7 @@ const EventDetails = ({ route, navigation }) => {
           icon={"create-outline"}
           color1={COLORS.grey}
           onPress={() => navigation.goBack()}
-          onPress1={handleReviewsMock}
+          onPress1={handleReviews}
         />
       </View>
 

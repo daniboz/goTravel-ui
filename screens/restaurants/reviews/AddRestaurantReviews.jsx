@@ -1,10 +1,9 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, StyleSheet, Alert } from "react-native";
 import React, { useState } from "react";
 import { Rating, RatingInput } from "react-native-stock-star-rating";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StyleSheet } from 'react-native';
 import HeightSpacer from "../../../components/reusable/HeightSpacer";
 import ReusableText from "../../../components/reusable/ReusableText";
 import ReusableBtn from "../../../components/reusable/ReusableBtn";
@@ -19,6 +18,16 @@ const AddRestaurantReviews = ({ navigation }) => {
   const [reviewInput, setReviewInput] = useState("");
 
   const postReview = async () => {
+    if (rating === 0) {
+      Alert.alert('Error', 'Please provide a rating.');
+      return;
+    }
+
+    if (reviewInput.trim() === "") {
+      Alert.alert('Error', 'Please write a review.');
+      return;
+    }
+
     const userId = await AsyncStorage.getItem('id');
     if (!userId) {
       console.error('No user ID found in AsyncStorage');

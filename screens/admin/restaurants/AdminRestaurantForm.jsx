@@ -121,133 +121,135 @@ const AdminRestaurantForm = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.container}>
-          <TextInput
-            style={styles.input}
-            placeholder="Name*"
-            value={name}
-            onChangeText={setName}
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Description*"
-            value={description}
-            onChangeText={setDescription}
-            multiline
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Hours*"
-            value={hours}
-            onChangeText={setHours}
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Location City*"
-            value={locationCity}
-            onChangeText={setLocationCity}
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Location Country*"
-            value={locationCountry}
-            onChangeText={setLocationCountry}
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Latitude*"
-            value={latitude}
-            onChangeText={setLatitude}
-            keyboardType="numeric"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Longitude*"
-            value={longitude}
-            onChangeText={setLongitude}
-            keyboardType="numeric"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Image URL*"
-            value={imageUrl}
-            onChangeText={setImageUrl}
-            autoCapitalize="none"
-          />
-          <Text style={styles.label}>Types of Cuisine:</Text>
-          {expandedTypes ? typesOfRestaurants.map((type) => (
-            <TouchableOpacity
-              key={type.id}
-              style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(type.id, selectedTypes, setSelectedTypes)}>
-              <Text style={styles.optionText}>{type.name}</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.safeArea}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.container}>
+            <TextInput
+              style={styles.input}
+              placeholder="Name*"
+              value={name}
+              onChangeText={setName}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Description*"
+              value={description}
+              onChangeText={setDescription}
+              multiline
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Hours*"
+              value={hours}
+              onChangeText={setHours}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Location City*"
+              value={locationCity}
+              onChangeText={setLocationCity}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Location Country*"
+              value={locationCountry}
+              onChangeText={setLocationCountry}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Latitude*"
+              value={latitude}
+              onChangeText={setLatitude}
+              keyboardType="numeric"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Longitude*"
+              value={longitude}
+              onChangeText={setLongitude}
+              keyboardType="numeric"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Image URL*"
+              value={imageUrl}
+              onChangeText={setImageUrl}
+              autoCapitalize="none"
+            />
+            <Text style={styles.label}>Types of Cuisine:</Text>
+            {expandedTypes ? typesOfRestaurants.map((type) => (
+              <TouchableOpacity
+                key={type.id}
+                style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
+                onPress={() => handleSelect(type.id, selectedTypes, setSelectedTypes)}>
+                <Text style={styles.optionText}>{type.name}</Text>
+              </TouchableOpacity>
+            )) : typesOfRestaurants.slice(0, 3).map((type) => (
+              <TouchableOpacity
+                key={type.id}
+                style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
+                onPress={() => handleSelect(type.id, selectedTypes, setSelectedTypes)}>
+                <Text style={styles.optionText}>{type.name}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity onPress={() => setExpandedTypes(!expandedTypes)} style={styles.viewMoreButton}>
+              <Text style={styles.viewMoreText}>{expandedTypes ? "View Less" : "View More"}</Text>
             </TouchableOpacity>
-          )) : typesOfRestaurants.slice(0, 3).map((type) => (
-            <TouchableOpacity
-              key={type.id}
-              style={[styles.option, selectedTypes.includes(type.id) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(type.id, selectedTypes, setSelectedTypes)}>
-              <Text style={styles.optionText}>{type.name}</Text>
-            </TouchableOpacity>
-          ))}
-          <TouchableOpacity onPress={() => setExpandedTypes(!expandedTypes)} style={styles.viewMoreButton}>
-            <Text style={styles.viewMoreText}>{expandedTypes ? "View Less" : "View More"}</Text>
-          </TouchableOpacity>
 
-          <Text style={styles.label}>Dietary Options:</Text>
-          {expandedDietaryOptions ? dietaryOptions.map(option => (
-            <TouchableOpacity
-              key={option}
-              style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
-              <Text style={styles.optionText}>{option}</Text>
+            <Text style={styles.label}>Dietary Options:</Text>
+            {expandedDietaryOptions ? dietaryOptions.map(option => (
+              <TouchableOpacity
+                key={option}
+                style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
+                onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
+                <Text style={styles.optionText}>{option}</Text>
+              </TouchableOpacity>
+            )) : dietaryOptions.slice(0, 3).map(option => (
+              <TouchableOpacity
+                key={option}
+                style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
+                onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
+                <Text style={styles.optionText}>{option}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity onPress={() => setExpandedDietaryOptions(!expandedDietaryOptions)} style={styles.viewMoreButton}>
+              <Text style={styles.viewMoreText}>{expandedDietaryOptions ? "View Less" : "View More"}</Text>
             </TouchableOpacity>
-          )) : dietaryOptions.slice(0, 3).map(option => (
-            <TouchableOpacity
-              key={option}
-              style={[styles.option, selectedDietaryOptions.includes(option) ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(option, selectedDietaryOptions, setSelectedDietaryOptions)}>
-              <Text style={styles.optionText}>{option}</Text>
-            </TouchableOpacity>
-          ))}
-          <TouchableOpacity onPress={() => setExpandedDietaryOptions(!expandedDietaryOptions)} style={styles.viewMoreButton}>
-            <Text style={styles.viewMoreText}>{expandedDietaryOptions ? "View Less" : "View More"}</Text>
-          </TouchableOpacity>
 
-          <Text style={styles.label}>Price Range*:</Text>
-          {priceRanges.map(priceRange => (
-            <TouchableOpacity
-              key={priceRange}
-              style={[styles.option, selectedPriceRange === priceRange ? styles.selectedOption : styles.unselectedOption]}
-              onPress={() => handleSelect(priceRange, selectedPriceRange, setSelectedPriceRange, true)}
-            >
-              <Text style={styles.optionText}>{priceRange}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-      <TouchableOpacity onPress={handleSubmit} style={styles.saveButton}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
+            <Text style={styles.label}>Price Range*:</Text>
+            {priceRanges.map(priceRange => (
+              <TouchableOpacity
+                key={priceRange}
+                style={[styles.option, selectedPriceRange === priceRange ? styles.selectedOption : styles.unselectedOption]}
+                onPress={() => handleSelect(priceRange, selectedPriceRange, setSelectedPriceRange, true)}
+              >
+                <Text style={styles.optionText}>{priceRange}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+        <TouchableOpacity onPress={handleSubmit} style={styles.saveButton}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
 
-      {confirmationVisible && (
-        <View style={styles.confirmationPopup}>
-          <Text style={styles.confirmationText}>{confirmationMessage}</Text>
-          <TouchableOpacity onPress={handleConfirmation} style={styles.okButton}>
-            <Text style={styles.okButtonText}>OK</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </SafeAreaView>
+        {confirmationVisible && (
+          <View style={styles.confirmationPopup}>
+            <Text style={styles.confirmationText}>{confirmationMessage}</Text>
+            <TouchableOpacity onPress={handleConfirmation} style={styles.okButton}>
+              <Text style={styles.okButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
