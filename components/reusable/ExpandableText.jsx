@@ -36,7 +36,7 @@ const ExpandableText = ({ text, numberOfLines }) => {
       </Text>
       <TouchableOpacity onPress={toggleExpanded}>
         <Text style={styles.seeMoreText}>
-          {isExpanded ? 'See less' : 'See more'}
+          {isExpanded ? 'View less' : 'View more'}
         </Text>
       </TouchableOpacity>
     </View>

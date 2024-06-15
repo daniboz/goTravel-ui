@@ -7,6 +7,7 @@ import { useNavigation, useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { deleteCalendarEntry, getCalendarEntries } from '../../services/api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment-timezone';
 
 const Calendar = () => {
   const [items, setItems] = useState({});
@@ -117,6 +118,11 @@ const Calendar = () => {
     }
   };
 
+  const formatTimeWithoutSeconds = (timeString) => {
+    if (!timeString) return '';
+    return moment(timeString).local().format('HH:mm');
+  };
+
   const renderItem = (item) => (
     <View key={item._id} style={styles.itemContainer}>
       <TouchableOpacity onPress={() => handleNavigateToDetail(item)} style={styles.item}>
@@ -126,7 +132,7 @@ const Calendar = () => {
             <Text style={styles.timeText}>All Day</Text>
           ) : (
             <Text style={styles.timeText}>
-              {item.start ? item.start.split('T')[1].split('.')[0] : ''} - {item.end ? item.end.split('T')[1].split('.')[0] : ''}
+              {formatTimeWithoutSeconds(item.start)}{item.end ? ` - ${formatTimeWithoutSeconds(item.end)}` : ''}
             </Text>
           )}
           {item.attraction && (

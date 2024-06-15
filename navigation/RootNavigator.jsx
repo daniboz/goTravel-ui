@@ -3,7 +3,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
 import AuthStackNavigator from './AuthStackNavigator';
-import BottomTabNavigation from './BottomTabNavigator';
+import BottomTabNavigation from './BottomTabNavigation';
 import AdminStackNavigator from './AdminStackNavigator';
 
 const RootStack = createNativeStackNavigator();

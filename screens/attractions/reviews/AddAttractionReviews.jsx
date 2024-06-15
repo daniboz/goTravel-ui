@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Alert } from "react-native";
 import React, { useState } from "react";
 import { Rating, RatingInput } from "react-native-stock-star-rating";
 import { useRoute } from "@react-navigation/native";
@@ -19,6 +19,16 @@ const AddAttractionReviews = ({ navigation }) => {
   const [reviewInput, setReviewInput] = useState("");
 
   const postReview = async () => {
+    if (rating === 0) {
+      Alert.alert('Error', 'Please provide a rating.');
+      return;
+    }
+
+    if (reviewInput.trim() === "") {
+      Alert.alert('Error', 'Please write a review.');
+      return;
+    }
+
     const userId = await AsyncStorage.getItem('id');
     if (!userId) {
       console.error('No user ID found in AsyncStorage');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet, Text, Switch, Alert } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Text, Switch, Alert, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -42,29 +42,34 @@ const EntryForm = () => {
   }, []);
 
   const handleSave = async () => {
+    if (!description.trim()) {
+      Alert.alert('Error', 'Please add a description.');
+      return;
+    }
+  
     if (!token) {
       console.error('Token is undefined');
       Alert.alert('Error', 'Token is undefined');
       return;
     }
-
+  
     let start;
     let end = null;
-
+  
     if (isAllDay) {
       start = date.toISOString();
     } else {
       const startDateTime = new Date(date);
       startDateTime.setHours(startTime.getHours(), startTime.getMinutes(), 0, 0);
       start = startDateTime.toISOString();
-
+  
       if (isEndTimeEnabled) {
         const endDateTime = new Date(date);
         endDateTime.setHours(endTime.getHours(), endTime.getMinutes(), 0, 0);
         end = endDateTime.toISOString();
       }
     }
-
+  
     const newEntry = {
       name: description,
       start,
@@ -74,9 +79,9 @@ const EntryForm = () => {
       event: selectedEvent ? selectedEvent._id : null,
       restaurant: selectedRestaurant ? selectedRestaurant._id : null,
     };
-
+  
     console.log('New entry data:', newEntry);
-
+  
     try {
       if (existingEntry) {
         await updateCalendarEntry(existingEntry._id, newEntry, token);
@@ -88,8 +93,7 @@ const EntryForm = () => {
       console.error('Error saving entry:', error);
       Alert.alert('Error', 'Failed to save entry');
     }
-  };
-  
+  };  
 
   const handleSearch = async (query) => {
     try {
@@ -130,113 +134,118 @@ const EntryForm = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <SearchComponent onSearch={handleSearch} placeholder="Link an attraction, event or restaurant" onSelect={handleSelect} />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView style={styles.container}>
+        <SearchComponent onSearch={handleSearch} placeholder="Link an attraction, event or restaurant" onSelect={handleSelect} />
 
-      {selectedAttraction && (
-        <View style={styles.selectedItemContainer}>
-          <Text style={styles.selectedItemText}>Linked to: {selectedAttraction.name}</Text>
-          <TouchableOpacity onPress={clearSelection}>
-            <Icon name="close" size={20} color={COLORS.green} />
-          </TouchableOpacity>
-        </View>
-      )}
-      {selectedEvent && (
-        <View style={styles.selectedItemContainer}>
-          <Text style={styles.selectedItemText}>Linked to: {selectedEvent.name}</Text>
-          <TouchableOpacity onPress={clearSelection}>
-            <Icon name="close" size={20} color={COLORS.green} />
-          </TouchableOpacity>
-        </View>
-      )}
-      {selectedRestaurant && (
-        <View style={styles.selectedItemContainer}>
-          <Text style={styles.selectedItemText}>Linked to: {selectedRestaurant.name}</Text>
-          <TouchableOpacity onPress={clearSelection}>
-            <Icon name="close" size={20} color={COLORS.green} />
-          </TouchableOpacity>
-        </View>
-      )}
-
-      <TextInput
-        style={[styles.input, styles.extraMargin]}
-        placeholder="Enter description"
-        value={description}
-        onChangeText={setDescription}
-      />
-
-      <TouchableOpacity onPress={() => setDatePickerVisibility(true)} style={styles.pickerContainer}>
-        <Text style={styles.pickerText}>{date.toDateString()}</Text>
-      </TouchableOpacity>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={(selectedDate) => {
-          setDatePickerVisibility(false);
-          setDate(selectedDate);
-        }}
-        onCancel={() => setDatePickerVisibility(false)}
-        style={styles.dateTimePicker}
-      />
-
-      <View style={styles.switchContainer}>
-        <Text style={styles.label}>All Day</Text>
-        <Switch
-          value={isAllDay}
-          onValueChange={setIsAllDay}
-        />
-      </View>
-
-      {!isAllDay && (
-        <>
-          <Text style={styles.label}>Start Time</Text>
-          <TouchableOpacity onPress={() => setStartTimePickerVisibility(true)} style={styles.pickerContainer}>
-            <Text style={styles.pickerText}>{startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isStartTimePickerVisible}
-            mode="time"
-            onConfirm={(selectedTime) => {
-              setStartTimePickerVisibility(false);
-              setStartTime(selectedTime);
-            }}
-            onCancel={() => setStartTimePickerVisibility(false)}
-            style={styles.dateTimePicker}
-          />
-
-          <View style={styles.switchContainer}>
-            <Text style={styles.label}>Include End Time</Text>
-            <Switch
-              value={isEndTimeEnabled}
-              onValueChange={setIsEndTimeEnabled}
-            />
+        {selectedAttraction && (
+          <View style={styles.selectedItemContainer}>
+            <Text style={styles.selectedItemText}>Linked to: {selectedAttraction.name}</Text>
+            <TouchableOpacity onPress={clearSelection}>
+              <Icon name="close" size={20} color={COLORS.green} />
+            </TouchableOpacity>
           </View>
+        )}
+        {selectedEvent && (
+          <View style={styles.selectedItemContainer}>
+            <Text style={styles.selectedItemText}>Linked to: {selectedEvent.name}</Text>
+            <TouchableOpacity onPress={clearSelection}>
+              <Icon name="close" size={20} color={COLORS.green} />
+            </TouchableOpacity>
+          </View>
+        )}
+        {selectedRestaurant && (
+          <View style={styles.selectedItemContainer}>
+            <Text style={styles.selectedItemText}>Linked to: {selectedRestaurant.name}</Text>
+            <TouchableOpacity onPress={clearSelection}>
+              <Icon name="close" size={20} color={COLORS.green} />
+            </TouchableOpacity>
+          </View>
+        )}
 
-          {isEndTimeEnabled && (
-            <>
-              <Text style={styles.label}>End Time</Text>
-              <TouchableOpacity onPress={() => setEndTimePickerVisibility(true)} style={styles.pickerContainer}>
-                <Text style={styles.pickerText}>{endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
-              </TouchableOpacity>
-              <DateTimePickerModal
-                isVisible={isEndTimePickerVisible}
-                mode="time"
-                onConfirm={(selectedTime) => {
-                  setEndTimePickerVisibility(false);
-                  setEndTime(selectedTime);
-                }}
-                onCancel={() => setEndTimePickerVisibility(false)}
-                style={styles.dateTimePicker}
+        <TextInput
+          style={[styles.input, styles.extraMargin]}
+          placeholder="Enter description"
+          value={description}
+          onChangeText={setDescription}
+        />
+
+        <TouchableOpacity onPress={() => setDatePickerVisibility(true)} style={styles.pickerContainer}>
+          <Text style={styles.pickerText}>{date.toDateString()}</Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={(selectedDate) => {
+            setDatePickerVisibility(false);
+            setDate(selectedDate);
+          }}
+          onCancel={() => setDatePickerVisibility(false)}
+          textColor="black"  
+          style={styles.dateTimePicker}
+        />
+
+        <View style={styles.switchContainer}>
+          <Text style={styles.label}>All Day</Text>
+          <Switch
+            value={isAllDay}
+            onValueChange={setIsAllDay}
+          />
+        </View>
+
+        {!isAllDay && (
+          <>
+            <Text style={styles.label}>Start Time</Text>
+            <TouchableOpacity onPress={() => setStartTimePickerVisibility(true)} style={styles.pickerContainer}>
+              <Text style={styles.pickerText}>{startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isStartTimePickerVisible}
+              mode="time"
+              onConfirm={(selectedTime) => {
+                setStartTimePickerVisibility(false);
+                setStartTime(selectedTime);
+              }}
+              onCancel={() => setStartTimePickerVisibility(false)}
+              textColor="black"  
+              style={styles.dateTimePicker}
+            />
+
+            <View style={styles.switchContainer}>
+              <Text style={styles.label}>Include End Time</Text>
+              <Switch
+                value={isEndTimeEnabled}
+                onValueChange={setIsEndTimeEnabled}
               />
-            </>
-          )}
-        </>
-      )}
+            </View>
 
-      <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
-        <Text style={styles.saveButtonText}>Save</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+            {isEndTimeEnabled && (
+              <>
+                <Text style={styles.label}>End Time</Text>
+                <TouchableOpacity onPress={() => setEndTimePickerVisibility(true)} style={styles.pickerContainer}>
+                  <Text style={styles.pickerText}>{endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+                </TouchableOpacity>
+                <DateTimePickerModal
+                  isVisible={isEndTimePickerVisible}
+                  mode="time"
+                  onConfirm={(selectedTime) => {
+                    setEndTimePickerVisibility(false);
+                    setEndTime(selectedTime);
+                  }}
+                  onCancel={() => setEndTimePickerVisibility(false)}
+                  textColor="black"  
+                  style={styles.dateTimePicker}
+                />
+              </>
+            )}
+          </>
+        )}
+
+        <TouchableOpacity onPress={handleSave} style={styles.saveButton}>
+          <Text style={styles.saveButtonText}>Save</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -325,7 +334,7 @@ const styles = StyleSheet.create({
     color: COLORS.green,
     textAlign: 'center',
     marginRight: 10,
-  },  
+  },
 });
 
 export default EntryForm;

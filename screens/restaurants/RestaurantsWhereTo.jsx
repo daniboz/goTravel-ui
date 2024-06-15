@@ -64,7 +64,7 @@ const RestaurantsWhereTo = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <SearchComponent onSearch={handleSearch} />
+      <SearchComponent onSearch={handleSearch} placeholder="Search for cities or countries..."/>
       {loading ? (
         <ActivityIndicator size="large" color={COLORS.primary} />
       ) : noResults ? (
